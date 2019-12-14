@@ -1,0 +1,15 @@
+{
+	"gamemodes": [
+		"Source"
+	],
+	"plugins": [
+		"crashdetect",
+		"mysql",
+		"sscanf",
+		"streamer"
+	],
+	"rcon_password": ",\u003eQuGt944{_%",
+	"port": 7777,
+	"hostname": "GTAVLC TEST",
+	"maxplayers": 32
+}
