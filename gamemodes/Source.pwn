@@ -233,18 +233,18 @@ new VehicleOwned[MAX_VEHICLES], VehicleSQL[MAX_VEHICLES], VehicleExist[MAX_VEHIC
  
 
 new MonthName[12][] = {
-	{"ianuare"},
-	{"februarie"},
-	{"martie"},
-	{"aprilie"},
-	{"mai"},
-	{"iune"},
-	{"iulye"},
+	{"january"},
+	{"februaru"},
+	{"march"},
+	{"april"},
+	{"may"},
+	{"june"},
+	{"july"},
 	{"august"},
-	{"septembrie"},
-	{"octombrie"},
-	{"noiembrie"},
-	{"decembrie"}
+	{"september"},
+	{"october"},
+	{"november"},
+	{"december"}
 };
 
 
@@ -786,7 +786,7 @@ public OnGameModeInit() {
 	}	
 
 	// if(!SERVER_HOSTSTATUS) 
-	Logo = TextDrawCreate(637.500000, 433.000000, "rpg."SERVER_NAME".ro");
+	Logo = TextDrawCreate(637.500000, 433.000000, "rpg."SERVER_NAME".net");
 	// else Logo = TextDrawCreate(637.500000, 433.000000, "beta.""SERVER_NAME"".ro");
 	TextDrawLetterSize(Logo, 0.346587, 1.407498);
 	TextDrawAlignment(Logo, 3);
@@ -845,7 +845,7 @@ public OnPlayerConnect(playerid) {
 	GetPlayerName(playerid, PlayerInfo[playerid][pUsername], MAX_PLAYER_NAME);
 	ResetVariables(playerid);
 	if(CountIP(GetIP(playerid)) > 1 && strcmp(GetIP(playerid), "127.0.0.1", true) != 0) {
-		SCM(playerid, COLOR_WARNING, "Sunt permise doar o conexiune!");
+		SCM(playerid, COLOR_WARNING, "Da da gioi han nguoi choi ket noi tren mot dia chi IP!");
 		KickEx(playerid);
 		return true;
 	} 
@@ -856,7 +856,7 @@ public OnPlayerConnect(playerid) {
 		}
 	}
 	if(FaceReclama(PlayerInfo[playerid][pUsername])) {
-		SCM(playerid, COLOR_WARNING, "Ai primit kick deoarece numele tau contine numele unei comunitati!");
+		SCM(playerid, COLOR_WARNING, "Ban bi kick vi ten chua ky tu khong hop le!");
 		Ban(playerid);	
 		return true;
 	}
@@ -954,7 +954,7 @@ public OnPlayerDisconnect(playerid, reason)
 	new string[180], query[256];
 	if(TradeID[playerid] != -1) {
 		new id = TradeID[playerid];
-		format(string, sizeof(string), "* %s s-a deconectat. Afacere anulata!", GetName(playerid));
+		format(string, sizeof(string), "* %s da roi game. Giao dich bi huy bo!", GetName(playerid));
 		SCM(playerid, COLOR_GOLD, string);
 		SCM(id, COLOR_GOLD, string);
 		CancelSelectTextDraw(playerid);
@@ -976,7 +976,7 @@ public OnPlayerDisconnect(playerid, reason)
 				Update(i, pCashx);
 				UpdateFactionRaport(i, 0);		
 
-				format(string, sizeof(string), "Ai primit $%d bonus pentru prinderea suspectului %s.", PlayerInfo[playerid][pWantedLevel] * 2000, GetName(playerid));
+				format(string, sizeof(string), "Ban nhan duoc $%d tien thuong bat toi pham %s.", PlayerInfo[playerid][pWantedLevel] * 2000, GetName(playerid));
 				SCM(i, COLOR_DBLUE, string);
 				format(names, 256, "%s %s", names, GetName(i));
 			}	
@@ -1031,18 +1031,18 @@ public OnPlayerDisconnect(playerid, reason)
 	foreach(new i: Player) {
 		if(IsPlayerConnected(i) && IsPlayerLogged[i] == 1) {
 			if(GetPVarInt(i, "OfferBy") == playerid) {
-				SCM(playerid, -1, "Afacerea a fost anulata!");
-				SCM(i, -1, "Afacerea a fost anulata!");
+				SCM(playerid, -1, "Giao dich bi huy bo!");
+				SCM(i, -1, "Giao dich bi huy bo!");
 				SetPVarInt(i, "OfferBy", -1);		
 			}
 			if(TradePlayer[i] == playerid) {
-				SCM(playerid, -1, "Afacerea a fost anulata!");
-				SCM(i, -1, "Afacerea a fost anulata!");				
+				SCM(playerid, -1, "Giao dich bi huy bo!");
+				SCM(i, -1, "Giao dich bi huy bo!");				
 				TradePlayer[i] = -1;
 			}
 			if(AcceptedReport[i] == playerid) {
 				AcceptedReport[i] = -1;
-				SCM(i, COLOR_YELLOW, "Conversatia a fost terminata! (quit)");
+				SCM(i, COLOR_YELLOW, "Cuoc tro chuyen ket thuc! (quit)");
 			}		
 		}	
 		if(IsPlayerConnected(Mobile[playerid])) {
@@ -1072,23 +1072,23 @@ public OnPlayerDisconnect(playerid, reason)
 			}
 		}
 		if(HaveHelp[i] == playerid && PlayerInfo[playerid][pHelper] == 0 && HaveHelp[i] != -1) {
-			format(string, sizeof(string), "(/n) %s s-a desconectat in timp ce intrebarea lui era la %s.", GetName(playerid), GetName(i));
+			format(string, sizeof(string), "(/n) %s da roi game trong khi dat mot cau hoi la %s.", GetName(playerid), GetName(i));
 			if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(0xFFADADFF, string, 1);
 			HaveHelp[i] = -1;
 		}
 		if(HaveHelp[playerid] == i && PlayerInfo[playerid][pHelper] >= 1 && HaveHelp[playerid] != -1) {
-			format(string, sizeof(string), "(/n) %s s-a desconectat in timp ce intrebarea lui era la %s.", GetName(playerid), GetName(i));
+			format(string, sizeof(string), "(/n) %s da roi game trong khi dat mot cau hoi la %s.", GetName(playerid), GetName(i));
 			if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(0xFFADADFF, string, 1);
 			OnHelper[i] = 0;
 		}
 		
 		if(TradePlayer[i] == playerid) {
 			TradePlayer[i] = -1;
-			SCM(i, -1, "Oferta pentru vanzarea vehiculului a fost anulata!");
+			SCM(i, -1, "Giao dich xe da bi huy");
 		}
 		if(playerID != -1 && i == playerID) {
 			SetPVarInt(i, "OfferBy", -1);
-			SCM(i, -1, "Afacerea a fost anulata!");
+			SCM(i, -1, "Giao dich bi huy bo!");
 		}
 		if(Spectate[i] == playerid) {
 			TogglePlayerControllable(i, 1);
@@ -1099,7 +1099,7 @@ public OnPlayerDisconnect(playerid, reason)
 			Unspec[i][sLocal] = 255;
 			gTeam[i] = PlayerInfo[i][pTeam];
 			SetPlayerToTeamColor(i);
-			SendClientMessage(i, COLOR_LIGHTRED, "Nu mai esti spectator!");
+			SendClientMessage(i, COLOR_LIGHTRED, "Ban khong con spec!");
 			Iter_Remove(MySpec[Spectate[playerid]], playerid);
 			SpawnPlayer(i);
 			Spectate[i] = 255;
@@ -1109,11 +1109,11 @@ public OnPlayerDisconnect(playerid, reason)
 	}
 	if(AcceptedService[playerid] != -1) {
 		AcceptedTaxiService[0][AcceptedService[playerid]] = 0;
-		format(string, sizeof(string), "* Membrul %s s-a deconectat in timp ce avea comanda lui %s (%d). Aceasta comanda este acum disponibila membrilor.", GetName(playerid), GetName(AcceptedService[playerid]), AcceptedService[playerid]);
+		format(string, sizeof(string), "* Member %s da thoat game trong khi da nhan cuoc goi taxi tu %s (%d). Hien cac thanh vien khac co the nhan cuoc goi nay.", GetName(playerid), GetName(AcceptedService[playerid]), AcceptedService[playerid]);
 		SendFactionMessage(12, 0x2C6CBFFF, string);
-		format(string, sizeof(string), "Ai renuntat la comanda acceptata!");
+		format(string, sizeof(string), "Ban da huy cuoc goi taxi!");
 		SCM(playerid, COLOR_WHITE, string);
-		format(string, sizeof(string), "Taximetristul %s s-a deconectat. Asteapta pana cand comanda ta va fi preluata de alti membri.", GetName(playerid));
+		format(string, sizeof(string), "Taxier %s da thoat game. Hay doi mot tai xe khac chap nhan cuoc goi cua ban.", GetName(playerid));
 		SCM(AcceptedService[playerid], COLOR_YELLOW, string);
 		AcceptedService[playerid] = -1;
 		targetfind[playerid] = -1;
@@ -1126,7 +1126,7 @@ public OnPlayerDisconnect(playerid, reason)
 			AcceptedService[TaxiDriver[playerid]] = -1;
 			foreach(new i: Player) {
 				if(IsNearPlayer(playerid, i)) {
-					format(string, sizeof(string), "* %s a platit taximetristului %s suma de $%s pentru cursa efectuata.", GetName(playerid), GetName(TaxiDriver[playerid]), FormatNumber(TaxiMoney[playerid]));
+					format(string, sizeof(string), "* %s da tra cho tai xe %s so tien $%s chi phi taxi.", GetName(playerid), GetName(TaxiDriver[playerid]), FormatNumber(TaxiMoney[playerid]));
 					SCM(i, COLOR_PURPLE, string);
 				}
 			}
@@ -1138,7 +1138,7 @@ public OnPlayerDisconnect(playerid, reason)
 	}
 	if(GetPVarInt(playerid, "InLesson") != -1) {
 		new id = GetPVarInt(playerid, "InLesson");
-		format(string, sizeof(string), "Lectia a fost anulata deoarece %s s-a deconectat.", GetName(playerid));
+		format(string, sizeof(string), "Buoi hoc bi huy vi %s da thoat game.", GetName(playerid));
 		SCM(id, COLOR_LIGHTBLUE,string);
 		SetPVarInt(id, "InLesson", -1);
 		SetPVarInt(playerid, "InLesson", -1);		
@@ -1219,25 +1219,25 @@ public OnPlayerDisconnect(playerid, reason)
 	}
 	if(PlayerInfo[playerid][pAdmin] >= 1) {
 		switch(reason) {
-			case 0: format(string, sizeof(string), "QuitBot: Adminul %s left the game (Crash)", GetName(playerid));
-			case 1: format(string, sizeof(string), "QuitBot: Adminul %s left the game (Quit)", GetName(playerid));
-			case 2: format(string, sizeof(string), "QuitBot: Adminul %s left the game (Kicked/Banned)", GetName(playerid));
+			case 0: format(string, sizeof(string), "QuitBot: Admin %s left the game (Crash)", GetName(playerid));
+			case 1: format(string, sizeof(string), "QuitBot: Admin %s left the game (Quit)", GetName(playerid));
+			case 2: format(string, sizeof(string), "QuitBot: Admin %s left the game (Kicked/Banned)", GetName(playerid));
 		}
 		SendAdminMessage(COLOR_LOGS, string, 1);
 	}		
 	if(PlayerInfo[playerid][pMember] != 0 && PlayerInfo[playerid][pRank] > 0) {
 		if(InWar[PlayerInfo[playerid][pMember]] == 1) {
 			switch(reason) {
-				case 0: format(string, sizeof(string), "Factiune %s s-a deconectat de pe server. War score: %d (Crash).",GetName(playerid), WarKills[playerid]-WarDeaths[playerid]);
-				case 1: format(string, sizeof(string), "Factiune %s s-a deconectat de pe server. War score: %d (Quit).",GetName(playerid), WarKills[playerid]-WarDeaths[playerid]);
-				case 2: format(string, sizeof(string), "Factiune %s s-a deconectat de pe server. War score: %d (Kicked/Banned).",GetName(playerid), WarKills[playerid]-WarDeaths[playerid]);
+				case 0: format(string, sizeof(string), "Thanh vien %s da roi game. War score: %d (Crash).",GetName(playerid), WarKills[playerid]-WarDeaths[playerid]);
+				case 1: format(string, sizeof(string), "Thanh vien %s da roi game. War score: %d (Quit).",GetName(playerid), WarKills[playerid]-WarDeaths[playerid]);
+				case 2: format(string, sizeof(string), "Thanh vien %s da roi game. War score: %d (Kicked/Banned).",GetName(playerid), WarKills[playerid]-WarDeaths[playerid]);
 			}	
 		}
 		else {
 			switch(reason) {
-				case 0: format(string, sizeof(string), "Factiune %s s-a deconectat de pe server. (Crash).",GetName(playerid));
-				case 1: format(string, sizeof(string), "Factiune %s s-a deconectat de pe server. (Quit).",GetName(playerid));
-				case 2: format(string, sizeof(string), "Factiune %s s-a deconectat de pe server. (Kicked/Banned).",GetName(playerid));
+				case 0: format(string, sizeof(string), "Thanh vien %s da roi game. (Crash).",GetName(playerid));
+				case 1: format(string, sizeof(string), "Thanh vien %s da roi game. (Quit).",GetName(playerid));
+				case 2: format(string, sizeof(string), "Thanh vien %s da roi game. (Kicked/Banned).",GetName(playerid));
 			}
 		}
 		SendFactionMessage(PlayerInfo[playerid][pMember], COLOR_CLIENT, string);
@@ -1273,10 +1273,10 @@ public OnPlayerClickTextDraw(playerid, Text:clickedid) {
    	gString[0] = EOS;
 	if(clickedid == RoulettaTD[12]) {
 		if(RulettStatus == 2) 
-			return SCM(playerid, COLOR_LGREEN, "You cannot bet when the roulette rolls");
+			return SCM(playerid, COLOR_LGREEN, "Ban khong the dat cuoc khi roulette dang xoay");
 		if(PlaceAlerdy[playerid])
-			return SCM(playerid, COLOR_LGREEN, "You've already placed a bet.");
-		Dialog_Show(playerid, DIALOG_BETRED, DIALOG_STYLE_INPUT, "Place a bet", "{FFFFFF}Bet on {FF0000}RED (WIN 2X)\n{FFFFFF}Enter how mouch you want to bet.", "Bet", "Back");
+			return SCM(playerid, COLOR_LGREEN, "Ban da dat cuoc.");
+		Dialog_Show(playerid, DIALOG_BETRED, DIALOG_STYLE_INPUT, "Place a bet", "{FFFFFF}Bet on {FF0000}RED (WIN 2X)\n{FFFFFF}Ban muon cuoc bao nhieu.", "Bet", "Back");
 		return true;
 	}
 	if(clickedid == PinTD[2]) {
@@ -1288,12 +1288,12 @@ public OnPlayerClickTextDraw(playerid, Text:clickedid) {
 	if(clickedid == PinTD[3]) {
 		if(strlen(PinInsert[playerid]) < 4) return true;
 		if(PinInsert[playerid][0] == '0')
-			return SCM(playerid, COLOR_LGREEN, "Eroare: Pin invalid.");
+			return SCM(playerid, COLOR_LGREEN, "Error: PIN khong hop le.");
 
 		switch(IsPin[playerid]) {
 			case 1: {	
 				PlayerInfo[playerid][pPin] = strval(PinInsert[playerid]);
-				format(gString, 150, "(PIN): {FFFFFF}Pinul setat de tine este '%d' pentru a nu uita pinu poti face un Screen Shot pe tasta F8.", PlayerInfo[playerid][pPin]);
+				format(gString, 150, "(PIN): {FFFFFF}Ban da dat PIN la '%d', ban co the f8 chup man hinh phong khi quen.", PlayerInfo[playerid][pPin]);
 				SCM(playerid, COLOR_LGREEN, gString);
 				PlayerInfo[playerid][pPinLogged] = 1;
 				UpdateVar(playerid, "Pin", PlayerInfo[playerid][pPin]);
@@ -1301,11 +1301,11 @@ public OnPlayerClickTextDraw(playerid, Text:clickedid) {
 			case 2: {
 				if(PlayerInfo[playerid][pPin] == strval(PinInsert[playerid])) {
 					PlayerInfo[playerid][pPinLogged] = 1;	
-					SendClientMessage(playerid, COLOR_YELLOW, "Felicitari! Codul PIN introdus de tine este unul valid, acum beneficiezi de acces la contul tau.");
+					SendClientMessage(playerid, COLOR_YELLOW, "Chuc mung! Ban da nhap chinh xac PIN, bay gio ban co toan quyen truy cap vao tai khoan.");
 				}
 				else {
 					new ste[5];
-					SendClientMessage(playerid, COLOR_WARNING, "Codul PIN introdus este invalid.");
+					SendClientMessage(playerid, COLOR_WARNING, "PIN da nhap khong hop le.");
 					PlayerTextDrawSetString(playerid, PinPTD[10], "----");
 					PinInsert[playerid] = "";	
 					for(new i = 0; i < 10; i++) format(ste, sizeof(ste), "%d", i == 9 ? 0 : i+1), PlayerTextDrawSetString(playerid, PinPTD[i], ste);								
@@ -1322,26 +1322,26 @@ public OnPlayerClickTextDraw(playerid, Text:clickedid) {
 	}
 	if(clickedid == RoulettaTD[13]) {
 		if(RulettStatus == 2) 
-			return SCM(playerid, COLOR_LGREEN, "You cannot bet when the roulette rolls");
+			return SCM(playerid, COLOR_LGREEN, "Ban khong the dat cuoc khi roulette dang xoay");
 		if(PlaceAlerdy[playerid])
-			return SCM(playerid, COLOR_LGREEN, "You've already placed a bet.");
-		Dialog_Show(playerid, DIALOG_BETGREEN, DIALOG_STYLE_INPUT, "Place a bet", "{FFFFFF}Bet on {65ec32}GREEN (WIN 14X)\n{FFFFFF}Enter how mouch you want to bet.", "Bet", "Back");
+			return SCM(playerid, COLOR_LGREEN, "Ban da dat cuoc.");
+		Dialog_Show(playerid, DIALOG_BETGREEN, DIALOG_STYLE_INPUT, "Place a bet", "{FFFFFF}Bet on {65ec32}GREEN (WIN 14X)\n{FFFFFF}Ban muon cuoc bao nhieu.", "Bet", "Back");
 		return true;
 	}
 	if(clickedid == RoulettaTD[14]) {
 		if(RulettStatus == 2) 
-			return SCM(playerid, COLOR_LGREEN, "You cannot bet when the roulette rolls");
+			return SCM(playerid, COLOR_LGREEN, "Ban khong the dat cuoc khi roulette dang xoay");
 		if(PlaceAlerdy[playerid])
-			return SCM(playerid, COLOR_LGREEN, "You've already placed a bet.");
-		Dialog_Show(playerid, DIALOG_BETBLACK, DIALOG_STYLE_INPUT, "Place a bet", "{FFFFFF}Bet on {656665}BLACK (WIN 2X)\n{FFFFFF}Enter how mouch you want to bet.", "Bet", "Back");
+			return SCM(playerid, COLOR_LGREEN, "Ban da dat cuoc.");
+		Dialog_Show(playerid, DIALOG_BETBLACK, DIALOG_STYLE_INPUT, "Place a bet", "{FFFFFF}Bet on {656665}BLACK (WIN 2X)\n{FFFFFF}Ban muon cuoc bao nhieu.", "Bet", "Back");
 		return true;
 	}
 	if(clickedid == TradeTD[10]) {
-		if(TradeItems[playerid] == 0) return SCM(playerid, COLOR_ERROR, "Eroare: {FFFFFF}Nu ai adaugat nimic in aceasta afacere!");
-		if(TradeReady[playerid] == 1) return SCM(playerid, COLOR_ERROR, "Eroare: {FFFFFF}Nu poti sterge bunurile adaugate in timp ce timer-ul este activat!");
+		if(TradeItems[playerid] == 0) return SCM(playerid, COLOR_ERROR, "Error: {FFFFFF}Ban chua them vat pham nao");
+		if(TradeReady[playerid] == 1) return SCM(playerid, COLOR_ERROR, "Ban khong the xoa hang hoa khi bo hen gio da duoc kich hoat");
 		HideTradeItems(playerid);		
 		new id = TradeID[playerid];
-		format(gString, 100, "%s si-a sters bunurile adaugate.", GetName(playerid));
+		format(gString, 100, "%s da xoa mot mon hang.", GetName(playerid));
 		SCM(playerid, COLOR_GOLD, gString);
 		SCM(id, COLOR_GOLD, gString);	
 		return true;	
@@ -1354,12 +1354,12 @@ public OnPlayerClickTextDraw(playerid, Text:clickedid) {
 			Camera(playerid);
 			TextDrawShowForPlayer(playerid, LoginTD[0]);
 			TextDrawShowForPlayer(playerid, LoginTD[1]);
-			format(gString, 100, "Welcome, %s!\nPlease enter your password below to login your account.", GetName(playerid));
+			format(gString, 100, "Welcome, %s!\nNhap mat khau cua ban de dang nhap.", GetName(playerid));
 			Dialog_Show(playerid, DIALOG_LOGIN2, DIALOG_STYLE_PASSWORD, "Account Registered", gString, "Login", "Quit");
 			IsRegister[playerid] = false;
 			CancelSelectTextDraw(playerid);
 		}
-		else return SCM(playerid, COLOR_GREY, "Nu ai completat toate casutele.");
+		else return SCM(playerid, COLOR_GREY, "Ban khong dien du thong tin.");
 		return true;
 	}
 	if(clickedid == RegisterTD[7]) return Kick(playerid);
@@ -1371,11 +1371,11 @@ public OnPlayerClickTextDraw(playerid, Text:clickedid) {
 		for(new i = 0; i < 9; i++) TextDrawHideForPlayer(playerid, SkinsTD[i]);
 		return true;
 	}
-	if(clickedid == SkinsTD[3]) SkinsActions[playerid] = 1, SCM(playerid, COLOR_GREY, "Orice skin vei alege il vei pune pe tine.");
-	if(clickedid == SkinsTD[2]) SkinsActions[playerid] = 2, SCM(playerid, COLOR_GREY, "Orice skin vei alege il vei sterge.");
+	if(clickedid == SkinsTD[3]) SkinsActions[playerid] = 1, SCM(playerid, COLOR_GREY, "Chon mot skin de thay doi dien mao nhan vat.");
+	if(clickedid == SkinsTD[2]) SkinsActions[playerid] = 2, SCM(playerid, COLOR_GREY, "Chon mot skin de xoa.");
  	if(clickedid == TradeTD[9] && TradeReady[playerid] == 0) Dialog_Show(playerid, DIALOG_TRADE, DIALOG_STYLE_LIST, "Trade", "Money\nHouse\nBusiness\nVehicle\nRare Voucher (50 PP)\nEpic Voucher (100 PP)\nLegendary Voucher (500 PP)\nCurrent Skin\nHidden Color\nMoney (with miliards)\nTickets Rainbow\nTickets Vip", "Ok", "Cancel");
 	if(clickedid == CrateTD[2]) {
-		if(totalcrates(playerid) < 1) return SCM(playerid, COLOR_LGREEN, "Nu ai cutii.");
+		if(totalcrates(playerid) < 1) return SCM(playerid, COLOR_LGREEN, "Ban khong co du hop.");
 		if(CrateModel[playerid] >= 0) return true;
 		for(new j = 0; j < 6; j++) TextDrawHideForPlayer(playerid, CrateTD[j]);
 		for(new j = 0; j < 2; j++) PlayerTextDrawHide(playerid, CratePTD[j]);
@@ -1386,7 +1386,7 @@ public OnPlayerClickTextDraw(playerid, Text:clickedid) {
 	if(clickedid == StageTD[0]) {
 		new idd = PersonalCar(playerid);
 		if(CarInfo[idd][cStage] > 2) return true;
-		format(gString, sizeof(gString), "{FFFFFF}Do you want to update your {539EEA}tuning step {FFFFFF}to {539EEA}%d\n{FFFFFF}The price is {539EEA}%d premium points{FFFFFF}.", CarInfo[idd][cStage]+1, StagePrice[0][CarInfo[idd][cStage]+1]);
+		format(gString, sizeof(gString), "{FFFFFF}Do you want to update your {539EEA}tuning step {FFFFFF}to {539EEA}%d\n{FFFFFF}Gia phai tra la {539EEA}%d premium points{FFFFFF}.", CarInfo[idd][cStage]+1, StagePrice[0][CarInfo[idd][cStage]+1]);
 		Dialog_Show(playerid, DIALOG_UPSTAGE, DIALOG_STYLE_MSGBOX, "{539EEA}Tuning {FFFFFF}Upgrade", gString, "Upgrade", "Cancel");
 		return true;
 	}
@@ -1411,7 +1411,7 @@ public OnPlayerClickTextDraw(playerid, Text:clickedid) {
 		if(CrateModel[playerid] >= 0) return true;
  		CrateModel[playerid] = 0;
  		CrateTime[playerid] = 20;
-		SCM(playerid, COLOR_WHITE, "{D81B15}(Crate System){FFFFFF} Ai deschis o cutie de TEST, castigul nu il vei primi. Doar vizualizezi ce ai putea castiga la o cuite normala.");
+		SCM(playerid, COLOR_WHITE, "{D81B15}(Crate System){FFFFFF} Ban da mo mot hop THU NGHIEM, phan thuong se khong duoc nhan. Hay hinh dung dieu nay khi ban mo hop thuc su.");
 		startcrates(playerid);
 		return true;
 	}	
@@ -1473,7 +1473,7 @@ public OnPlayerClickTextDraw(playerid, Text:clickedid) {
 		if(IsRegister[playerid]) SelectTextDraw(playerid, 0x5AC6D5FF);
 		if(Iter_Contains(IsRuletta, playerid)) {
 			if(PlaceAlerdy[playerid] != 0) {
-				SCM(playerid, COLOR_GREY, "You can't get out of roulette right now.");
+				SCM(playerid, COLOR_GREY, "Hien tai ban khong the roi khoi roulette.");
 				SelectTextDraw(playerid, 0xFFFFFFFF);
 				return true;
 			}
@@ -1549,7 +1549,7 @@ public OnPlayerClickTextDraw(playerid, Text:clickedid) {
 		if(GetPVarInt(playerid, "PlayMine") == 1 || GetPVarInt(playerid, "StartedGame") == 1) SelectTextDraw(playerid, 0x80FF00FF);
 		if(TradeID[playerid] != -1) {
 			new id = TradeID[playerid];
-			format(gString, 50, "* %s a anulat afacerea!", GetName(playerid));
+			format(gString, 50, "* %s da huy giao dich!", GetName(playerid));
 			SCM(playerid, COLOR_GOLD, gString);
 			SCM(id, COLOR_GOLD, gString);
 			HideTradeItems(playerid);
@@ -1643,13 +1643,13 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 		switch(InExamen[playerid]) {
 			case 2: {
 				switch(StepExam[playerid]) {
-					case 0, 1, 3: FailExam(playerid), SCM(playerid, COLOR_LIGHTRED, "Licenses:{FFFFFF} Rapsuns gresit.");
+					case 0, 1, 3: FailExam(playerid), SCM(playerid, COLOR_LIGHTRED, "Licenses:{FFFFFF} Cau tra loi sai.");
 					case 2, 4: StepExam[playerid] ++, ShowExam(playerid, 0);
 				}
 			}
 			case 3: {
 				switch(StepExam[playerid]) {
-					case 0, 1: FailExam(playerid), SCM(playerid, COLOR_LIGHTRED, "Licenses:{FFFFFF} Rapsuns gresit.");
+					case 0, 1: FailExam(playerid), SCM(playerid, COLOR_LIGHTRED, "Licenses:{FFFFFF} Cau tra loi sai.");
 					case 2, 3: StepExam[playerid] ++, ShowExam(playerid, 1);
 				}				
 			}
@@ -1659,13 +1659,13 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 		switch(InExamen[playerid]) {
 			case 2: {
 				switch(StepExam[playerid]) {
-					case 2, 3, 4: FailExam(playerid), SCM(playerid, COLOR_LIGHTRED, "Licenses:{FFFFFF} Rapsuns gresit.");
+					case 2, 3, 4: FailExam(playerid), SCM(playerid, COLOR_LIGHTRED, "Licenses:{FFFFFF} Cau tra loi sai.");
 					case 0, 1: StepExam[playerid] ++, ShowExam(playerid, 0);
 				}
 			}
 			case 3: {
 				switch(StepExam[playerid]) {
-					case 0, 3: FailExam(playerid), SCM(playerid, COLOR_LIGHTRED, "Licenses:{FFFFFF} Rapsuns gresit.");
+					case 0, 3: FailExam(playerid), SCM(playerid, COLOR_LIGHTRED, "Licenses:{FFFFFF} Cau tra loi sai.");
 					case 1, 2: StepExam[playerid] ++, ShowExam(playerid, 1);
 				}				
 			}
@@ -1675,13 +1675,13 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 		switch(InExamen[playerid]) {
 			case 2: {
 				switch(StepExam[playerid]) {
-					case 0, 1, 2, 4: FailExam(playerid), SCM(playerid, COLOR_LIGHTRED, "Licenses:{FFFFFF} Rapsuns gresit.");
+					case 0, 1, 2, 4: FailExam(playerid), SCM(playerid, COLOR_LIGHTRED, "Licenses:{FFFFFF} Cau tra loi sai.");
 					case 3: StepExam[playerid] ++, ShowExam(playerid, 0);
 				}
 			}
 			case 3: {
 				switch(StepExam[playerid]) {
-					case 1, 2, 3: FailExam(playerid), SCM(playerid, COLOR_LIGHTRED, "Licenses:{FFFFFF} Rapsuns gresit.");
+					case 1, 2, 3: FailExam(playerid), SCM(playerid, COLOR_LIGHTRED, "Licenses:{FFFFFF} Cau tra loi sai.");
 					case 0: StepExam[playerid] ++, ShowExam(playerid, 1);
 				}				
 			}
@@ -1700,7 +1700,7 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 	}
 	if(playertextid == GunTD[4]) {
 		new query[128];
-		if(PlayerInfo[playerid][pGunLic] != 1) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai licenta de arme!");
+		if(PlayerInfo[playerid][pGunLic] != 1) return SCM(playerid, COLOR_LGREEN, "Error: Ban khong co giay phep su dung sung!");
 		switch(GunID[playerid]) {
 			case 0: {
 				ServerWeapon(playerid, 24, 50);
@@ -1708,7 +1708,7 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 				BizzInfo[InBussines[playerid]][bBalance] += 5000;
 				mysql_format(SQL, query, sizeof(query),"UPDATE `bizz` SET `Till`='%d',`Products`='%d' WHERE `ID`='%d'",BizzInfo[InBussines[playerid]][bBalance],BizzInfo[InBussines[playerid]][bProducts],InBussines[playerid]);
 				mysql_tquery(SQL,query, "", "");		
-				SCM(playerid, COLOR_LGREEN, "Gun Shop: {FFFFFF}Ti-ai cumparat arma Deagle pentru suma de $5.000");
+				SCM(playerid, COLOR_LGREEN, "Gun Shop: {FFFFFF}Ban da thanh toan mot em Deagle voi gia $5.000");
 			}
 			case 1: {
 				ServerWeapon(playerid, 31, 200);
@@ -1716,7 +1716,7 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 				BizzInfo[InBussines[playerid]][bBalance] += 10000;
 				mysql_format(SQL, query, sizeof(query),"UPDATE `bizz` SET `Till`='%d',`Products`='%d' WHERE `ID`='%d'",BizzInfo[InBussines[playerid]][bBalance],BizzInfo[InBussines[playerid]][bProducts],InBussines[playerid]);
 				mysql_tquery(SQL,query, "", "");
-				SCM(playerid, COLOR_LGREEN, "Gun Shop: {FFFFFF}Ti-ai cumparat arma M4 pentru suma de $10.000");
+				SCM(playerid, COLOR_LGREEN, "Gun Shop: {FFFFFF}Ban da thanh toan mot em M4 voi gia $10.000");
 			}
 			case 2: {
 				ServerWeapon(playerid, 30, 200);
@@ -1724,7 +1724,7 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 				BizzInfo[InBussines[playerid]][bBalance] += 2000;
 				mysql_format(SQL, query, sizeof(query),"UPDATE `bizz` SET `Till`='%d',`Products`='%d' WHERE `ID`='%d'",BizzInfo[InBussines[playerid]][bBalance],BizzInfo[InBussines[playerid]][bProducts],InBussines[playerid]);
 				mysql_tquery(SQL,query, "", "");
-				SCM(playerid, COLOR_LGREEN, "Gun Shop: {FFFFFF}Ti-ai cumparat arma AK47 pentru suma de $10.000");
+				SCM(playerid, COLOR_LGREEN, "Gun Shop: {FFFFFF}Ban da thanh toan mot em AK47 voi gia $10.000");
 			}
 			case 3: {
 				ServerWeapon(playerid, 28, 200);
@@ -1740,7 +1740,7 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 				BizzInfo[InBussines[playerid]][bBalance] += 15000;
 				mysql_format(SQL, query, sizeof(query),"UPDATE `bizz` SET `Till`='%d',`Products`='%d' WHERE `ID`='%d'",BizzInfo[InBussines[playerid]][bBalance],BizzInfo[InBussines[playerid]][bProducts],InBussines[playerid]);
 				mysql_tquery(SQL,query, "", "");
-				SCM(playerid, COLOR_LGREEN, "Gun Shop: {FFFFFF}Ti-ai cumparat arma Shotgan pentru suma de $15.000");
+				SCM(playerid, COLOR_LGREEN, "Gun Shop: {FFFFFF}Ban da thanh toan mot em Shotgan voi gia $15.000");
 			}
 			case 5: {
 				ServerWeapon(playerid, 5, 1);
@@ -1748,7 +1748,7 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 				BizzInfo[InBussines[playerid]][bBalance] += 2000;
 				mysql_format(SQL, query, sizeof(query),"UPDATE `bizz` SET `Till`='%d',`Products`='%d' WHERE `ID`='%d'",BizzInfo[InBussines[playerid]][bBalance],BizzInfo[InBussines[playerid]][bProducts],InBussines[playerid]);
 				mysql_tquery(SQL,query, "", "");
-				SCM(playerid, COLOR_LGREEN, "Gun Shop: {FFFFFF}Ti-ai cumparat arma Baseball pentru suma de $2.000");
+				SCM(playerid, COLOR_LGREEN, "Gun Shop: {FFFFFF}Ban da thanh toan mot em Baseball voi gia $2.000");
 			}
 		}
 	}
@@ -1849,8 +1849,8 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 		}
 	}
 	if(playertextid == PacaneleTD[7]) {
-		if(BetPacanele[playerid] == 0) return SCM(playerid, COLOR_LGREEN, "Nu ai pus un bet!");
-		if(PlayerMoney(playerid, BetPacanele[playerid])) return SCM(playerid, COLOR_LGREEN, "Nu ai beni setati.");
+		if(BetPacanele[playerid] == 0) return SCM(playerid, COLOR_LGREEN, "Ban da khong dat cuoc!");
+		if(PlayerMoney(playerid, BetPacanele[playerid])) return SCM(playerid, COLOR_LGREEN, "Ban khong co du tien.");
 		if(TimerPacanele[playerid] > 0) return true;
 		GivePlayerCash(playerid, 0, BetPacanele[playerid]);
 		if(PacaneleT[playerid] != 1) repeat Pacanele(playerid), PacaneleT[playerid] = 1;
@@ -1861,7 +1861,7 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
  		PlayerTextDrawSetString(playerid, PacaneleTD[9], string);
  		OnePlayAnim(playerid,"PED","IDLE_CHAT",4.0,0,0,0,0,0);
 	}
-	if(playertextid == PacaneleTD[5]) Dialog_Show(playerid, 0, DIALOG_STYLE_MSGBOX, "INFO", "- Informati Castig -\n\n{FF0000}6{00FF17}9{FFFFFF} - 10x\n{8625BD}Struguri {FFFFFF} - 4x\n{EDF320}Clopotele{FFFFFF} - 5x\n{CC9632}Aur x2{FFFFFF} - 6x\n{CC9632}Aur 1x{FFFFFF} - 5", "Ok", "");
+	if(playertextid == PacaneleTD[5]) Dialog_Show(playerid, 0, DIALOG_STYLE_MSGBOX, "INFO", "- Quy tac -\n\n{FF0000}6{00FF17}9{FFFFFF} - 10x\n{8625BD}Nho {FFFFFF} - 4x\n{EDF320}Chuong{FFFFFF} - 5x\n{CC9632}Gold x2{FFFFFF} - 6x\n{CC9632}Gold 1x{FFFFFF} - 5", "Ok", "");
 	if(playertextid == PacaneleTD[10]) {
 		if(TimerPacanele[playerid] > 0) SelectTextDraw(playerid, 0xF4E318FF);
 		else {
@@ -1884,7 +1884,7 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 			case 0: {
 				PlayerTextDrawSetString(playerid, DublajTD[4], "LD_CARD:cd13s");
 				defer HideDublaj(playerid);
-				format(string, sizeof(string), "Ai piredut $%s.", FormatNumbers(TotalBet[playerid]));
+				format(string, sizeof(string), "Ban thua $%s.", FormatNumbers(TotalBet[playerid]));
 				GivePlayerCash(playerid, 0, TotalBet[playerid]);
 				Update(playerid, pCashx);
 				TotalBet[playerid] = 0;
@@ -1894,11 +1894,11 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 				PlayerTextDrawSetString(playerid, DublajTD[4], "LD_CARD:cd13h");
 				defer HideDublaj(playerid);
 				TotalBet[playerid] = TotalBet[playerid] * 2;
-				format(string, sizeof(string), "Ai dublat la $%s.", FormatNumbers(TotalBet[playerid]));
+				format(string, sizeof(string), "Ban thang $%s.", FormatNumbers(TotalBet[playerid]));
 				SCM(playerid, COLOR_LGREEN, string);
 				GivePlayerCash(playerid, 1, TotalBet[playerid]);
 				Update(playerid, pCashx);
-				format(string, sizeof(string), "You win: ~g~$%s~n~~w~~h~Press RED or BLACK to double your win.", FormatNumbers(TotalBet[playerid]));
+				format(string, sizeof(string), "You win: ~g~$%s~n~~w~~h~Nhan RED hoac BLACK de nhan doi chien thang cua ban.", FormatNumbers(TotalBet[playerid]));
 				PlayerTextDrawSetString(playerid, DublajTD[2], string);
 			}
 		}
@@ -1910,7 +1910,7 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 			case 0: {
 				PlayerTextDrawSetString(playerid, DublajTD[4], "LD_CARD:cd13h");
 				defer HideDublaj(playerid);
-				format(string, sizeof(string), "Ai piredut $%s.", FormatNumbers(TotalBet[playerid]));
+				format(string, sizeof(string), "Ban thua $%s.", FormatNumbers(TotalBet[playerid]));
 				GivePlayerCash(playerid, 0, TotalBet[playerid]);
 				Update(playerid, pCashx);
 				TotalBet[playerid] = 0;
@@ -1920,16 +1920,16 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 				PlayerTextDrawSetString(playerid, DublajTD[4], "LD_CARD:cd13s");
 				defer HideDublaj(playerid);
 				TotalBet[playerid] = TotalBet[playerid] * 2;
-				format(string, sizeof(string), "Ai dublat la $%s.", FormatNumbers(TotalBet[playerid]));
+				format(string, sizeof(string), "Ban thang $%s.", FormatNumbers(TotalBet[playerid]));
 				SCM(playerid, COLOR_LGREEN, string);
-				format(string, sizeof(string), "You win: ~g~$%s~n~~w~~h~Press RED or BLACK to double your win.", FormatNumbers(TotalBet[playerid]));
+				format(string, sizeof(string), "You win: ~g~$%s~n~~w~~h~Nhan RED hoac BLACK de nhan doi chien thang cua ban.", FormatNumbers(TotalBet[playerid]));
 				PlayerTextDrawSetString(playerid, DublajTD[2], string);
 				GivePlayerCash(playerid, 1, TotalBet[playerid]);
 				Update(playerid, pCashx);
 			}
 		}
 	}
-	if(playertextid == PacaneleTD[8]) if(TimerPacanele[playerid] == 0) Dialog_Show(playerid, DIALOG_BETP, DIALOG_STYLE_INPUT, "Bet:", "Introdu numarul de bani cu care vrei sa joci.\nMinim $50.000 maxim $5.000.000.", "Select", "Cancel");
+	if(playertextid == PacaneleTD[8]) if(TimerPacanele[playerid] == 0) Dialog_Show(playerid, DIALOG_BETP, DIALOG_STYLE_INPUT, "Bet:", "Nhap so tien ban muon choi.\nToi thieu $50.000 va toi da $5.000.000.", "Select", "Cancel");
 	for(new i = 0; i < 10; i++) {
 		if(playertextid == PinPTD[i]) {
 			if(strlen(PinInsert[playerid]) == 4) break;
@@ -1940,36 +1940,36 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 			format(gString, 2, "%d", i == 9 ? 0 : i+1);
 			strcat(PinInsert[playerid], gString);
 			PlayerTextDrawSetString(playerid, PinPTD[10], PinInsert[playerid]);
-			if(strlen(PinInsert[playerid]) == 4) SCM(playerid, COLOR_LGREEN, "(PIN Systems): {FFFFFF}Apasa pe butonul deasupra textului '{D7FFB3}ENTER{FFFFFF}' pentru a seta pinul.");
+			if(strlen(PinInsert[playerid]) == 4) SCM(playerid, COLOR_LGREEN, "(PIN Systems): {FFFFFF}Nhan nut '{D7FFB3}ENTER{FFFFFF}' phia tren de set PIN");
 			break;
 		}		
 	}
 	if(playertextid == RegisterPTD[1]) {
-		format(string, sizeof(string), "Welcome, %s!\nType your password:.",GetName(playerid));
-		Dialog_Show(playerid, DIALOG_LOGIN1,DIALOG_STYLE_PASSWORD,"Register", string,"Select","Cancel");
+		format(string, sizeof(string), "Welcome, %s!\nNhap mat khau cua ban de dang ky:",GetName(playerid));
+		Dialog_Show(playerid, DIALOG_LOGIN1,DIALOG_STYLE_PASSWORD,"Registration", string,"Select","Cancel");
 	}
-	if(playertextid == RegisterPTD[3]) Dialog_Show(playerid, DIALOG_REGISTER4, DIALOG_STYLE_INPUT, "Email:", "Type your email:", "Select", "Cancel");
-	if(playertextid == RegisterPTD[2]) Dialog_Show(playerid, DIALOG_REGISTER, DIALOG_STYLE_LIST, "Gander", "Male\nFemale", "Select", "Cancel");
-	if(playertextid == RegisterPTD[4]) Dialog_Show(playerid, DIALOG_REGISTER5, DIALOG_STYLE_INPUT, "Refferal", "type ID refferal:","Select", "Cancel");
-	if(playertextid == RegisterPTD[5]) Dialog_Show(playerid, DIALOG_REGISTER2,DIALOG_STYLE_INPUT,"Age:","Type your age:","Select","Cancel");
+	if(playertextid == RegisterPTD[3]) Dialog_Show(playerid, DIALOG_REGISTER4, DIALOG_STYLE_INPUT, "Email:", "Nhap email cua ban:", "Select", "Cancel");
+	if(playertextid == RegisterPTD[2]) Dialog_Show(playerid, DIALOG_REGISTER, DIALOG_STYLE_LIST, "Gioi tinh", "Nam\nNu", "Select", "Cancel");
+	if(playertextid == RegisterPTD[4]) Dialog_Show(playerid, DIALOG_REGISTER5, DIALOG_STYLE_INPUT, "Refferal", "Nhap ID refferal (neu co):","Select", "Cancel");
+	if(playertextid == RegisterPTD[5]) Dialog_Show(playerid, DIALOG_REGISTER2,DIALOG_STYLE_INPUT,"Age:","Nhap tuoi cua ban:","Select","Cancel");
 	if(playertextid == DSTds[3]) Dialog_Show(playerid, DIALOG_EDITVEHICLE, DIALOG_STYLE_LIST, "Edit vehicle", "Value\nStock", "Ok", "Exit"), SetPVarInt(playerid, "VehicleID", DealerID[playerid]);
 	for(new s = 0; s < 10; s++) {
 		if(playertextid != SkinsPTD[s])
 			continue;
 
 		if(PlayerInfo[playerid][pSkins][s] == -1) {
-			SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai un skin pe acest slot.");
+			SCM(playerid, COLOR_LGREEN, "Error: Ban khong co skin tren slot nay.");
 			break;
 		}
 		
 		if(SkinsActions[playerid] == 0) {
-			SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai ales o actiune.");
+			SCM(playerid, COLOR_LGREEN, "Error: Ban khong chon mot skin.");
 			break;
 		}
 		if(SkinsActions[playerid] == 1)
-			Dialog_Show(playerid, DIALOG_SKIN, DIALOG_STYLE_MSGBOX,  "My Skins", SkinsActions[playerid] == 1 ? "Esti sigur ca vrei sa pui acest skin pe tine?" : "Esti sigur ca vrei sa stergi acest skin?",  "Da",  "Nu");
+			Dialog_Show(playerid, DIALOG_SKIN, DIALOG_STYLE_MSGBOX,  "My Skins", SkinsActions[playerid] == 1 ? "Ban co chac muon su dung skin nay?" : "Ban co chac muon xoa skin nay?",  "Co", "Khong");
 		else 
-			Dialog_Show(playerid, DIALOG_SKINS, DIALOG_STYLE_MSGBOX,  "My Skins", SkinsActions[playerid] == 1 ? "Esti sigur ca vrei sa pui acest skin pe tine?" : "Esti sigur ca vrei sa stergi acest skin?",  "Da",  "Nu");
+			Dialog_Show(playerid, DIALOG_SKINS, DIALOG_STYLE_MSGBOX,  "My Skins", SkinsActions[playerid] == 1 ? "Ban co chac muon su dung skin nay?" : "Ban co chac muon xoa skin nay?",  "Co", "Khong");
 		
 		SetPVarInt(playerid, "skin", s);
 		break;
@@ -1979,29 +1979,29 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 			new id = TradeID[playerid];
 			switch(TradeReady[playerid]) {
 				case 0: {
-					if(TradeItems[playerid] == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Trebuie sa adaugi minim un bun personal!");
+					if(TradeItems[playerid] == 0) return SCM(playerid, COLOR_LGREEN, "Error: Ban phai them it nhat mot vat pham!");
 					
 					if(PlayerMoney(playerid, MoneyTrade[playerid])) 
-						return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai banii pe care i-ai pus in afacere!");
+						return SCM(playerid, COLOR_LGREEN, "Error: Ban khong co du tien!");
 					
 					if(CarTrade[playerid] != -1 && CarTrade[id] == -1 && GetSlots(id) == Iter_Count(MyVehicle[id])) 
-						return SCM(playerid, COLOR_LGREEN, "Eroare: Ai numarul maxim de vehicule! Puteti face doar schimb pe schimb.");
+						return SCM(playerid, COLOR_LGREEN, "Error: Ban da het slot xe! Ban chi co the trao doi xe.");
 					
 					if(CarTrade[id] != -1 && CarTrade[playerid] == -1 && GetSlots(playerid) == Iter_Count(MyVehicle[playerid])) 
-						return SCM(playerid, COLOR_LGREEN, "Eroare: Acel player are numarul maxim de vehicule personale! Puteti face doar schimb pe schimb.");
+						return SCM(playerid, COLOR_LGREEN, "Error: Nguoi choi kia da het slot xe! Ban chi co the trao doi xe voi ho.");
 					
 					if(SkinTrade[playerid] != -1 && total_skins(id) == 10) 
-						return SCM(playerid, COLOR_LGREEN, "Eroare: Acel player nu are un skin slot liber.");
+						return SCM(playerid, COLOR_LGREEN, "Error: Ban khong con slot skin.");
 					
 					if(SkinTrade[id] != -1 && total_skins(playerid) == 10) 
-						return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai un skin slot liber.");
+						return SCM(playerid, COLOR_LGREEN, "Error: Nguoi choi do khong con slot skin.");
 
 					if(CheckTradeMoney(playerid, id) != 0)
-						return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti pune bani pe bani.");
+						return SCM(playerid, COLOR_LGREEN, "Error: Ban khong the bo tien vao.");
 
 					TradeReady[playerid] = 1;
-					PlayerTextDrawSetString(playerid, TradePTD[4], "~g~pregatit");
-					PlayerTextDrawSetString(id, TradePTD[4], "~g~pregatit");
+					PlayerTextDrawSetString(playerid, TradePTD[4], "~g~da san sang");
+					PlayerTextDrawSetString(id, TradePTD[4], "~g~da san sang");
 					PlayerTextDrawShow(playerid, TradePTD[4]);
 					PlayerTextDrawShow(id, TradePTD[4]);
 
@@ -2014,8 +2014,8 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 					}
 				}
 				case 1: {
-					PlayerTextDrawSetString(playerid, TradePTD[4], "~r~nepregatit");
-					PlayerTextDrawSetString(id, TradePTD[4], "~r~nepregatit");
+					PlayerTextDrawSetString(playerid, TradePTD[4], "~r~chua san sang");
+					PlayerTextDrawSetString(id, TradePTD[4], "~r~chua san sang");
 					PlayerTextDrawShow(playerid, TradePTD[4]);
 					PlayerTextDrawShow(id, TradePTD[4]);
 					TradeReady[playerid] = 0;
@@ -2034,28 +2034,28 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 			new id = TradeID[playerid];
 			switch(TradeReady[playerid]) {
 				case 0: {
-					if(TradeItems[playerid] == 0) return SCM(playerid, COLOR_ERROR, "Eroare: Trebuie sa adaugi minim un bun personal!");
+					if(TradeItems[playerid] == 0) return SCM(playerid, COLOR_ERROR, "Error: Ban phai them it nhat mot vat pham!");
 					
-					if(PlayerMoney(playerid, MoneyTrade[playerid])) return SCM(playerid, COLOR_ERROR, "Eroare: {FFFFFF}Nu ai banii pe care i-ai pus in afacere!");
+					if(PlayerMoney(playerid, MoneyTrade[playerid])) return SCM(playerid, COLOR_ERROR, "Error: {FFFFFF}Ban khong co du tien!");
 					
 					if(CarTrade[playerid] != -1 && CarTrade[id] == -1 && GetSlots(id) == Iter_Count(MyVehicle[id])) 
-						return SCM(playerid, COLOR_LGREEN, "Eroare: Ai numarul maxim de vehicule! Puteti face doar schimb pe schimb.");
+						return SCM(playerid, COLOR_LGREEN, "Error: Ban da het slot xe! Ban chi co the trao doi xe.");
 					
 					if(CarTrade[id] != -1 && CarTrade[playerid] == -1 && GetSlots(playerid) == Iter_Count(MyVehicle[playerid])) 
-						return SCM(playerid, COLOR_LGREEN, "Eroare: Acel player are numarul maxim de vehicule personale! Puteti face doar schimb pe schimb.");
+						return SCM(playerid, COLOR_LGREEN, "Error: Nguoi choi kia da het slot xe! Ban chi co the trao doi xe voi ho.");
 					
 					if(SkinTrade[playerid] != -1 && total_skins(id) == 10) 
-						return SCM(playerid, COLOR_LGREEN, "Eroare: Acel player nu are un skin slot liber.");
+						return SCM(playerid, COLOR_LGREEN, "Error: Nguoi choi do khong con slot skin.");
 					
 					if(SkinTrade[id] != -1 && total_skins(playerid) == 10) 
-						return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai un skin slot liber.");
+						return SCM(playerid, COLOR_LGREEN, "Error: Nguoi choi do khong con slot skin.");
 
 					if(CheckTradeMoney(playerid, id) != 0)
-						return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti pune bani pe bani.");
+						return SCM(playerid, COLOR_LGREEN, "Error: Ban khong the bo tien vao.");
 
 					TradeReady[playerid] = 1;	
-					PlayerTextDrawSetString(playerid, TradePTD[5], "~g~pregatit");
-					PlayerTextDrawSetString(id, TradePTD[5], "~g~pregatit");
+					PlayerTextDrawSetString(playerid, TradePTD[5], "~g~da san sang");
+					PlayerTextDrawSetString(id, TradePTD[5], "~g~da san sang");
 					PlayerTextDrawShow(playerid, TradePTD[5]);
 					PlayerTextDrawShow(id, TradePTD[5]);			
 					if(TradeReady[playerid] == 1 && TradeReady[id] == 1) {
@@ -2067,8 +2067,8 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 					}
 				}
 				case 1: {
-					PlayerTextDrawSetString(playerid, TradePTD[5], "~r~nepregatit");
-					PlayerTextDrawSetString(id, TradePTD[5], "~r~nepregatit");
+					PlayerTextDrawSetString(playerid, TradePTD[5], "~r~chua san sang");
+					PlayerTextDrawSetString(id, TradePTD[5], "~r~chua san sang");
 					PlayerTextDrawShow(playerid, TradePTD[5]);
 					PlayerTextDrawShow(id, TradePTD[5]);
 					TradeReady[playerid] = 0;
@@ -2083,20 +2083,20 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 		}
 	}
 	if(playertextid == TradePTD[3]) {
-		if(TradeItems[playerid] == 0) return SCM(playerid, COLOR_ERROR, "Eroare: {FFFFFF}Nu ai adaugat nimic in aceasta afacere!");
-		if(TradeReady[playerid] == 1) return SCM(playerid, COLOR_ERROR, "Eroare: {FFFFFF}Nu poti sterge bunurile adaugate in timp ce timer-ul este activat!");
+		if(TradeItems[playerid] == 0) return SCM(playerid, COLOR_ERROR, "Error: {FFFFFF}Ban chua them vat pham nao");
+		if(TradeReady[playerid] == 1) return SCM(playerid, COLOR_ERROR, "Ban khong the xoa hang hoa khi bo hen gio da duoc kich hoat");
 		HideTradeItems(playerid);
 		new id = TradeID[playerid];
-		format(string, sizeof(string), "%s si-a sters bunurile adaugate.", GetName(playerid));
+		format(string, sizeof(string), "%s da xoa mot mon hang.", GetName(playerid));
 		SCM(playerid, COLOR_GOLD, string);
 		SCM(id, COLOR_GOLD, string);		
 	}	
 	if(playertextid == TradePTD[2] && TradeReady[playerid] == 0) Dialog_Show(playerid, DIALOG_TRADE, DIALOG_STYLE_LIST, "Trade", "Money\nHouse\nBusiness\nVehicle\nRare Voucher (50 PP)\nEpic Voucher (100 PP)\nLegendary Voucher (500 PP)\nCurrent Skin\nHidden Color\nMoney (with miliards)\nTickets Rainbow\nTickets Vip", "Ok", "Cancel");
 	if(playertextid == BuyModel) {
 		if(InDealer[playerid] == 0) return true;
-		if(DSModels[SelectedCar[playerid][DealerID[playerid]]][dStock] < 1) return SCM(playerid, COLOR_LGREEN, "Eroare: Acest vehicul nu mai este in stock.");
-		if(PlayerMoney(playerid, DSModels[SelectedCar[playerid][DealerID[playerid]]][dPrice])) return SCM(playerid, COLOR_GREY, "Nu ai suficienti bani pentru a cumpara aceasta masina.");
-		if(GetSlots(playerid) == Iter_Count(MyVehicle[playerid])) return SCM(playerid, COLOR_LGREEN, "Eroare: Ai numarul maxim de masini personale!"); 		
+		if(DSModels[SelectedCar[playerid][DealerID[playerid]]][dStock] < 1) return SCM(playerid, COLOR_LGREEN, "Error: Xe nay da het hang.");
+		if(PlayerMoney(playerid, DSModels[SelectedCar[playerid][DealerID[playerid]]][dPrice])) return SCM(playerid, COLOR_GREY, "Error: Ban khong co du tien de mua xe nay.");
+		if(GetSlots(playerid) == Iter_Count(MyVehicle[playerid])) return SCM(playerid, COLOR_LGREEN, "Error: Ban da het slot xe!"); 		
 		gQuery[0] = EOS;
 		mysql_format(SQL, gQuery, sizeof(gQuery), "INSERT INTO cars (Model) VALUES (%d)", DSModels[DealerID[playerid]][dModel]);
 		mysql_tquery(SQL, gQuery, "InsertDsCars", "ii", playerid, DSModels[SelectedCar[playerid][DealerID[playerid]]][dModel]);
@@ -2164,8 +2164,8 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 		PlayerTextDrawShow(playerid, DSTds[4]);
 	}
 	if(playertextid == TestModel) {
-		SCM(playerid, COLOR_YELLOW, "Ai 3 minute la dispozitie pentru a testata vehiculul.");
-		SCM(playerid, COLOR_YELLOW, "Daca doresti sa anulezi testarea, iesi din vehicul.");
+		SCM(playerid, COLOR_YELLOW, "Ban co 3 phut de test xe");
+		SCM(playerid, COLOR_YELLOW, "Neu ban khong muon test nua, hay ra khoi xe.");
 		TestingModel[playerid] = 1;
 		CancelSelectTextDraw(playerid);
 		HideDealershipTextdraws(playerid);
@@ -2184,10 +2184,10 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 		defer CancelTestDrive(playerid);
 	}
 	if(playertextid == HiddTDs[1]) {
-		if(PlayerInfo[playerid][pPremiumPoints] < 40) return SCM(playerid, COLOR_GREY, "Ai nevoie de 40 Premium Points pentru a lua acest produs.");
+		if(PlayerInfo[playerid][pPremiumPoints] < 40) return SCM(playerid, COLOR_GREY, "Ban can 40 Premium Points de mua vat pham nay.");
 		PlayerInfo[playerid][pPremiumPoints] -= 40;
 		Update(playerid, pPremiumPointsx);
-		format(string, sizeof(string), "Felicitari! Ti-ai cumparat culorile (%d, %d) din magazin pentru vehiculul tau personal.", pColor1[playerid], pColor2[playerid]);
+		format(string, sizeof(string), "Chuc mung! Ban da mua mau (%d, %d) tu cua hang cho phuong tien ca nhan cua ban.", pColor1[playerid], pColor2[playerid]);
 		SCM(playerid, COLOR_GOLD, string);
 		new idd = pCar[playerid];
 		CarInfo[idd][cColorOne] = pColor1[playerid];
@@ -2211,7 +2211,7 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 	}
 	if(playertextid == ShopTDs[1]) {
 		if(CreateHouse[playerid] == 0) {
-			if(PlayerInfo[playerid][pPremiumPoints] < 2000) return SCM(playerid, -1, "Nu ai suficiente Premium Points!");
+			if(PlayerInfo[playerid][pPremiumPoints] < 2000) return SCM(playerid, -1, "Ban khong co du Premium Points!");
 			PlayerInfo[playerid][pPremiumPoints] -= 2000;
 			Update(playerid, pPremiumPointsx);			
 			HideShopTDs(playerid), SetCameraBehindPlayer(playerid), SetPlayerPosEx(false, playerid, pPos[playerid][0], pPos[playerid][1], pPos[playerid][2]);
@@ -2226,16 +2226,16 @@ public OnPlayerClickPlayerTextDraw(playerid, PlayerText:playertextid) {
 				HUpdate(house, hExityx);
 				HUpdate(house, hExitzx);
 				HUpdate(house, hInteriorx);
-				SCM(playerid, COLOR_GOLD, "Felicitari! Ti-ai cumparat un interior din magazin.");
+				SCM(playerid, COLOR_GOLD, "Chuc mung! Ban da mua mot goi noi that nha moi.");
 				foreach(new x: Player) {
 					if(InHouse[x] == house && IsPlayerConnected(x)) {
-						SCM(x, COLOR_YELLOW, "Ai fost respawnat deoarece detinatorul casei a schimbat interiorul.");
+						SCM(x, COLOR_YELLOW, "Ban da bi da' ra khoi nha vi chu nha mua noi that moi.");
 						SpawnPlayer(x);
 					}
 				}
 				SetPlayerInterior(playerid, pInteriorID[playerid]);
 			}
-			else return SCM(playerid, COLOR_GREY, "Nu detii o casa."), SetPlayerInterior(playerid, pInteriorID[playerid]);
+			else return SCM(playerid, COLOR_GREY, "Ban khong so huu mot ngoi nha."), SetPlayerInterior(playerid, pInteriorID[playerid]);
 		}
 		else {
 			gQuery[0] = EOS;
@@ -2324,17 +2324,17 @@ function InsertDsCars(playerid, modelid) {
 	GivePlayerCash(playerid, 0, DSModels[SelectedCar[playerid][DealerID[playerid]]][dPrice]);
 
 	gString[0] = EOS;
-	format(gString, sizeof(gString), "Felicitari! Ai cumparat un %s pentru %s$.",aVehicleNames[modelid-400],FormatNumber(CarInfo[idd][cValue]));
+	format(gString, sizeof(gString), "Chuc mung! Ban da mua mot chiec %s voi gia %s$.",aVehicleNames[modelid-400],FormatNumber(CarInfo[idd][cValue]));
 	SCM(playerid, COLOR_MONEY, gString);
-	format(gString, sizeof(gString), "%s si-a cumparat un %s[%d], (last money: $%s / new money: $%s)", GetName(playerid), aVehicleNames[modelid-400], idd, LastMoney, GetCashStr(playerid));
+	format(gString, sizeof(gString), "%s da mua mot chiec %s[%d], (last money: $%s / new money: $%s)", GetName(playerid), aVehicleNames[modelid-400], idd, LastMoney, GetCashStr(playerid));
 	SendAdminMessage(COLOR_YELLOW, gString, 1); 
 	InsertLog(playerid, gString, LOG_CAR);	
 	finishAchievement(playerid, 1);	
 	return true;
 }
 public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ) {
-	if(PlayerInfo[playerid][pAdmin] < 7) return SCM(playerid, COLOR_LGREEN, "Nu ai voie sa folosesti aceasta comanda atata timp cat esti in arena de curse!");
-	if(JobWorking[playerid] == 1 && PlayerInfo[playerid][pAdmin] < 6 && PlayerInfo[playerid][pAdmin] != 0) return SCM(playerid, COLOR_WARNING, "Nu ai voie sa faci abuz de functie!");
+	if(PlayerInfo[playerid][pAdmin] < 7) return SCM(playerid, COLOR_LGREEN, "Ban khong the su dung thao tac nay khi dang trong Race Arena!");
+	if(JobWorking[playerid] == 1 && PlayerInfo[playerid][pAdmin] < 6 && PlayerInfo[playerid][pAdmin] != 0) return SCM(playerid, COLOR_WARNING, "Ban khong duoc lam dung thao tac nay!");
 	if(PlayerInfo[playerid][pAdmin] > 0) {
 		if(GetPlayerState(playerid) == 2) SetVehiclePosEx(playerid, GetPlayerVehicleID(playerid), fX, fY, fZ+5);
 		else SetPlayerPosFindZ(playerid, fX, fY, fZ+5);
@@ -2356,7 +2356,7 @@ public OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart) 
 		if(amount < 0) {
 			new string[64],sendername[25];
 			GetPlayerName(issuerid,sendername,sizeof(sendername));
-			format(string, sizeof(string), "AdmWarning: %s(%d) este suspectat de global kill. (damage: %.2f)",sendername,issuerid,amount);
+			format(string, sizeof(string), "AdmWarning: %s(%d) duoc phat hien nghi van global kill. (damage: %.2f)",sendername,issuerid,amount);
 			if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(COLOR_WARNING, string,1);
 			KickEx(issuerid);
 			return true;
@@ -2491,7 +2491,7 @@ public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 			if(SafeZone[sf][szRange] >= 15) {
 				if(PlayerToPoint(SafeZone[sf][szRange], playerid, SafeZone[sf][szX], SafeZone[sf][szY], SafeZone[sf][szZ])) {
 					if(!IsPlayerInAnyVehicle(playerid) && !IsACop(playerid) && PlayerHit[playerid] != damagedid && PaintType[playerid] == 0 && InWar[PlayerInfo[playerid][pMember]] == 0) {
-						SCM(playerid, COLOR_LIGHTRED, "Ai primit freeze timp de 5 secunde deoarece ai lovit pe cineva intr-o zona protejata.");
+						SCM(playerid, COLOR_LIGHTRED, "Ban da bi dung hinh mat 5 giay vi tan cong nguoi choi khac trong safezone.");
 						TogglePlayerControllable(playerid, 0);
 						SetPlayerFreeze(playerid, 5);
 						SetPlayerArmedWeapon(playerid, 0);
@@ -2501,9 +2501,9 @@ public OnPlayerGiveDamage(playerid, damagedid, Float:amount, weaponid, bodypart)
 		}	
 		if(playerDeath[damagedid] == -1) {
 			if(tazer[playerid] == 1 && IsACop(playerid) && weaponid == 24) {
-				if(IsACop(damagedid)) return SCM(playerid, COLOR_WHITE, "Acel player este intr-un departament de politie..");
-				if(PlayerCuffed[damagedid] == 1) return SCM(playerid, COLOR_WHITE, "Acel player este deja electrocutat.");
-				if(PlayerInfo[damagedid][pSleeping] == 1) return SCM(playerid, COLOR_WHITE, "Acel player doarme.");
+				if(IsACop(damagedid)) return SCM(playerid, COLOR_WHITE, "Nguoi choi do la mot canh sat..");
+				if(PlayerCuffed[damagedid] == 1) return SCM(playerid, COLOR_WHITE, "Nguoi choi do bi giat dien.");
+				if(PlayerInfo[damagedid][pSleeping] == 1) return SCM(playerid, COLOR_WHITE, "Nguoi choi dang ngu.");
 				if(GetDistanceBetweenPlayers(playerid, damagedid) < 15) {
 					format(string, sizeof(string), "* %s tazed %s for 8 seconds.", GetName(playerid), GetNameEx(damagedid));
 					ProxDetector(30.0, playerid, string, COLOR_PURPLE);
@@ -2595,7 +2595,7 @@ public OnPlayerDeath(playerid, killerid, reason) {
 
 
 	InEvent[playerid] = 0;
-	if(InRob[playerid] == 1) FailRob(playerid, "Ai fost omorat");
+	if(InRob[playerid] == 1) FailRob(playerid, "Chet");
 	
 	if(killerid == INVALID_PLAYER_ID) ADeathMessage(INVALID_PLAYER_ID, playerid, 47);
 	else ADeathMessage(playerid, killerid, reason);
@@ -2613,7 +2613,7 @@ public OnPlayerDeath(playerid, killerid, reason) {
 				Update(i, pCashx);
 				UpdateFactionRaport(i, 0);			
 
-				format(string, sizeof(string), "Ai primit $%d bonus pentru prinderea suspectului %s.", PlayerInfo[playerid][pWantedLevel] * 2000, GetName(playerid));
+				format(string, sizeof(string), "Ban nhan duoc $%d tien thuong bat toi pham %s.", PlayerInfo[playerid][pWantedLevel] * 2000, GetName(playerid));
 				SCM(i, COLOR_DBLUE, string);
 				format(names, 256, "%s %s", names, GetName(i));
 			}	
@@ -2686,7 +2686,7 @@ public OnPlayerDeath(playerid, killerid, reason) {
 							if(PaintType[i] == PaintType[killerid]) {
 								new pp = PaintType[killerid]-1;
 								for(new m = 0; m < 5; m++) SendDeathMessageToPlayer(i, 1001, 1001, 200);
-								format(string, sizeof(string), "* %s a castigat runda deoarece a omorat pe %s cu cutitul.", GetName(killerid), GetName(playerid));
+								format(string, sizeof(string), "* %s chien thang ngay khi ha guc %s.", GetName(killerid), GetName(playerid));
 								SendPaintMessage(PaintType[i]-1, COLOR_YELLOW, string);
 								PaintTime[pp] = 300;
 								PKills[i] = 0, PDeaths[i] = 0;
@@ -2707,12 +2707,12 @@ public OnPlayerDeath(playerid, killerid, reason) {
 		}
 		if(PlayerInfo[killerid][pJailTime] != 0 && PlayerInfo[playerid][pJailTime] != 0) {
 			PlayerInfo[killerid][pJailTime] += 120;
-			SCM(killerid, COLOR_WARNING, "Sentinta ta a fost marita cu 2 minute deoarece ai ucis un player.");
+			SCM(killerid, COLOR_WARNING, "Ban o tu them 2 phut vi giet mot nguoi choi.");
 		}
 		if(GetDistanceBetweenPlayers(killerid,playerid) > 100 && reason != 34) {
 			new gunname[50];
 		   	GetWeaponNameEx(reason,gunname,sizeof(gunname));
-			format(string, sizeof(string), "AdmWarning: %s l-a omorat pe %s de la %dm cu %s.",GetName(killerid),GetName(playerid),GetDistanceBetweenPlayers(killerid,playerid),gunname);
+			format(string, sizeof(string), "AdmWarning: %s giet %s tu khoang cach %dm bang con %s.",GetName(killerid),GetName(playerid),GetDistanceBetweenPlayers(killerid,playerid),gunname);
 			if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(COLOR_WARNING, string,1);
 		}
 
@@ -2778,9 +2778,9 @@ public OnPlayerDeath(playerid, killerid, reason) {
 						}
 						new wname[32];
 						GetWeaponNameEx(GetPlayerWeapon(killerid), wname, sizeof(wname));
-						format(string, sizeof(string), "War: L-ai omorat pe %s cu %s de la %dm.",GetName(playerid), wname, DistanceToPlayer(killerid, playerid));
+						format(string, sizeof(string), "War: Ban da giet %s bang con %s tu khoang cach.",GetName(playerid), wname, DistanceToPlayer(killerid, playerid));
 						SCM(killerid, 0x00E5FFFF, string);
-						format(string, sizeof(string), "War: Ai fost omorat de %s cu %s de la %dm.",GetName(killerid),wname, DistanceToPlayer(killerid, playerid));
+						format(string, sizeof(string), "War: Ban da bi giet boi %s bang con %s tu khoang cach %dm.",GetName(killerid),wname, DistanceToPlayer(killerid, playerid));
 						SCM(playerid, 0x00E5FFFF, string);
 						if(PaintType[playerid] == 0 && PaintType[killerid] == 0) {	
 							new Float: Pos[3], sweapon, sammo, idd;
@@ -2823,7 +2823,7 @@ public OnPlayerDeath(playerid, killerid, reason) {
 		}
 		if(Mobile[playerid] != 255) {
 			if(Mobile[playerid] < 255) {
-				SCM(Mobile[playerid],  COLOR_GRAD2, "Linia tocmai a fost intrerupta...");
+				SCM(Mobile[playerid],  COLOR_GRAD2, "Tut tut tut...");
 				CellTime[Mobile[playerid]] = 0;
 				CellTime[playerid] = 0;
 				Mobile[Mobile[playerid]] = 255;
@@ -2850,14 +2850,14 @@ public OnPlayerDeath(playerid, killerid, reason) {
 			
 			if(DistanceToPlayer(killerid, playerid) >= 100 || reason == 4) {
 				if(DistanceToPlayer(killerid, playerid) >= 200) GivePlayerCash(killerid, 1, HeadValue[playerid]);
-				format(string, sizeof(string), "* Ai efectuat cu succes contractul pe %s(%d). Ai primit: $%s.", GetName(playerid), playerid, FormatNumber(HeadValue[playerid]));
+				format(string, sizeof(string), "* Ban da hoan thanh hop dong tren %s(%d). Ban nhan duoc:$%s.", GetName(playerid), playerid, FormatNumber(HeadValue[playerid]));
 				SCM(killerid, COLOR_MONEY, string);
-				format(string, sizeof(string), "(!) %s[rank: %d] a terminat contractul pe %s [distanta: %dm][arma: %s][fail]", GetName(killerid), PlayerInfo[killerid][pRank], GetName(playerid), DistanceToPlayer(killerid, playerid), wname);
+				format(string, sizeof(string), "(!) %s[rank: %d] cham dut hop dong len %s [khoang cach: %dm][vu khi: %s][fail]", GetName(killerid), PlayerInfo[killerid][pRank], GetName(playerid), DistanceToPlayer(killerid, playerid), wname);
 				if(PhoneOnline[killerid] == 0) FailRaport(killerid, 0);
 				if(GetPVarInt(killerid, "Undercover") == 0) FailRaport(killerid, 1);
 				if(PhoneOnline[killerid] == 1 && GetPVarInt(killerid, "Undercover") == 1) {
 					UpdateFactionRaport(killerid, 0);
-					format(string, sizeof(string), "(!) %s[rank: %d] a terminat contractul pe %s [distanta: %dm][arma: %s][succes]", GetName(killerid), PlayerInfo[killerid][pRank], GetName(playerid), DistanceToPlayer(killerid, playerid), wname);
+					format(string, sizeof(string), "(!) %s[rank: %d] cham dut hop dong len %s [khoang cach: %dm][vu khi: %s][success]", GetName(killerid), PlayerInfo[killerid][pRank], GetName(playerid), DistanceToPlayer(killerid, playerid), wname);
 					for(new m; m < 2; m++) {
 						if(PlayerInfo[killerid][pDailyMission][m] == 15 || PlayerInfo[killerid][pDailyMission][m] == 16) CheckMission(killerid, m);
 					}						
@@ -2865,7 +2865,7 @@ public OnPlayerDeath(playerid, killerid, reason) {
 			}	
 			else {
 				FailRaport(killerid, 3);
-				format(string, sizeof(string), "(!) %s[rank: %d] a terminat contractul pe %s [distanta: %dm][arma: %s][fail]", GetName(killerid), PlayerInfo[killerid][pRank], GetName(playerid), DistanceToPlayer(killerid, playerid), wname); 
+				format(string, sizeof(string), "(!) %s[rank: %d] cham dut hop dong len %s [khoang cach: %dm][vu khi: %s][fail]", GetName(killerid), PlayerInfo[killerid][pRank], GetName(playerid), DistanceToPlayer(killerid, playerid), wname); 
 			}	
 			SendFactionMessage(11, COLOR_LIGHTBLUE, string);				
 			HeadValue[playerid] = 0;
@@ -2877,7 +2877,7 @@ public OnPlayerDeath(playerid, killerid, reason) {
 			if(PlayerInfo[killerid][pMember] == 0 && PlayerInfo[playerid][pMember] == 0 || PlayerInfo[playerid][pMember] != PlayerInfo[killerid][pMember]) {
 				format(WantedName[playerid], 256, GetName(killerid));
 				WantedReason[playerid] = reason;
-				SCM(playerid,COLOR_WARNING,"Ai fost omorat de un player. Ai la dispozitie un minut pentru a folosi comanda '/call 112'.");
+				SCM(playerid,COLOR_WARNING,"Ban da bi giet boi mot nguoi choi. Ban co 1 phut de goi cho canh sat '/call 112'.");
 				WantedTimer[playerid] = SetTimerEx("ClearWanted",60000, false,"d", playerid);
 			}
 		}
@@ -2932,7 +2932,7 @@ YCMD:changepin(playerid, params[], help) {
 		return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/changepin [pin actual] [new pin]");
 
 	if(vpin != PlayerInfo[playerid][pPin] || (npin < 1000 && npin != 0))
-		return SCM(playerid, COLOR_LGREEN, "Eroae: Pin invaid.");
+		return SCM(playerid, COLOR_LGREEN, "Error: PIN sai.");
 
 	PlayerInfo[playerid][pPin] = npin;
 	UpdateVar(playerid, "Pin", npin);
@@ -2940,15 +2940,15 @@ YCMD:changepin(playerid, params[], help) {
 	if(npin == 0) PlayerInfo[playerid][pPinLogged] = 0;
 
 	gString[0] = EOS;
-	format(gString, 25, "Noul pin este: %d.", npin);
-	SCM(playerid, COLOR_YELLOW, npin != 0 ? gString : "Pinul a fost scos.");
+	format(gString, 25, "PIN moi la: %d.", npin);
+	SCM(playerid, COLOR_YELLOW, npin != 0 ? gString : "PIN da duoc go bo.");
 	return true;
 }
 
 YCMD:server(playerid, params[], help) {
-	if(PlayerInfo[playerid][pScripter] < 1) return SCM(playerid, COLOR_LGREEN, "Acces interzis!");
+	if(PlayerInfo[playerid][pScripter] < 1) return SCM(playerid, COLOR_LGREEN, "Khong du quyen han!");
 	Dialog_Show(playerid, DIALOG_SERVER, DIALOG_STYLE_LIST, "Server menu",
-		"Debaneaza toti jucatorii\nRestart la payday\nServer in mentenanta\nPune parola la server\nSchimba numele la server\nSterge casele inactivilor\nSterge afacerile inactivilor\nReseteaza quest",
+		"Unban all\nRestart ngay khi Payday\nBao tri may chu\nDat mat khau\nThay doi ten server\nReset nha khong hoat dong\nReset biz khong hoat dong\nReset quest",
 		"Ok", "Exit");
 	return true;
 }
@@ -3017,11 +3017,6 @@ stock islegalcarmod(vehicleide, componentid) {
 	}
 	return modok;
 }
-function LoginAdmin(playerid) {
-	KickEx(playerid);
-	SCM(playerid, COLOR_RED, "Nu te-ai logat la timp");
-	return true;
-}
 public OnPlayerSpawn(playerid) {
 	new string[150];
 	if(SpawnedCarYT[playerid] == 1) { DestroyDynamicObject(nameobject[YouTuberCar[playerid]]), DestroyVehicle(YouTuberCar[playerid]), SpawnedCarYT[playerid] = 0; }
@@ -3082,9 +3077,9 @@ public OnPlayerSpawn(playerid) {
 	if(FreezeTime[playerid] != 0) TogglePlayerControllable(playerid, 0);
 	if(GetPVarInt(playerid, "InLesson") != -1) {
 		new id = GetPVarInt(playerid, "InLesson");
-		format(string, sizeof(string), "Lectia a fost anulata deoarece %s a murit.", GetName(playerid));
+		format(string, sizeof(string), "Bai hoc bi huy vi %s da chet.", GetName(playerid));
 		SCM(id, COLOR_LIGHTBLUE,string);
-		SCM(playerid, COLOR_LIGHTBLUE, "Lectie anulata!");
+		SCM(playerid, COLOR_LIGHTBLUE, "Bai hoc bi huy!");
 		SetPVarInt(id, "InLesson", -1);
 		SetPVarInt(playerid, "InLesson", -1);		
 	}
@@ -3096,12 +3091,12 @@ public OnPlayerSpawn(playerid) {
 			PlayerSpectatePlayer(i, playerid);		
 		}
 	}	
-	if(gDice[playerid] == 1) SCM(playerid, -1, "Ai pierdut zarurile."), gDice[playerid] = 0;
+	if(gDice[playerid] == 1) SCM(playerid, -1, "Ban mat xuc xac."), gDice[playerid] = 0;
 	if(PlayerInfo[playerid][pGlasses] > 0 && PlayerInfo[playerid][pShowGlasses] == 1) {
 		new skin = PlayerInfo[playerid][pChar];
 		if(skin < 300) SetPlayerHoldingObject(playerid, PlayerInfo[playerid][pGlasses], 2, SkinOffSet[skin][0], SkinOffSet[skin][1], SkinOffSet[skin][2], SkinOffSet[skin][3], SkinOffSet[skin][4], SkinOffSet[skin][5]);
 	}	
-	if(InRob[playerid] == 1) FailRob(playerid, "Ai fost omorat");	
+	if(InRob[playerid] == 1) FailRob(playerid, "Chet");	
 	if(JobWorking[playerid] == 1) {
 		JobWorking[playerid] = 0;
 		PlayerTextDrawHide(playerid, JobTD);
@@ -3115,13 +3110,13 @@ public OnPlayerSpawn(playerid) {
 		RemovePlayerAttachedObject(playerid, 2);
 	}
 	if(CP[playerid] == 51) {
-		SCM(playerid, -1, "Ai pierdut sacul cu faina.");
+		SCM(playerid, -1, "Ban mat tui bot");
 		CP[playerid] = 0;
 		KG[playerid] = 0;
 		DisablePlayerCheckpointEx(playerid);
 	}
 	if(HaveFish[0][playerid] != 0) {
-		SCM(playerid, -1, "Ai pierdut pestele!");
+		SCM(playerid, -1, "Ban mat con ca!");
 		HaveFish[0][playerid] = 0;
 		HaveFish[1][playerid] = 0;
 		DisablePlayerCheckpointEx(playerid);
@@ -3155,7 +3150,7 @@ public OnPlayerSpawn(playerid) {
 		CancelDriveTest(playerid);
 	}
 	if(StartedSpray[playerid] == 1 || ClanDuty[playerid] == 1) {
-		SCM(playerid, COLOR_ERROR, "Eroare: {FFFFFF}Nu mai esti la datoria clanului!");
+		SCM(playerid, COLOR_ERROR, "Error: {FFFFFF}Ban khong o trong!");
 		GraffitiInfo[StartedSpray2[playerid]][gfAttacked] = 0;
 		StartedSpray[playerid] = 0;
 		StartedSpray2[playerid] = 0;
@@ -3193,7 +3188,7 @@ public OnPlayerSpawn(playerid) {
 		PlayerInfo[playerid][pTeam] = 2;
 	}
 	if(IsPlayerLogged[playerid] == 0) {
-		SCM(playerid, COLOR_WARNING, "* Ai primit kick deoarece nu te-ai logat.");
+		SCM(playerid, COLOR_WARNING, "* Ban da bi kick vi chua dang nhap.");
 		KickEx(playerid);
 		return true;
  	}	
@@ -3214,7 +3209,7 @@ public OnPlayerSpawn(playerid) {
 		SetPlayerColor(playerid, COLOR_WHITE);
 		SetPlayerScore(playerid, 1+random(2));
 		SetPlayerSkinEx(playerid, 1+random(100));
-		SCM(playerid, COLOR_YELLOW, "Esti sub acoperire!");
+		SCM(playerid, COLOR_YELLOW, "Ban dang cai trang (undercover)!");
 	}
 	return true;
 }
@@ -3227,9 +3222,9 @@ public OnPlayerEnterRaceCheckpoint(playerid) {
 	if(CP[playerid] == 669) {
 		gString[0] = EOS;
 		new i = playerid, money = random(20000000) + 50000000, pp = random(20) + 50, plp = random(500) + 1000, gp = random(200) + 100;
-		format(gString, sizeof(gString), "(( {31d6e4}Winter Quest{A9C4E4} - %s found all gift and finished quest. ))", GetName(i));
+		format(gString, sizeof(gString), "(( {31d6e4}Winter Quest{A9C4E4} - %s da tim ra tat ca qua tang va hoan tat quest. ))", GetName(i));
 		SCMTA(COLOR_CLIENT, gString);
-		SCM(i, COLOR_WHITE,  "Felicitari! Ai terminat questul de iarna si ai primit:");
+		SCM(i, COLOR_WHITE,  "Xin chuc mung! Ban da hoan tat Winter Quest va nhan duoc:");
 		format(gString, sizeof(gString), "- $%s, %d Premium Points, %s Red-Points, %d Gift Points.", FormatNumbers(money), pp, FormatNumbers(plp), gp);
 		SCM(i, COLOR_WHITE, gString);
 		GivePlayerCash(i, 1, money);
@@ -3254,7 +3249,7 @@ public OnPlayerEnterRaceCheckpoint(playerid) {
    			PlayerInfo[playerid][pCarLic] = 1;
 			PlayerInfo[playerid][pCarLicT] = 100;
 			DisableRemoteVehicleCollisions(playerid, 0);
-			SCM(playerid, COLOR_LIGHTBLUE, "Ai primit licenta de condus pentru 100 de ore. Felicitari!");
+			SCM(playerid, COLOR_LIGHTBLUE, "Ban nhan duoc giay phep lay xe 100 gio. Chuc mung!");
 			DestroyVehicle(ExamCar[playerid]);
 			ExamCar[playerid] = 0;
 			GivePlayerCash(playerid, 0, 1000);
@@ -3282,7 +3277,7 @@ public OnPlayerEnterRaceCheckpoint(playerid) {
 			DisablePlayerRaceCheckpointEx(playerid);
    			PlayerInfo[playerid][pBoatLic] = 1;
 			PlayerInfo[playerid][pBoatLicT] = 100;
-			SCM(playerid, COLOR_LIGHTBLUE, "Ai primit licenta de barca pentru 100 de ore. Felicitari!");
+			SCM(playerid, COLOR_LIGHTBLUE, "Ban nhan duoc giay phep lay thuyen 100 gio. Chuc mung!");
 			DestroyVehicle(ExamCar[playerid]);
 			ExamCar[playerid] = 0;
 			InExamen[playerid] = 0;
@@ -3423,8 +3418,8 @@ public OnPlayerEnterCheckpoint(playerid) {
 
 		new Float: Pos[3];
 		GetPlayerPos(playerid, Pos[0], Pos[1], Pos[2]);		
-		if(idd == -1) format(gString, sizeof(gString), "**(( TTC Dispatch: Tow Truck Member %s (%d) a tractat vehiculul %d. [hp: %0.2f] ))**", GetName(playerid), playerid, towedcar, GetPVarFloat(playerid, "VehHP"));
-		else format(gString, sizeof(gString), "**(( TTC Dispatch: Tow Truck Member %s (%d) a tractat vehiculul %d. [veh: %d][hp: %0.2f] ))**", GetName(playerid), playerid, towedcar, idd, GetPVarFloat(playerid, "VehHP"));
+		if(idd == -1) format(gString, sizeof(gString), "**(( TTC Dispatch: Tow Truck Member %s (%d) keo xe %d. [hp: %0.2f] ))**", GetName(playerid), playerid, towedcar, GetPVarFloat(playerid, "VehHP"));
+		else format(gString, sizeof(gString), "**(( TTC Dispatch: Tow Truck Member %s (%d) keo xe %d. [veh: %d][hp: %0.2f] ))**", GetName(playerid), playerid, towedcar, idd, GetPVarFloat(playerid, "VehHP"));
 		SendFactionMessage(8, COLOR_LIGHTBLUE, gString);
 		
 		if(idd != 0) {		
@@ -3441,7 +3436,7 @@ public OnPlayerEnterCheckpoint(playerid) {
 			mysql_tquery(SQL, query, "", "");
 			foreach(new i: Player) {
 				if(IsPlayerConnected(i)) {
-					if(PlayerInfo[i][pSQLID] == CarInfo[idd][Userid]) SCM(i, COLOR_YELLOW, "SMS from TTC: Unul dintre vehiculele tale, a fost tractat deoarece a fost parcat ilegal. Il poti recupera folosind /v - [vehicle] - Pay fine");
+					if(PlayerInfo[i][pSQLID] == CarInfo[idd][Userid]) SCM(i, COLOR_YELLOW, "SMS from TTC: Mot trong nhung chiec xe cua ban da bi keo di vi dau trai phep. Ban co the khoi phuc no ban viec su dung /v - [vehicle] - Dong phat");
 				}
 			}				
 		}
@@ -3449,7 +3444,7 @@ public OnPlayerEnterCheckpoint(playerid) {
 		
 		new money = 1000 + random(100);
 		GivePlayerCash(playerid, 1, money);
-		format(gString, sizeof(gString), "Ai primit $%s pentru tractarea efectuata!", FormatNumber(money));
+		format(gString, sizeof(gString), "Ban da nhan duoc $%s cho xe da keo!", FormatNumber(money));
 		SCM(playerid,COLOR_MONEY,gString);
 		Update(playerid, pCashx);
 		
@@ -3472,7 +3467,7 @@ public OnPlayerEnterCheckpoint(playerid) {
 		PlayerInfo[playerid][pRobSkill] += 1;
 		DisablePlayerCheckpointEx(playerid);
 		GivePlayerCash(playerid, 1, cashr);
-		format(gString, sizeof(gString), "Ai primit $%s!", FormatNumber(cashr));
+		format(gString, sizeof(gString), "Ban nhan duoc $%s!", FormatNumber(cashr));
 		SCM(playerid, COLOR_YELLOW, gString);
 		CP[playerid] = 0;
 		Update(playerid, pCashx);
@@ -3493,19 +3488,19 @@ public OnPlayerEnterCheckpoint(playerid) {
 			DisablePlayerCheckpointEx(playerid);
 			CP[playerid] = 0;
 			new rand = KG[playerid] * 14 + 82 * GetPlayerSkill(playerid);
-			format(gString, sizeof(gString), "Felicitari! Ai primit $%s pentru munca depusa.", FormatNumber(rand));
+			format(gString, sizeof(gString), "Chuc mung! Ban nhan duoc $%s cho cong suc da bo ra.", FormatNumber(rand));
 			SCM(playerid, COLOR_MONEY, gString);
 			GivePlayerCash(playerid, 1, rand);
 			PlayerInfo[playerid][pFarmerSkill] ++;
 			Update(playerid, pFarmerSkillx);
 			if(PlayerInfo[playerid][pFarmerSkill] == 50)
-			{ SCM(playerid, COLOR_YELLOW, "* Skillul tau la jobul Fermier, este acum 2. Vei primi mai multi bani."); }
+			{ SCM(playerid, COLOR_YELLOW, "* Cong viec Fermier da dat Skill Level 2. Ban se nhan duoc nhieu tien hon. "); }
 			else if(PlayerInfo[playerid][pFarmerSkill] == 100)
-			{ SCM(playerid, COLOR_YELLOW, "* Skillul tau la jobul Fermier, este acum 3. Vei primi mai multi bani."); }
+			{ SCM(playerid, COLOR_YELLOW, "* Cong viec Fermier da dat Skill Level 3. Ban se nhan duoc nhieu tien hon. "); }
 			else if(PlayerInfo[playerid][pFarmerSkill] == 200)
-			{ SCM(playerid, COLOR_YELLOW, "* Skillul tau la jobul Fermier, este acum 4. Vei primi mai multi bani."); }
+			{ SCM(playerid, COLOR_YELLOW, "* Cong viec Fermier da dat Skill Level 4. Ban se nhan duoc nhieu tien hon. "); }
 			else if(PlayerInfo[playerid][pFarmerSkill] == 400)
-			{ SCM(playerid, COLOR_YELLOW, "* Skillul tau la jobul Fermier, este acum 5. Vei primi mai multi bani."); }
+			{ SCM(playerid, COLOR_YELLOW, "* Cong viec Fermier da dat Skill Level 5. Ban se nhan duoc nhieu tien hon. "); }
 			DestroyVehicle(JobVehicle[playerid]);
 			JobVehicle[playerid] = 0, JobWorking[playerid] = 0;
 			PlayerTextDrawHide(playerid, JobTD);
@@ -3516,19 +3511,19 @@ public OnPlayerEnterCheckpoint(playerid) {
 		}
 		case 52: {
 			if(!IsTrailerAttachedToVehicle(GetPlayerVehicleID(playerid))) 
-				return SCM(playerid, COLOR_GREY, "Nu ai atasata remorca de tir.");
+				return SCM(playerid, COLOR_GREY, "Xe khong tai theo hang.");
 
 			DestroyVehicle(GetVehicleTrailer(GetPlayerVehicleID(playerid)));
 			Trailer[playerid] = 0;
 			DisablePlayerCheckpointEx(playerid);
 			new szDialog2[1024];				
 			strcat(szDialog2, "Category\tType\tSkill\n");
-			strcat(szDialog2, "Clothes\t{35DE1F}Legal\t1+\n");
-			strcat(szDialog2, "Food\t{35DE1F}Legal\t1+\n");
-			strcat(szDialog2, "Furniture\t{35DE1F}Legal\t1+\n");
-			strcat(szDialog2, "Explosible\t{35DE1F}Legal\t2+\n");
-			strcat(szDialog2, "Guns\t{F21313}Illegal\t3+\n");
-			strcat(szDialog2, "Stolen cars\t{F21313}Illegal\t3+\n");
+			strcat(szDialog2, "Clothes\t{35DE1F}Hop phap\t1+\n");
+			strcat(szDialog2, "Food\t{35DE1F}Hop phap\t1+\n");
+			strcat(szDialog2, "Furniture\t{35DE1F}Hop phap\t1+\n");
+			strcat(szDialog2, "Explosible\t{35DE1F}Hop phap\t2+\n");
+			strcat(szDialog2, "Guns\t{F21313}Bat hop phap\t3+\n");
+			strcat(szDialog2, "Stolen cars\t{F21313}Bat hop phap\t3+\n");
 			Dialog_Show(playerid, DIALOG_TRUCKER, DIALOG_STYLE_TABLIST_HEADERS, "Choose destination", szDialog2, "Select", "Cancel");	
 				
 			PlayerInfo[playerid][pTruckerSkill] ++;
@@ -3549,7 +3544,7 @@ public OnPlayerEnterCheckpoint(playerid) {
 			}			
 		}
 		case 373: {
-			format(gString, sizeof(gString), "Du-te la un magazin 24/7 pentru a vinde cele %d kilograme de peste.", GetPlayerSkill(playerid)*15);
+			format(gString, sizeof(gString), "Den cua hang 24/7 gan nhat de ban %d kilogram ca ban vua cau.", GetPlayerSkill(playerid)*15);
 			SCM(playerid, COLOR_YELLOW, gString);		
 			DestroyVehicle(JobVehicle[playerid]);
 			JobVehicle[playerid] = 0, JobWorking[playerid] = 0;	
@@ -3562,9 +3557,9 @@ public OnPlayerEnterCheckpoint(playerid) {
 			CP[playerid] = 0;
 			new salar = Farming[playerid]*14+82*GetPlayerSkill(playerid);
 			if(PlayerInfo[playerid][pPremiumAccount] == 1) salar += salar/2;
-			format(gString, sizeof(gString), "%s a primit $%s pentru munca efectuata la job-ul %s.", GetName(playerid), FormatNumber(salar), JobInfo[PlayerInfo[playerid][pJob]][jName]);
+			format(gString, sizeof(gString), "%s da nhan duoc $%s cho cong suc da bo ra cho cong viec %s.", GetName(playerid), FormatNumber(salar), JobInfo[PlayerInfo[playerid][pJob]][jName]);
 			InsertLog(playerid, gString, LOG_MONEY);			
-			format(gString, sizeof(gString), "(+) Ai primit $%s pentru munca facuta de catre tine.", FormatNumber(salar));
+			format(gString, sizeof(gString), "(+) Ban nhan duoc $%s cho cong suc da bo ra.", FormatNumber(salar));
 			SCM(playerid, COLOR_MONEY, gString);
 			GivePlayerCash(playerid, 1, salar);
 			GunoiKG[playerid] = 0;
@@ -3588,14 +3583,14 @@ public OnPlayerEnterCheckpoint(playerid) {
 			WorkingTime[playerid] = 0;
 		}
 		case 58: {
-			if(IsPlayerInAnyVehicle(playerid)) return SCM(playerid, COLOR_LGREEN, "Eroare: {FFFFFF}Nu poti livra coletul dintr-un vehicul!");
-			if(GetPVarInt(playerid, "InHand") == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: {FFFFFF}Nu ai coletul! Pentru a-l lua, du-te in spatele vehiculului si apasa Y.");
+			if(IsPlayerInAnyVehicle(playerid)) return SCM(playerid, COLOR_LGREEN, "Error: {FFFFFF}Ban khong the giao buu kien khi o trong xe!");
+			if(GetPVarInt(playerid, "InHand") == 0) return SCM(playerid, COLOR_LGREEN, "Error: {FFFFFF}Ban khong co buu kien tren tay! De lay no hay ra sau xe va bam Y.");
 			SetPVarInt(playerid, "InHand", 0);
 			new j = random(housess)+1;
 			if(j == 0) j = 1;
 			SetPlayerCheckpointEx(playerid, HouseInfo[j][hEntrancex],HouseInfo[j][hEntrancey],HouseInfo[j][hEntrancez], 7.0);
 			CP[playerid] = 58;
-			format(gString, sizeof(gString), "Du-te la punctul ~r~~h~rosu~w~~h~ de pe mapa pentru a livra coletul.~n~Pentru a lua coletul, apasa tasta Y in spatele vehiculului!~n~Distanta: ~y~%0.1fm.", GetPlayerDistanceFromPoint(playerid, HouseInfo[j][hEntrancex],HouseInfo[j][hEntrancey],HouseInfo[j][hEntrancez]));
+			format(gString, sizeof(gString), "Den diem mau ~r~~h~do~w~~h~ tren ban do de giao buu kien.~n~De lay goi hang, ra sau xe va bam Y!~n~khoang cach: ~y~%0.1fm.", GetPlayerDistanceFromPoint(playerid, HouseInfo[j][hEntrancex],HouseInfo[j][hEntrancey],HouseInfo[j][hEntrancez]));
 			PlayerTextDrawSetString(playerid, InfosTD, gString);
 			defer HideTextdraw(playerid);
 			PlayerTextDrawShow(playerid, InfosTD);	
@@ -3609,12 +3604,12 @@ public OnPlayerEnterCheckpoint(playerid) {
 		case 169: {	
 			DisablePlayerCheckpointEx(playerid);
 			CP[playerid] = 0;
-			if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return FailRob(playerid, "Nu esti soferul");
-			if(!IsPlayerInAnyVehicle(playerid)) return FailRob(playerid, "Nu esti intr-un vehicul");
-			if(LastRVehicle[playerid] != GetPlayerVehicleID(playerid)) return FailRob(playerid, "Vehicul diferit fata de cel in care ai pus sacii");
+			if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return FailRob(playerid, "Ban khong o tren xe");
+			if(!IsPlayerInAnyVehicle(playerid)) return FailRob(playerid, "Khong o trong xe");
+			if(LastRVehicle[playerid] != GetPlayerVehicleID(playerid)) return FailRob(playerid, "Xe khong chua tui tien");
 			new cash = Bags[playerid] * 45000 + random(1000);
 			GivePlayerCash(playerid, 1, cash);
-			format(gString, sizeof(gString), "* Jaful a fost terminat cu succes. Ai primit $%s.", FormatNumber(cash));
+			format(gString, sizeof(gString), "* Tien da duoc rua. Ban nhan duoc $%s.", FormatNumber(cash));
 			SCM(playerid, COLOR_MONEY, gString);
 			InRob[playerid] = 0;
 			BizRobbed[playerid] = 0;
@@ -3629,7 +3624,7 @@ public OnPlayerEnterCheckpoint(playerid) {
 			new j = random(housess)+1;
 			if(j == 0) j = 1;
 			SetPlayerCheckpointEx(playerid, HouseInfo[j][hEntrancex],HouseInfo[j][hEntrancey],HouseInfo[j][hEntrancez], 7.0);
-			format(gString, sizeof(gString), "Du-te la punctul ~r~~h~rosu~w~~h~ de pe mapa pentru a livra pizza.~n~Distanta: ~y~%0.1fm.", GetPlayerDistanceFromPoint(playerid, HouseInfo[j][hEntrancex],HouseInfo[j][hEntrancey],HouseInfo[j][hEntrancez]));
+			format(gString, sizeof(gString), "Den diem ~r~~h~rosu~w~~h~ tren ban do de giao pizza.~n~khoang cach: ~y~%0.1fm.", GetPlayerDistanceFromPoint(playerid, HouseInfo[j][hEntrancex],HouseInfo[j][hEntrancey],HouseInfo[j][hEntrancez]));
 			PlayerTextDrawSetString(playerid, InfosTD, gString);
 			defer HideTextdraw(playerid);
 			PlayerTextDrawShow(playerid, InfosTD);
@@ -3659,7 +3654,7 @@ public OnPlayerEnterCheckpoint(playerid) {
 			AttachObjectToVehicle(playerObject2[playerid], GetPlayerVehicleID(playerid), 0.000000, 0.599999, 0.499999, 0.000000, 0.000000, 0.000000 );	
 			DisablePlayerCheckpointEx(playerid);
 			CP[playerid] ++;
-			PlayerTextDrawSetString(playerid, InfosTD, "Du-te la ~r~~h~checkpoint-ul~w~~h~ de pe mapa pentru a descarca marfa!");
+			PlayerTextDrawSetString(playerid, InfosTD, "Den diem ~r~~h~checkpoint~w~~h~ tren ban do de tai hang hoa!");
 			defer HideTextdraw(playerid);
 			PlayerTextDrawShow(playerid, InfosTD);		
 			new rand = random(2);
@@ -3672,7 +3667,7 @@ public OnPlayerEnterCheckpoint(playerid) {
 			if(playerObject2[playerid] != 0) DestroyObject(playerObject2[playerid]), playerObject2[playerid] = 0;
 			DisablePlayerCheckpointEx(playerid);
 			CP[playerid] --;	
-			PlayerTextDrawSetString(playerid, InfosTD, "Du-te la ~r~~h~checkpoint-ul~w~~h~ de pe mapa pentru a lua marfa!");
+			PlayerTextDrawSetString(playerid, InfosTD, "Den diem ~r~~h~checkpoint~w~~h~ tren ban do de lay hang!");
 			defer HideTextdraw(playerid);
 			PlayerTextDrawShow(playerid, InfosTD);			
 			DisablePlayerCheckpointEx(playerid);
@@ -3688,11 +3683,11 @@ public OnPlayerEnterCheckpoint(playerid) {
 			DisablePlayerCheckpointEx(playerid);
 			for(new i = 0; i < 50; i++) SCM(playerid, COLOR_WHITE, "");
 			SCM(playerid, COLOR_LIGHTGOLD, "..Tutorial Step 4/5..");
-			format(gString, sizeof(gString), "Ai ajuns cu success la jobul %s.", JobInfo[listitemm[playerid]][jName]);
+			format(gString, sizeof(gString), "Ban da hoan thanh cong viec %s.", JobInfo[listitemm[playerid]][jName]);
 			SCM(playerid, COLOR_LIGHTGOLD, gString);
-			SCM(playerid, COLOR_LIGHTGOLD, "Apasa pe tasta Y pentru a lua acest job sau poti folosi comanda (/getjob).");
-			SCM(playerid, COLOR_LIGHTGOLD, "Pentru a demisiona de la un job poti folosi tasta N in apropierea lui sau comanda (/quitjob).");
-			SCM(playerid, COLOR_LIGHTGOLD, "Dupa ce vei completa si tutorialu de la job vei fi transferat in lume virtuala normala.");
+			SCM(playerid, COLOR_LIGHTGOLD, "Bam phim Y de nhan cong viec nay hoac ban co the su dung lenh (/getjob).");
+			SCM(playerid, COLOR_LIGHTGOLD, "De nghi viec, ban co the su dung phim N khi o gan NPC hoac lenh (/quitjob).");
+			SCM(playerid, COLOR_LIGHTGOLD, "Sau khi hoan thanh Huong dan Cong viec ban se duoc chuyen ve Virtual World 0.");
 			SCM(playerid, COLOR_LIGHTGOLD, "..");
 		}	
 	}
@@ -3708,29 +3703,29 @@ public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger) {
 		if(ServerVehicles[vehicle][vID] != 0 && JobWorking[playerid] == 0) {
 			if(ServerVehicles[vehicle][vFaction] == 1 || ServerVehicles[vehicle][vFaction] == 2 || ServerVehicles[vehicle][vFaction] == 3 || ServerVehicles[vehicle][vFaction] == 14) {
 				if(!IsACop(playerid)) {
-					format(string, sizeof(string), "Nu faci parte din factiunea %s.", FactionName(ServerVehicles[vehicle][vFaction]));
+					format(string, sizeof(string), "Ban khong thuoc %s.", FactionName(ServerVehicles[vehicle][vFaction]));
 					SCM(playerid, COLOR_GREY, string);
 					SlapPlayer(playerid);
 				}
 				else if(OnDuty[playerid] == 0 && IsACop(playerid)) {
-					SCM(playerid, COLOR_LGREEN, "Nu poti folosi vehiculele factiunii daca nu esti la datorie!");
+					SCM(playerid, COLOR_LGREEN, "Ban khong the su dung xe thuoc to chuc khi ban khong lam nhiem vu (onduty)!");
 					SlapPlayer(playerid);
 					return true;
 				}
 				else if(ServerVehicles[vehicle][vRank] > PlayerInfo[playerid][pRank]) {
-					format(string, sizeof(string), "Ai nevoie de rank %d pentru a lua acest vehicul.", ServerVehicles[vehicle][vRank]);
+					format(string, sizeof(string), "Ban can rank %d de su dung phuong tien nay.", ServerVehicles[vehicle][vRank]);
 					SCM(playerid, COLOR_GREY, string);
 					SlapPlayer(playerid);
 				}
 			}
 			else if(ServerVehicles[vehicle][vFaction] != PlayerInfo[playerid][pMember] && ServerVehicles[vehicle][vFaction] != 0) {
-				format(string, sizeof(string), "Nu faci parte din factiunea %s.", FactionName(ServerVehicles[vehicle][vFaction]));
+				format(string, sizeof(string), "Ban khong thuoc %s.", FactionName(ServerVehicles[vehicle][vFaction]));
 				SCM(playerid, COLOR_GREY, string);
 				SlapPlayer(playerid);
 			}
 			else {
 				if(OnDuty[playerid] == 0 && IsACop(playerid) && Copcar2(vehicle)) {
-					SCM(playerid, COLOR_LGREEN, "Nu poti folosi vehiculele factiunii daca nu esti la datorie!");
+					SCM(playerid, COLOR_LGREEN, "Ban khong the su dung xe thuoc to chuc khi ban khong lam nhiem vu (onduty)!");
 					SlapPlayer(playerid);
 					return true;
 				}			
@@ -3738,21 +3733,21 @@ public OnPlayerEnterVehicle(playerid, vehicleid, ispassenger) {
 		}
 		if(IsABoat(vehicleid) && GetPVarInt(playerid, "InLesson") == -1) {
 			if(PlayerInfo[playerid][pBoatLic] < 1 && InDealer[playerid] == 0 && InExamen[playerid] == 0) {
-				SCM(playerid,COLOR_GREY, "Nu ai licenta de navigatie.");
+				SCM(playerid,COLOR_GREY, "Ban khong co giay phep su dung thuyen.");
 				SlapPlayer(playerid);
 				TogglePlayerControllable(playerid, 1);
 			}
 		}
 		else if(IsAPlane(vehicleid) && GetPVarInt(playerid, "InLesson") == -1) {
 			if(PlayerInfo[playerid][pFlyLic] < 1 && InDealer[playerid] == 0) {
-				SCM(playerid, COLOR_GREY, "Nu ai licenta de zbor.");
+				SCM(playerid, COLOR_GREY, "Ban khong co giay phep bay.");
 				SlapPlayer(playerid);
 				TogglePlayerControllable(playerid, 1); 
 			}
 		}
 		else {
 			if(PlayerInfo[playerid][pCarLic] < 1 && !IsABike2(vehicleid) && InExamen[playerid] != 1 && GetVehicleModel(vehicleid) != 471) {
-			 	SCM(playerid,COLOR_GREY, "Nu ai licenta de condus.");
+			 	SCM(playerid,COLOR_GREY, "Ban khong co giay phep lai xe.");
 				SlapPlayer(playerid);
 				TogglePlayerControllable(playerid, 1);
 				SetPlayerFreeze(playerid, 1);
@@ -3866,7 +3861,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate) {
 			AcceptedService[TaxiDriver[playerid]] = -1;	
 			foreach(new i: Player) {
 				if(IsNearPlayer(playerid, i)) {
-					format(string, sizeof(string), "* %s a platit taximetristului %s suma de $%s pentru cursa efectuata.", GetName(playerid), GetName(TaxiDriver[playerid]), FormatNumber(TaxiMoney[playerid]));
+					format(string, sizeof(string), "* %s da tra cho tai xe %s so tien $%s chi phi taxi.", GetName(playerid), GetName(TaxiDriver[playerid]), FormatNumber(TaxiMoney[playerid]));
 					SCM(i, COLOR_PURPLE, string);
 	
 				}
@@ -3891,7 +3886,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate) {
 				TaxiMoney[i] = 0;
 			}
 		}
-		format(string, sizeof(string), "Acum nu mai esti la datorie si ai primit $%s, banii facuti de tine.", FormatNumber(TaxiMoney[playerid]));
+		format(string, sizeof(string), "Bay gio ban khong con lam nhiem vu (onduty) nua, ban nhan duoc $%s, la so tien ban kiem duoc.", FormatNumber(TaxiMoney[playerid]));
 		SCM(playerid, COLOR_WHITE, string);
 		GivePlayerCash(playerid, 1, TaxiMoney[playerid]);
 		TaxiMoney[playerid] = 0;
@@ -3899,7 +3894,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate) {
 	
 	if(Helmet[playerid] == 1) {
 		Helmet[playerid] = 0;
-		format(string, sizeof(string), "* %s si-a scos casca de pe cap.", GetName(playerid));
+		format(string, sizeof(string), "* %s keo non bao hiem ra khoi dau.", GetName(playerid));
 		ProxDetector(30.0, playerid, string, COLOR_PURPLE);
 		RemovePlayerAttachedObject(playerid, 3);
 	}
@@ -3912,7 +3907,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate) {
 	if(oldstate == PLAYER_STATE_DRIVER) {
 		if(IsPlayerInAnyVehicle(playerid) && InEvent[playerid] == 1 && EventType == 2) {
 			SpawnPlayer(playerid);
-			SCM(playerid, COLOR_WARNING, "Ai fost descalificat din event deoarece ai parasit vehiculul!");
+			SCM(playerid, COLOR_WARNING, "Ban da bi loai khoi su kien vi su dung phuong tien!");
 		}		
 		if(PlayerRainbow[playerid] != 0) {
 			if(Iter_Contains(Rainbows[PlayerRainbow[playerid]], playerid)) Iter_Remove(Rainbows[PlayerRainbow[playerid]], playerid);
@@ -3945,7 +3940,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate) {
 	
 	if(JobWorking[playerid] == 1 && gLastCar[playerid] == JobVehicle[playerid]) {
 		if(PlayerInfo[playerid][pJob] == 1) {
-			SCM(playerid, COLOR_GREY, "Job esuat! Ai parasit vehiculul.");
+			SCM(playerid, COLOR_GREY, "Cong viec that bai! Ban da roi khoi xe.");
 			if(playerObject[playerid] != 0) DestroyPlayerObject(playerid, playerObject[playerid]), playerObject[playerid] = 0;
 			if(playerObject2[playerid] != 0) DestroyObject(playerObject2[playerid]), playerObject2[playerid] = 0;
 			JobWorking[playerid] = 0;
@@ -3968,10 +3963,10 @@ public OnPlayerStateChange(playerid, newstate, oldstate) {
 			if(IsPlayerInVehicle(i, vehicleid) && GetPlayerState(i) == 2 && TaxiDuty[i] == 1) {
 				
 				if(IsInBlacklist(playerid, 11) || IsInBlacklist(playerid, 12))
-					return SCM(playerid, -1, "Esti pe blacklist-ul acestei factiuni, nu poti folosi serviciile acestei factiuni!"), SlapPlayer(playerid);
+					return SCM(playerid, -1, "Ban nam trong danh sach den cua to chuc nay, vi vay ban khong the su dung dich vu to chuc cung cap!"), SlapPlayer(playerid);
 					
 				if(PlayerMoney(playerid, Fare[i])) {
-					format(string, sizeof(string), "Nu ai $%d pentru a intra in acest taxi.", Fare[i]);
+					format(string, sizeof(string), "Ban khong co so tien $%d de vao taxi nay.", Fare[i]);
 			 		SCM(playerid, COLOR_GREY, string);
 			 		RemovePlayerFromVehicle(playerid);
 				}
@@ -4042,30 +4037,30 @@ public OnPlayerStateChange(playerid, newstate, oldstate) {
 			new x = GetPlayerSkill(playerid), newcar = GetPlayerVehicleID(playerid);
 			if(x == 1 && CarInfo[carid][Spawned] == 0 && !IsAFLYCar(newcar) && !IsABOATCar(newcar)) {
 				SetCheckpoint(playerid);
-				PlayerTextDrawSetString(playerid, InfosTD, "~y~Car Jacker~w~~h~~n~Du-te la checkpoint pentru a primii banii!");
+				PlayerTextDrawSetString(playerid, InfosTD, "~y~Car Jacker~w~~h~~n~Den diem checkpoint de nhan tien!");
 				PlayerTextDrawShow(playerid, InfosTD);
 				defer HideTextdraw(playerid);
 				result = 0;
 			}
 			else if(x == 2 && CarInfo[carid][Spawned] != 0 && !IsAFLYCar(newcar) && !IsABOATCar(newcar)) {
-				if(CarInfo[carid][Userid] == PlayerInfo[playerid][pSQLID]) return SCM(playerid, COLOR_ERROR, "Eroare: {FFFFFF}Nu iti poti fura propria masina!");
+				if(CarInfo[carid][Userid] == PlayerInfo[playerid][pSQLID]) return SCM(playerid, COLOR_ERROR, "Error: {FFFFFF}Nu iti poti fura propria masina!");
 				else {
 					SetCheckpoint(playerid);
-					PlayerTextDrawSetString(playerid, InfosTD, "~y~Car Jacker~w~~h~~n~Du-te la checkpoint pentru a primii banii!");
+					PlayerTextDrawSetString(playerid, InfosTD, "~y~Car Jacker~w~~h~~n~Den diem checkpoint de nhan tien!");
 					PlayerTextDrawShow(playerid, InfosTD);
 					defer HideTextdraw(playerid);
 					result = 1;
-					format(string, sizeof(string), "%s (%d) stole your personal car.", GetName(playerid), playerid);
+					format(string, sizeof(string), "%s (%d) cuop xe cua ban.", GetName(playerid), playerid);
 					SendUserMessage(COLOR_LIGHTBLUE, string, CarInfo[carid][Userid]);
 				}	
 			}
 			else if(x == 3 && IsAGangCar(newcar)) {
 				SetCheckpoint(playerid);
-				PlayerTextDrawSetString(playerid, InfosTD, "~y~Car Jacker~w~~h~~n~Du-te la checkpoint pentru a primii banii!");
+				PlayerTextDrawSetString(playerid, InfosTD, "~y~Car Jacker~w~~h~~n~Den diem checkpoint de nhan tien!");
 				PlayerTextDrawShow(playerid, InfosTD);
 				defer HideTextdraw(playerid);
 				result = 1;
-				format(string, sizeof(string), "%s (%d) stole a faction vehicle.", GetName(playerid), playerid);
+				format(string, sizeof(string), "%s (%d) cuop mot xe thuoc so huu to chuc.", GetName(playerid), playerid);
 				SendFactionMessage(4, COLOR_LIGHTBLUE, string);
 				SendFactionMessage(5, COLOR_LIGHTBLUE, string);
 				SendFactionMessage(6, COLOR_LIGHTBLUE, string);
@@ -4073,27 +4068,27 @@ public OnPlayerStateChange(playerid, newstate, oldstate) {
 			}
 			else if(x == 4) {
 				SetCheckpoint(playerid);
-				PlayerTextDrawSetString(playerid, InfosTD, "~y~Car Jacker~w~~h~~n~Du-te la checkpoint pentru a primii banii!");
+				PlayerTextDrawSetString(playerid, InfosTD, "~y~Car Jacker~w~~h~~n~Den diem checkpoint de nhan tien!");
 				defer HideTextdraw(playerid);
 				PlayerTextDrawShow(playerid, InfosTD);
 				result = 1;
-				format(string, sizeof(string), "%s (%d) stole your personal car.", GetName(playerid), playerid);
+				format(string, sizeof(string), "%s (%d) cuop xe cua ban.", GetName(playerid), playerid);
 				SendUserMessage(COLOR_LIGHTBLUE, string, CarInfo[carid][Userid]);				
 			}
 			else if(x == 5 && Copcar2(newcar)) {
 				SetCheckpoint(playerid);
-				PlayerTextDrawSetString(playerid, InfosTD, "~y~Car Jacker~w~~h~~n~Du-te la checkpoint pentru a primii banii!");
+				PlayerTextDrawSetString(playerid, InfosTD, "~y~Car Jacker~w~~h~~n~Den diem checkpoint de nhan tien!");
 				PlayerTextDrawShow(playerid, InfosTD);
 				defer HideTextdraw(playerid);
 				result = 1;
 				PlayerInfo[playerid][pWantedLevel] += 3;
 				SetPlayerWantedLevel(playerid, PlayerInfo[playerid][pWantedLevel]);
-				SetPlayerCriminal(playerid,255, "jefuire vehicul politie");
+				SetPlayerCriminal(playerid,255, "cuop xe canh sat");
 				WantedTime[playerid] = 0;
 				Update(playerid,pWantedLevelx);
 				ShowWanted[playerid] = 1;	
 
-				format(string, sizeof(string), "%s (%d) stole a faction vehicle.", GetName(playerid), playerid);
+				format(string, sizeof(string), "%s (%d) cuop mot xe thuoc so huu to chuc.", GetName(playerid), playerid);
 				SendFactionMessage(1, COLOR_LIGHTBLUE, string);
 				SendFactionMessage(2, COLOR_LIGHTBLUE, string);
 				SendFactionMessage(3, COLOR_LIGHTBLUE, string);
@@ -4102,38 +4097,38 @@ public OnPlayerStateChange(playerid, newstate, oldstate) {
 		
 		if(ServerVehicles[vehicle][vID] != 0 && result == 0) {
 			if(vehicle >= 130 && vehicle <= 135) {
-				if(GetPVarInt(playerid, "InLesson") == -1) return SCM(playerid, COLOR_GREY, "Nu ai o lectie activa!"), SlapPlayer(playerid);
+				if(GetPVarInt(playerid, "InLesson") == -1) return SCM(playerid, COLOR_GREY, "Ban khong trong mot bai giang (lesson)!"), SlapPlayer(playerid);
 			}
 			else if(ServerVehicles[vehicle][vFaction] == 1 || ServerVehicles[vehicle][vFaction] == 2 || ServerVehicles[vehicle][vFaction] == 3 || ServerVehicles[vehicle][vFaction] == 14) {
 				if(ServerVehicles[vehicle][vRank] > PlayerInfo[playerid][pRank]) {
-					format(string, sizeof(string), "Ai nevoie de rank %d pentru a lua acest vehicul.", ServerVehicles[vehicle][vRank]);
+					format(string, sizeof(string), "Ban can rank %d de su dung phuong tien nay.", ServerVehicles[vehicle][vRank]);
 					SCM(playerid, COLOR_GREY, string);
 					SlapPlayer(playerid);
 				}
 				else if(OnDuty[playerid] == 0 && IsACop(playerid)) {
-					SCM(playerid, COLOR_LGREEN, "Nu poti folosi vehiculele factiunii daca nu esti la datorie!");
+					SCM(playerid, COLOR_LGREEN, "Ban khong the su dung xe thuoc to chuc khi ban khong lam nhiem vu (onduty)!");
 					SlapPlayer(playerid);
 					return true;
 				}
 				else if(!IsACop(playerid)) {
-					format(string, sizeof(string), "Nu faci parte din factiunea %s.", FactionName(ServerVehicles[vehicle][vFaction]));
+					format(string, sizeof(string), "Ban khong thuoc %s.", FactionName(ServerVehicles[vehicle][vFaction]));
 					SCM(playerid, COLOR_GREY, string);
 					SlapPlayer(playerid);				
 				}
 			}
 			else if(ServerVehicles[vehicle][vFaction] != PlayerInfo[playerid][pMember] && ServerVehicles[vehicle][vFaction] != 0) {
-				format(string, sizeof(string), "Nu faci parte din factiunea %s.", FactionName(ServerVehicles[vehicle][vFaction]));
+				format(string, sizeof(string), "Ban khong thuoc %s.", FactionName(ServerVehicles[vehicle][vFaction]));
 				SCM(playerid, COLOR_GREY, string);
 				SlapPlayer(playerid);
 			}
 			else {
 				if(OnDuty[playerid] == 0 && IsACop(playerid) && Copcar2(vehicle)) {
-					SCM(playerid, COLOR_LGREEN, "Nu poti folosi vehiculele factiunii daca nu esti la datorie!");
+					SCM(playerid, COLOR_LGREEN, "Ban khong the su dung xe thuoc to chuc khi ban khong lam nhiem vu (onduty)!");
 					SlapPlayer(playerid);
 					return true;
 				}			
 				if(ServerVehicles[vehicle][vRank] > PlayerInfo[playerid][pRank]) {
-					format(string, sizeof(string), "Ai nevoie de rank %d pentru a lua acest vehicul.", ServerVehicles[vehicle][vRank]);
+					format(string, sizeof(string), "Ban can rank %d de su dung phuong tien nay.", ServerVehicles[vehicle][vRank]);
 					SCM(playerid, COLOR_GREY, string);
 					SlapPlayer(playerid);
 				}
@@ -4149,7 +4144,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate) {
 		if(CarInfo[carid][cStage] > 0) format(stage, sizeof(stage), " {509AE4}[stage: %d/3]", CarInfo[carid][cStage]);
 		if(CarInfo[carid][cRainBow]) { rainbow = " {791DD5}[RAINBOW]"; }
 		if(CarInfo[carid][cTemporar] == 1) 
-			format(temporar, sizeof(temporar), "[Temporary vehicles]: {FFFFFF}Vehicle expiration time left: %d days", GetTimeEx(CarInfo[carid][cTemporarTime]));
+			format(temporar, sizeof(temporar), "[Xe dung ngay]: {FFFFFF}Xe het han sau: %d ngay", GetTimeEx(CarInfo[carid][cTemporarTime]));
 		
 		if(CarInfo[carid][cNeon] != 0) 
 			format(neon, sizeof(neon), " {%s}[NEON]", NeonColor[CarInfo[carid][cNeon]-1]);
@@ -4169,7 +4164,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate) {
 			   	Iter_Add(Rainbows[tograinbow[playerid]], playerid);
 			}
 			if(CarInfo[carid][cPoints] == 0) {
-				SCM(playerid, COLOR_GREY, "Nu ai platit asigurarea! Ca s-o platesti, foloseste comanda /cars > Vehicul > Asigurare.");
+				SCM(playerid, COLOR_GREY, "Ban chua thanh toan tien bao hiem! De thanh toan, su dung /cars -> [Phuong tien] > Bao hiem.");
 				new engine,lights,alarm,doors,bonnet,boot,objective;
 				GetVehicleParamsEx(vehicleid,engine,lights,alarm,doors,bonnet,boot,objective);
 	  			SetVehicleParamsEx(vehicleid,VEHICLE_PARAMS_OFF,lights,alarm,doors,bonnet,boot,objective);
@@ -4194,7 +4189,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate) {
 				}
 			}
 			if(CarInfo[carid][cPoints] == 0) {
-				SCM(playerid, COLOR_GREY, "Acest vehicul nu are asigurarea platita!");
+				SCM(playerid, COLOR_GREY, "Chiec xe nay chua thanh toan phi bao hiem");
 				new engine,lights,alarm,doors,bonnet,boot,objective;
 				GetVehicleParamsEx(vehicleid,engine,lights,alarm,doors,bonnet,boot,objective);
 	  			SetVehicleParamsEx(vehicleid,VEHICLE_PARAMS_OFF,lights,alarm,doors,bonnet,boot,objective);		
@@ -4218,14 +4213,14 @@ public OnPlayerStateChange(playerid, newstate, oldstate) {
 		}
 		if(IsABoat(vehicleid) && GetPVarInt(playerid, "InLesson") == -1) {
 			if(PlayerInfo[playerid][pBoatLic] < 1 && InDealer[playerid] == 0 && InExamen[playerid] == 0) {
-				SCM(playerid,COLOR_GREY, "Nu ai licenta de navigatie.");
+				SCM(playerid,COLOR_GREY, "Ban khong co giay phep su dung thuyen.");
 				SlapPlayer(playerid);
 				TogglePlayerControllable(playerid, 1);
 			}
 		}
 		else if(IsAPlane(vehicleid) && GetPVarInt(playerid, "InLesson") == -1) {
 			if(PlayerInfo[playerid][pFlyLic] < 1 && InDealer[playerid] == 0) {
-				SCM(playerid, COLOR_GREY, "Nu ai licenta de zbor.");
+				SCM(playerid, COLOR_GREY, "Ban khong co giay phep bay.");
 				SlapPlayer(playerid);
 				TogglePlayerControllable(playerid, 1); 
 			}
@@ -4234,7 +4229,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate) {
 			if(PlayerInfo[playerid][pCarLic] < 1 && InExamen[playerid] != 1 && !IsABike2(vehicleid) && GetVehicleModel(vehicleid) != 471) {
 			  	SCMf(playerid, COLOR_GREY, "%d", InExamen[playerid]);
 
-			 	SCM(playerid,COLOR_GREY, "Nu ai licenta de condus.");
+			 	SCM(playerid,COLOR_GREY, "Ban khong co giay phep lai xe.");
 				SlapPlayer(playerid);
 				TogglePlayerControllable(playerid, 1);
 				SetPlayerFreeze(playerid, 1);
@@ -4287,7 +4282,7 @@ public OnPlayerExitVehicle(playerid, vehicleid) {
 		TakingLesson[playerid] = 0;
 		DisablePlayerRaceCheckpointEx(playerid);
 		SetVehicleToRespawn(GetPlayerVehicleID(playerid));
-		SCM(playerid, COLOR_LIGHTRED, "Test esuat!");
+		SCM(playerid, COLOR_LIGHTRED, "Test failed!");
 		vehEngine[GetPlayerVehicleID(playerid)] = 0;
 		GetVehicleParamsEx(GetPlayerVehicleID(playerid),engine,lights,alarm,doors,bonnet,boot,objective);
 		SetVehicleParamsEx(GetPlayerVehicleID(playerid),VEHICLE_PARAMS_OFF,lights,alarm,doors,bonnet,boot,objective);
@@ -4350,10 +4345,10 @@ function EnterFunction(playerid) {
 				return true;
 
 			if(GetPlayerVirtualWorld(playerid) != 0)
-				return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti intra intr-o casa, pentru ca esti in alt virtual world.");
+				return SCM(playerid, COLOR_LGREEN, "Error: Ban khong the vao nha, vi ban dang o mot the gioi ao khac.");
 
 			if(HouseInfo[i][hLock] != 0) 
-				return GameTextForPlayer(playerid, "~r~~h~Inchis", 1000, 1);
+				return GameTextForPlayer(playerid, "~r~~h~Khoa", 1000, 1);
 			
 			SetPlayerFreeze(playerid, 3);
 			SetPlayerPosEx(true, playerid,HouseInfo[i][hExitx],HouseInfo[i][hExity],HouseInfo[i][hExitz]);
@@ -4373,7 +4368,7 @@ function EnterFunction(playerid) {
 				return GameTextForPlayer(playerid, "~r~~h~Nu ai destui bani", 1000, 1);
 			
 			if(BizzInfo[i][bLocked] == 1) 
-				return GameTextForPlayer(playerid, "~r~~h~Inchis", 1000, 1);
+				return GameTextForPlayer(playerid, "~r~~h~Khoa", 1000, 1);
 			
 			if(BizzInfo[i][bType] == 1) SCM(playerid,COLOR_WHITE,"Comenzi disponibile: /withdraw, /transfer, /deposit");
 			if(BizzInfo[i][bType] == 9) SCM(playerid,COLOR_WHITE,"Comenzi disponibile: /dice.");
@@ -4429,7 +4424,7 @@ function EnterFunction(playerid) {
 				return true;
 
 			if(GetPlayerVirtualWorld(playerid) != 0)
-				return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti intra intr-o casa, pentru ca esti in alt virtual world.");
+				return SCM(playerid, COLOR_LGREEN, "Error: Ban khong the vao nha, vi ban dang o mot the gioi ao khac.");
 
 			if(ClanHQInfo[i][cClan] != PlayerInfo[playerid][pClan] && ClanHQInfo[i][cClan] != 0) return SCMf(playerid, COLOR_GREY, "Nu esti in clan-ul cu id %d.", ClanHQInfo[i][cClan]);
 			else if(ClanHQInfo[i][cClan] == 0) return 1;
@@ -4645,11 +4640,11 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
 						format(string, sizeof(string), "Clan money: +$%s [10%s].", FormatNumber(fishing/4), "%%");
 						ClanInfo[PlayerInfo[playerid][pClan]][ClanBank] += fishing/4;
 					}
-					format(string, sizeof(string), "Ai primit $%s!", FormatNumber(fishing + totalmony));
+					format(string, sizeof(string), "Ban nhan duoc $%s!", FormatNumber(fishing + totalmony));
 					SendClientMessage(playerid, COLOR_MONEY, string);
 					UpdateJobGoal(totalmony + fishing);
 					GivePlayerCash(playerid, 1, fishing + totalmony);
-					format(string, sizeof(string), "%s a primit $%s pentru munca efectuata la job-ul %s.", GetName(playerid), FormatNumber(fishing + totalmony), JobInfo[PlayerInfo[playerid][pJob]][jName]);
+					format(string, sizeof(string), "%s da nhan duoc $%s cho cong suc da bo ra cho cong viec %s.", GetName(playerid), FormatNumber(fishing + totalmony), JobInfo[PlayerInfo[playerid][pJob]][jName]);
 					InsertLog(playerid, string, LOG_MONEY);
 					if(HaveFish[0][playerid] != 0 && HaveFish[1][playerid] != 0) PlayerInfo[playerid][pFishSkill] += 2;
 					else PlayerInfo[playerid][pFishSkill] ++;
@@ -4876,7 +4871,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
 				RemovePlayerMapIcon(i, 70+q);
 				SetPlayerAttachedObject(playerid, 0, 19057, 3, 0.19, -0.26, -0.11, 57.60, -84.60, -18.19, 0.30, 0.34, 0.26);
 				SetPlayerSpecialAction(playerid, SPECIAL_ACTION_CARRY);
-				SCM(playerid, -1, "{31d6e4}(Winter Quest): {FFFFFF}Acum du-te langa vehicul primit si apasa 'Y'.");
+				SCM(playerid, -1, "{31d6e4}(Winter Quest): {FFFFFF}Acum Den diemnga vehicul primit si apasa 'Y'.");
 				x = true;
 				break;
 			}
@@ -4884,7 +4879,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
 				new Float: Pos[3];
 				GetVehiclePos(QuestVehicle[playerid], Pos[0], Pos[1], Pos[2]);
 				if(!PlayerToPoint(5, playerid, Pos[0], Pos[1], Pos[2]))
-					return SCM(playerid, COLOR_LGREEN, "Eroare: Nu esti langa masina.");
+					return SCM(playerid, COLOR_LGREEN, "Error: Nu esti langa masina.");
 
 				RemovePlayerAttachedObject(playerid, 0);
 				SetPlayerSpecialAction(playerid, 0);
@@ -4947,7 +4942,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
 		if(PlayerInfo[playerid][pJob] == 0) {
 			for(new j = 1; j < MAX_JOBS; j++) {
 				if(IsPlayerInAnyVehicle(playerid)) 
-					return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti aceasta comanda dintr-un vehicul!");
+					return SCM(playerid, COLOR_LGREEN, "Error: Nu poti aceasta comanda dintr-un vehicul!");
 				
 				if(PlayerToPoint(3, playerid, JobInfo[j][jPosX], JobInfo[j][jPosY], JobInfo[j][jPosZ])) {
 				   if(PlayerInfo[playerid][pLevel] < JobInfo[j][jLevel]) {
@@ -4956,7 +4951,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
 					   return true;
    				   }
 
-				   format(gString, sizeof(gString), "*Felicitari! Noul tau job este acum %s.", JobInfo[j][jName]);
+				   format(gString, sizeof(gString), "*Chuc mung! Noul tau job este acum %s.", JobInfo[j][jName]);
 				   SCM(playerid, COLOR_LIGHTBLUE, gString);
 				   switch(j) {
 				   	  	case 6: SCM(playerid, COLOR_LIGHTBLUE, "Pentru a localiza un player, foloseste comanda /find.");	
@@ -4977,7 +4972,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
 			if(!IsPlayerNearVehicle(playerid, car, 5) && !IsABoat(car)) return true;
 			else if(!IsPlayerNearVehicle(playerid, car, 10) && IsABoat(car)) return true;				
 			if(LastRVehicle[playerid] != car && LastRVehicle[playerid] != 0) return SCM(playerid, -1, "Nu ai pus in acest vehicul vreun sac.");
-			if(IsABike2(car)) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti da rob cu o bicicleta/motor!");
+			if(IsABike2(car)) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti da rob cu o bicicleta/motor!");
 			LastRVehicle[playerid] = car;
 			HaveBag[playerid] = 0;
 			RemovePlayerAttachedObject(playerid,0);
@@ -4987,9 +4982,9 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
 			if(Bags[playerid] >= GetBags(BizRobbed[playerid])) {
 				new rand = random( sizeof(RobPos) );
 				SetPlayerCheckpointEx(playerid, RobPos[rand][0], RobPos[rand][1], RobPos[rand][2], 8.0);
-				format(string, sizeof(string), "* Du-te la punctul rosu de pe mapa pentru a primi banii. Distanta: %0.1fm", GetPlayerDistanceFromPoint(playerid, RobPos[rand][0], RobPos[rand][1], RobPos[rand][2]));
+				format(string, sizeof(string), "* Den diem rosu tren ban do de primi banii. khoang cach: %0.1fm", GetPlayerDistanceFromPoint(playerid, RobPos[rand][0], RobPos[rand][1], RobPos[rand][2]));
 				SCM(playerid, COLOR_YELLOW, string);
-				SCM(playerid, COLOR_YELLOW, "Daca nu esti soferul / nu esti in vehiculul in care ai pus sacii cand intri in checkpoint, vei lua fail.");
+				SCM(playerid, COLOR_YELLOW, "Daca Ban khong o tren xe / nu esti in vehiculul in care ai pus sacii cand intri in checkpoint, vei lua fail.");
 				CP[playerid] = 169;
 			}
 			else {
@@ -5004,9 +4999,9 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
 			if(!IsPlayerNearVehicle(playerid, car, 5) && !IsABoat(car)) return true;
 			else if(!IsPlayerNearVehicle(playerid, car, 10) && IsABoat(car)) return true;							
 			if(GetPVarInt(playerid, "InHand") == 1) return true;
-			if(JobVehicle[playerid] != car) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu esti in spatele vehiculului tau de la job!");
-			if(IsPlayerInAnyVehicle(playerid)) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti ridica coletul dintr-un vehicul!");
-			if(!PlayerToPoint(15, playerid, CheckpointPos[playerid][0], CheckpointPos[playerid][1], CheckpointPos[playerid][2])) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti ridica coletul deoarece nu esti aproape de destinatie!");
+			if(JobVehicle[playerid] != car) return SCM(playerid, COLOR_LGREEN, "Error: Nu esti in spatele vehiculului tau de la job!");
+			if(IsPlayerInAnyVehicle(playerid)) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti ridica coletul dintr-un vehicul!");
+			if(!PlayerToPoint(15, playerid, CheckpointPos[playerid][0], CheckpointPos[playerid][1], CheckpointPos[playerid][2])) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti ridica coletul deoarece nu esti aproape de destinatie!");
 			SetPVarInt(playerid, "InHand", 1);
 			SCM(playerid, COLOR_LGREEN, "Colet ridicat!");
 			SetPlayerSpecialAction(playerid, SPECIAL_ACTION_CARRY);
@@ -5036,7 +5031,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
 			Unspec[playerid][sLocal] = 255;
 			gTeam[playerid] = PlayerInfo[playerid][pTeam];
 			SetPlayerToTeamColor(playerid);
-			SCM(playerid, -1, "Nu mai esti spectator!");
+			SCM(playerid, -1, "Ban khong con spec!");
 			SpawnPlayer(playerid);
 			Iter_Remove(MySpec[Spectate[playerid]], playerid);
 			IsPlayerSpec[playerid] = 0;
@@ -5050,7 +5045,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
 		for(new j = 1; j < MAX_JOBS; j++) {
 			if(PlayerToPoint(5, playerid, JobInfo[j][jPosX], JobInfo[j][jPosY], JobInfo[j][jPosZ])) {
 				if(IsPlayerInAnyVehicle(playerid)) 
-					return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti aceasta comanda dintr-un vehicul!");
+					return SCM(playerid, COLOR_LGREEN, "Error: Nu poti aceasta comanda dintr-un vehicul!");
 				
 				if(PlayerInfo[playerid][pJob] == 0) 
 					return SCM(playerid, COLOR_LGREEN, "Nu ai un job.");
@@ -5149,7 +5144,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
 	   		  			break;
 	   		  		} else {
 	   		  			if(CarInfo[idd][cVip] != 1) 
-	   		  				return SCM(playerid, COLOR_LGREEN, "Eroare: Trebuie sa ai vehiculul upgradat la VIP PLUS.");
+	   		  				return SCM(playerid, COLOR_LGREEN, "Error: Trebuie sa ai vehiculul upgradat la VIP PLUS.");
 
 	   		  			if(CarInfo[idd][cNeon] != 0) SCM(playerid, COLOR_LIGHTGREEN, "ATENITE: {FFFFFF}Ai deja un set de neoane si iar daca iti vei cumpara le vei pierde pe cele actuale.");
 	   		  			Dialog_Show(playerid, DIALOG_NEON, DIALOG_STYLE_TABLIST_HEADERS, "Buy neon", "Neon Type\tValue\n{FFFFFF}White\t169\n{ff00c9}Pink\t269\n{fff000}Yellow\t369\n{64ff00}Green\t469\n{0046ff}Blue\t569\n{ff0400}Red\t669", "Select", "Close");
@@ -5180,7 +5175,7 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
 						return SCM(playerid,COLOR_GREY,"* Motorul este pornit, opreste-l.");
 
 					if(Gas[idcar] == 100) 
-						return SCM(playerid, COLOR_LGREEN, "Eroare: Ai facut deja plinul.");
+						return SCM(playerid, COLOR_LGREEN, "Error: Ai facut deja plinul.");
 
 					TogglePlayerControllable(playerid, 0);
 					GameTextForPlayer(playerid,"~w~~n~~n~~n~~n~~n~~n~~n~~n~~n~~y~the tank is loaded~n~~w~~h~Wait...",RefuelWait,3);
@@ -5198,13 +5193,13 @@ public OnPlayerKeyStateChange(playerid, newkeys, oldkeys) {
 		   if(IsABike(idcar)) return true;
 		   new carid = FindSpawnID(idcar);
 		   if(carid != 0) {
-				if(CarInfo[carid][cPoints] == 0) return SCM(playerid, COLOR_GREY, "Acest vehicul nu are asigurarea platita!");
+				if(CarInfo[carid][cPoints] == 0) return SCM(playerid, COLOR_GREY, "Chiec xe nay chua thanh toan tien bao hiem");
 		   }
 		   if(Refueling[playerid] != 0) return SCM(playerid,COLOR_LGREEN,"* Te rugam sa astepti pana ce iti faci plinul!");
 		   new vehicle = GetVehicleModel(idcar) - 400;		   
 		   if(vehEngine[idcar] == 0) {
 		   	   if(IsEditVip[playerid] != 0)
-		   	   		return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti porni motoru in timp ce editezi vip-ul.");
+		   	   		return SCM(playerid, COLOR_LGREEN, "Error: Nu poti porni motoru in timp ce editezi vip-ul.");
 			   vehEngine[idcar] = 1;
 			   GetVehicleParamsEx(idcar,engine,lights,alarm,doors,bonnet,boot,objective);
 			   SetVehicleParamsEx(idcar,VEHICLE_PARAMS_ON,lights,alarm,doors,bonnet,boot,objective);
@@ -5288,12 +5283,12 @@ YCMD:getjob(playerid, params[], help) {
 		if(PlayerToPoint(3, playerid, JobInfo[j][jPosX], JobInfo[j][jPosY], JobInfo[j][jPosZ])) {
 			if(PlayerInfo[playerid][pLevel] < JobInfo[j][jLevel]) {
 				gString[0] = EOS;
-				format(gString, sizeof(gString), "Eroare: Ai nevoie de level %d pentru a lu-a job-ul %s.",  JobInfo[j][jLevel], JobInfo[j][jName]);
+				format(gString, sizeof(gString), "Error: Ai nevoie de level %d pentru a lu-a job-ul %s.",  JobInfo[j][jLevel], JobInfo[j][jName]);
 				SCM(playerid, COLOR_LGREEN, gString);
 				return true;
 			}
 			gString[0] = EOS;
-			format(gString, sizeof(gString), "* Felicitari! Noul tau job este acum %s.", JobInfo[j][jName]);
+			format(gString, sizeof(gString), "* Chuc mung! Noul tau job este acum %s.", JobInfo[j][jName]);
 			SCM(playerid, COLOR_LIGHTBLUE, gString);
 			switch(j) {
 				case 6: SCM(playerid, -1, "Pentru a localiza un player, foloseste comanda /find.");	
@@ -5314,7 +5309,7 @@ YCMD:getjob(playerid, params[], help) {
 }
 YCMD:quitjob(playerid, params[], help) {
 	if(PlayerInfo[playerid][pJob] == 0) 
-		return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai un job");
+		return SCM(playerid, COLOR_LGREEN, "Error: Nu ai un job");
 	
 	SCM(playerid, COLOR_LIGHTBLUE, "* Ai demisionat de la locul de munca.");
 
@@ -5566,7 +5561,7 @@ YCMD:crateforall(playerid, params[], help) {
 }
 YCMD:setslot(playerid, params[], help) {
 	if(PlayerInfo[playerid][pAdmin] < 7) 
-		return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai acces la aceasta comanda.");
+		return SCM(playerid, COLOR_LGREEN, "Error: Nu ai acces la aceasta comanda.");
 	new id, slot;
 	if(sscanf(params, "ui", id, slot))
 		return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/setslot <playerid/name> <slot>");
@@ -5592,7 +5587,7 @@ function SQL_CheckPlayer(playerid, id) {
 
 function PlaceGarage(playerid) {
 	new house = PlayerInfo[playerid][pHouse];
-	if(!PlayerToPoint(30, playerid, HouseInfo[house][hEntrancex], HouseInfo[house][hEntrancey], HouseInfo[house][hEntrancez])) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu te afli in zona casei tale");
+	if(!PlayerToPoint(30, playerid, HouseInfo[house][hEntrancex], HouseInfo[house][hEntrancey], HouseInfo[house][hEntrancez])) return SCM(playerid, COLOR_LGREEN, "Error: Nu te afli in zona casei tale");
 	HouseInfo[house][hGarage] = 1;
 	new idd = garage+1, Float: PosX, Float: PosY, Float: PosZ, Float: PosR;
 	GetPlayerPos(playerid, PosX, PosY, PosZ);
@@ -5626,7 +5621,7 @@ function PlaceGarage(playerid) {
 }
 YCMD:movegarage(playerid, params[], help) {
 	if(PlayerInfo[playerid][pAdmin] < 6) return SCM(playerid, COLOR_LGREEN, AdminOnly);
-	if(GetPlayerVirtualWorld(playerid) != 0) return SCM(playerid, COLOR_LGREEN, "Eroare: nu poti folosi acesta comanda dintr-un virtual world.");
+	if(GetPlayerVirtualWorld(playerid) != 0) return SCM(playerid, COLOR_LGREEN, "Error: nu poti folosi acesta comanda dintr-un virtual world.");
 	new id;
 	if(sscanf(params, "i", id)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/movegarage <id>");
 	new Float: X, Float: Y, Float: Z, Float: Rotation;
@@ -5655,7 +5650,7 @@ YCMD:buycrate(playerid, params[], help) {
 	AlegeCrates[playerid] = x;
 	gString[0] = EOS;
 	format(gString, sizeof(gString), "{A0C4D3}Doresti sa cumperi un %s Crate?\nAcest crate costa {1A79A2}(%d RPoints / %d Premium Points){A0C4D3}.", CrateName[x], CratePrice[x][0], CratePrice[x][1]);
-	Dialog_Show(playerid, DIALOG_BUYCRATES, DIALOG_STYLE_MSGBOX, "Buy Crate", gString, "Da", "nu");
+	Dialog_Show(playerid, DIALOG_BUYCRATES, DIALOG_STYLE_MSGBOX, "Buy Crate", gString, "Co", "Khong");
 	return true;
 }
 YCMD:vouchers(playerid, params[], help) {
@@ -5694,7 +5689,7 @@ public OnPlayerWeaponShot(playerid, weaponid, hittype, hitid, Float:fX, Float:fY
 public OnQueryError(errorid, const error[], const callback[], const query[], MySQL:handle)
 {
 	print( "====================================================================" );
-	printf( "Error ID: %d, Eroare: %s", errorid, error );
+	printf( "Error ID: %d, Error: %s", errorid, error );
 	printf( "Callback: %s", callback );
 	printf( "gQuery: %s", query );
 	print( "====================================================================" );
@@ -5704,7 +5699,7 @@ public OnQueryError(errorid, const error[], const callback[], const query[], MyS
 		{
 			foreach(new i: Player) {
 				if(IsPlayerConnected(i) && IsPlayerLogged[i] == 1) {
-					SCM(i, COLOR_CLIENT, "SERVER: Ai primit kick deoarece sunt probleme tehnice cu baza de date!");
+					SCM(i, COLOR_CLIENT, "SERVER: Ban nhan duoc kick deoarece sunt probleme tehnice cu baza de date!");
 					SCM(i, COLOR_CLIENT, "SERVER: Revenim cat mai repede posibil. Nu exista un termen anume.");
 					KickEx(i);
 				}	
@@ -5730,7 +5725,7 @@ YCMD:opencrate(playerid, params[], help) {
 YCMD:park(playerid, params[], help) {
 	new car = GetPlayerVehicleID(playerid);
 	if(!IsPlayerInAnyVehicle(playerid)) 
-		return SCM(playerid, COLOR_ERROR, "Eroare: {FFFFFF}Nu esti in vehiculul tau.");
+		return SCM(playerid, COLOR_ERROR, "Error: {FFFFFF}Nu esti in vehiculul tau.");
 	
 	if(Iter_Count(MyVehicle[playerid]) == 0) 
 		return SCM(playerid, COLOR_ERROR, "erorr: {FFFFFF}Nu ai un vehicul personal!");
@@ -5840,9 +5835,9 @@ YCMD:aduty(playerid, params[], help) {
 }
 YCMD:swapcolors(playerid, params[], help) {
 	new string[128], color1,color2;
-	if(Iter_Count(MyVehicle[playerid]) == 0) return SCM(playerid, COLOR_ERROR, "Eroare: {FFFFFF}Nu ai un vehicul personal!");
+	if(Iter_Count(MyVehicle[playerid]) == 0) return SCM(playerid, COLOR_ERROR, "Error: {FFFFFF}Nu ai un vehicul personal!");
 	if(PlayerMoney(playerid, 5000)) return SCM(playerid, COLOR_GREY, "Nu ai $5,000!");
-	if(PersonalCar(playerid) == -1) return SCM(playerid, COLOR_ERROR, "Eroare: {FFFFFF}Nu esti in unul dintre vehiculele tale personale!");
+	if(PersonalCar(playerid) == -1) return SCM(playerid, COLOR_ERROR, "Error: {FFFFFF}Nu esti in unul dintre vehiculele tale personale!");
 	if(GetPlayerState(playerid) != 2) return SCM(playerid, COLOR_LGREEN, "* Trebuie sa fii la volan pentru a putea folosi aceasta comanda!");
 	new idd = PersonalCar(playerid);
 	color1 = CarInfo[idd][cColorOne];
@@ -5869,14 +5864,14 @@ YCMD:debugmoney(playerid, params[], help) {
 }
 YCMD:carplate(playerid, params[], help) {
 	new string[128], plate[10];
-	if(Iter_Count(MyVehicle[playerid]) == 0) return SCM(playerid, COLOR_ERROR, "Eroare: {FFFFFF}Nu ai un vehicul personal!");
+	if(Iter_Count(MyVehicle[playerid]) == 0) return SCM(playerid, COLOR_ERROR, "Error: {FFFFFF}Nu ai un vehicul personal!");
 	if(sscanf(params, "s[10]", plate)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/carplate <Car Plate>");
-	if(PersonalCar(playerid) == -1) return SCM(playerid, COLOR_ERROR, "Eroare: {FFFFFF}Nu esti in unul dintre vehiculele tale personale!");
+	if(PersonalCar(playerid) == -1) return SCM(playerid, COLOR_ERROR, "Error: {FFFFFF}Nu esti in unul dintre vehiculele tale personale!");
 	new idd = PersonalCar(playerid);
 	if(strfind(plate, "'", true) != -1 || strfind(plate, "Model", true) != -1 || strfind(plate, "`", true) != -1) return SCM(playerid, -1, "Caractere invalide!");
 	if(strlen(plate) > 10) return SCM(playerid, -1, "Numarul de inmatriculare poate avea maxim 10 caractere!");
 	if(idd == 0) return SCM(playerid, -1, "Acest vehicul nu iti apartine!");
-	if(CarInfo[idd][Spawned] == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Vehiculul tau nu este spawnat!");
+	if(CarInfo[idd][Spawned] == 0) return SCM(playerid, COLOR_LGREEN, "Error: Vehiculul tau nu este spawnat!");
 	if(PlayerMoney(playerid, 5000)) return SCM(playerid, COLOR_GREY, "Nu ai $5,000!");
 	SetVehicleNumberPlate(CarInfo[idd][Spawned], plate);
 	GivePlayerCash(playerid, 0, 5000);
@@ -5904,8 +5899,8 @@ function saveFuel(dbid) {
 function CancelTrade(playerid) {
 	new playerID = GetPVarInt(playerid, "OfferBy");
 	if(playerID != -1 && IsPlayerConnected(playerID)){
-		SCM(playerid, -1, "Afacerea a fost anulata deoarece a expirat timpul!");
-		SCM(playerID, -1, "Afacerea a fost anulata deoarece a expirat timpul!");
+		SCM(playerid, -1, "Giao dich bi huy bo deoarece a expirat timpul!");
+		SCM(playerID, -1, "Giao dich bi huy bo deoarece a expirat timpul!");
 		SetPVarInt(playerid, "OfferBy", -1);
 	}
 	return true;
@@ -5919,12 +5914,12 @@ function UpdateVar(playerid, varname[], amount) {
 }	
 YCMD:carcolor(playerid, params[], help) {
 	new string[128],part,color;
-	if(Iter_Count(MyVehicle[playerid]) == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai un vehicul personal!");
+	if(Iter_Count(MyVehicle[playerid]) == 0) return SCM(playerid, COLOR_LGREEN, "Error: Nu ai un vehicul personal!");
 	if(!IsPlayerInAnyVehicle(playerid)) return SCM(playerid, COLOR_GREY, "Nu esti in vehiculul tau.");
 	if(sscanf(params, "ii",part,color)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/carcolor <part (1/2)> <color>"), SCM(playerid, -1, "Foloseste /colors pentru a vedea o lista cu culorile existente.");
 	if(PlayerMoney(playerid, 2500)) return SCM(playerid, COLOR_WHITE, "Your don't have $2,500!");
 	new car = GetPlayerVehicleID(playerid);
-	if(PersonalCar(playerid) == -1) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu esti in unul dintre vehiculele tale personale!");
+	if(PersonalCar(playerid) == -1) return SCM(playerid, COLOR_LGREEN, "Error: Nu esti in unul dintre vehiculele tale personale!");
 	if(GetPlayerState(playerid) != 2) return SCM(playerid, COLOR_LGREEN, "* Trebuie sa fii la volan pentru a putea folosi aceasta comanda!");
 	new idd = PersonalCar(playerid);
 	if(part < 1 || part > 2) return true;
@@ -5983,7 +5978,7 @@ YCMD:alock(playerid, params[], help) {
 		SetVehicleParamsEx(carid,engine,lights,alarm,0,bonnet,boot,objective);
 	}
 	else {
-		format(string, sizeof(string), "~w~%s~n~~r~Inchis",aVehicleNames[GetVehicleModel(carid)-400]);
+		format(string, sizeof(string), "~w~%s~n~~r~Khoa",aVehicleNames[GetVehicleModel(carid)-400]);
 		GameTextForPlayer(playerid, string, 3000, 4);
 		SetVehicleParamsEx(carid,engine,lights,alarm,1,bonnet,boot,objective);
 	}
@@ -5998,9 +5993,9 @@ function LockCarFunction(playerid) {
 		
 	if(IsPlayerInAnyVehicle(playerid)) car = GetPlayerVehicleID(playerid);
 	else car = GetClosestVehicle(playerid);
-	if(car == INVALID_VEHICLE_ID) return true;//SCM(playerid, COLOR_LGREEN, "Eroare: Nu au fost gasite vehicule in jur care pot fi descuiate/incuiate!");
-	else if(!IsPlayerNearVehicle(playerid, car, 5) && !IsABoat(car)) return true;//SCM(playerid, COLOR_LGREEN, "Eroare: Nu au fost gasite vehicule in jur care pot fi descuiate/incuiate!");
-	else if(!IsPlayerNearVehicle(playerid, car, 10) && IsABoat(car)) return true;//SCM(playerid, COLOR_LGREEN, "Eroare: Nu au fost gasite vehicule in jur care pot fi descuiate/incuiate!");
+	if(car == INVALID_VEHICLE_ID) return true;//SCM(playerid, COLOR_LGREEN, "Error: Nu au fost gasite vehicule in jur care pot fi descuiate/incuiate!");
+	else if(!IsPlayerNearVehicle(playerid, car, 5) && !IsABoat(car)) return true;//SCM(playerid, COLOR_LGREEN, "Error: Nu au fost gasite vehicule in jur care pot fi descuiate/incuiate!");
+	else if(!IsPlayerNearVehicle(playerid, car, 10) && IsABoat(car)) return true;//SCM(playerid, COLOR_LGREEN, "Error: Nu au fost gasite vehicule in jur care pot fi descuiate/incuiate!");
 	GetVehicleParamsEx(car,engine,lights,alarm,doors,bonnet,boot,objective);
 	
 	// job
@@ -6011,7 +6006,7 @@ function LockCarFunction(playerid) {
 			SetVehicleParamsEx(car,engine,lights,alarm,0,bonnet,boot,objective);
 		}
 		else {
-			format(string, sizeof(string), "~w~%s~n~~r~Inchis",aVehicleNames[GetVehicleModel(car)-400]);
+			format(string, sizeof(string), "~w~%s~n~~r~Khoa",aVehicleNames[GetVehicleModel(car)-400]);
 			GameTextForPlayer(playerid, string, 3000, 4);				
 			SetVehicleParamsEx(car,engine,lights,alarm,1,bonnet,boot,objective);
 		}		
@@ -6025,7 +6020,7 @@ function LockCarFunction(playerid) {
 			SetVehicleParamsEx(car,engine,lights,alarm,0,bonnet,boot,objective);
 		}
 		else {
-			format(string, sizeof(string), "~w~%s~n~~r~Inchis",aVehicleNames[GetVehicleModel(car)-400]);
+			format(string, sizeof(string), "~w~%s~n~~r~Khoa",aVehicleNames[GetVehicleModel(car)-400]);
 			GameTextForPlayer(playerid, string, 3000, 4);
 			SetVehicleParamsEx(car,engine,lights,alarm,1,bonnet,boot,objective);
 		}
@@ -6036,7 +6031,7 @@ function LockCarFunction(playerid) {
 	if(HireCar[playerid] == car) {
 		if(doors == 0) {
 			SetVehicleParamsEx(HireCar[playerid],engine,lights,alarm,1,bonnet,boot,objective);
-			format(string, sizeof(string), "~w~%s~n~~r~Inchis",aVehicleNames[GetVehicleModel(HireCar[playerid])-400]);
+			format(string, sizeof(string), "~w~%s~n~~r~Khoa",aVehicleNames[GetVehicleModel(HireCar[playerid])-400]);
 			GameTextForPlayer(playerid, string, 5000, 4);
 		}
 		else if(doors == 1) {
@@ -6055,7 +6050,7 @@ function LockCarFunction(playerid) {
 	if(CarInfo[idd][cLock] == 0) {
 		CarInfo[idd][cLock] = 1;	
 		SetVehicleParamsEx(car,engine,lights,alarm,1,bonnet,boot,objective);
-		format(string, sizeof(string), "~w~%s~n~~r~Inchis",aVehicleNames[GetVehicleModel(car)-400]);
+		format(string, sizeof(string), "~w~%s~n~~r~Khoa",aVehicleNames[GetVehicleModel(car)-400]);
 		GameTextForPlayer(playerid, string, 5000, 4);
 	}
 	else {
@@ -6079,13 +6074,13 @@ function IsVehicleOccupied(vehicleid) return VehicleOccupied[vehicleid] != 0 ? (
 YCMD:enter(playerid, params[], help) {
 	for(new i = 1; i < sizeof(BizzInfo); i++) {
 		if(IsPlayerInRangeOfPoint(playerid,2,BizzInfo[i][bEntranceX], BizzInfo[i][bEntranceY], BizzInfo[i][bEntranceZ]) && BizzInfo[i][bStatic] == 1) {
-		   if(InWar[PlayerInfo[playerid][pMember]] == 1) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti intra intr-o afacere in timpul war-ului!");
+		   if(InWar[PlayerInfo[playerid][pMember]] == 1) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti intra intr-o afacere in timpul war-ului!");
 		   if(PlayerMoney(playerid, BizzInfo[i][bFee])) return GameTextForPlayer(playerid, "~r~~h~Nu ai destui bani", 1000, 1);
 		   if(OnDuty[playerid] == 1 || PlayerHit[playerid] != -1) { }
-		   else if(BizzInfo[i][bLocked] == 1) return GameTextForPlayer(playerid, "~r~~h~Inchis", 1000, 1);
+		   else if(BizzInfo[i][bLocked] == 1) return GameTextForPlayer(playerid, "~r~~h~Khoa", 1000, 1);
 		   else if(i == 22) {
 				if(OnDuty[playerid] == 1) return SCM(playerid, COLOR_WHITE, "Esti la datorie, nu poti intra.");
-				if(PlayerInfo[playerid][pCarLic] == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Ai nevoie de o licenta de condus pentru a participa la o cursa!");
+				if(PlayerInfo[playerid][pCarLic] == 0) return SCM(playerid, COLOR_LGREEN, "Error: Ai nevoie de o licenta de condus pentru a participa la o cursa!");
 				if(CP[playerid] != 0 || targetfind[playerid] != -1) return Dialog_Show(playerid, DIALOG_CHECKPOINT, DIALOG_STYLE_MSGBOX, "Checkpoint", "Ai deja un checkpoint activ.\nDoresti sa-l anulezi? Daca da, apasa pe 'Ok'.", "Ok", "Exit");								
 		   }
 		   else return true;
@@ -6100,10 +6095,10 @@ YCMD:enter(playerid, params[], help) {
 }
 YCMD:paint(playerid, params[], help) {
 	if(IsPlayerInRangeOfPoint(playerid,2,BizzInfo[19][bEntranceX], BizzInfo[19][bEntranceY], BizzInfo[19][bEntranceZ]) && BizzInfo[19][bStatic] == 1) {
-		if(InWar[PlayerInfo[playerid][pMember]] == 1) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti intra intr-o afacere in timpul war-ului!");
+		if(InWar[PlayerInfo[playerid][pMember]] == 1) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti intra intr-o afacere in timpul war-ului!");
 		if(PlayerMoney(playerid, BizzInfo[22][bFee])) return GameTextForPlayer(playerid, "~r~~h~Nu ai destui bani", 1000, 1);
 		if(OnDuty[playerid] == 1 || PlayerHit[playerid] != -1) { }
-		else if(BizzInfo[22][bLocked] == 1) return GameTextForPlayer(playerid, "~r~~h~Inchis", 1000, 1);
+		else if(BizzInfo[22][bLocked] == 1) return GameTextForPlayer(playerid, "~r~~h~Khoa", 1000, 1);
 		if(OnDuty[playerid] == 1) return SCM(playerid, COLOR_WHITE, "Esti la datorie, nu poti intra.");
 		if(PlayerInfo[playerid][pWantedLevel] > 0) return SCM(playerid, -1, "Ai wanted, nu poti intra!");
 		if(PlayerInfo[playerid][pConnectTime] < 5) return SCM(playerid, COLOR_LGREEN, "Ai nevoie de 5 ore jucate pentru a putea intra in paintball!");
@@ -6166,7 +6161,7 @@ function UpdateSlots(playerid) {
 }
 YCMD:towcar(playerid, params[], help) {
 	if(Iter_Count(MyVehicle[playerid]) == 0)
-		return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai masini personale.");
+		return SCM(playerid, COLOR_LGREEN, "Error: Nu ai masini personale.");
 
 	gString[0] = EOS;
 	new x;
@@ -6184,7 +6179,7 @@ YCMD:towcar(playerid, params[], help) {
 
 YCMD:findcar(playerid, params[], help) {
 	if(Iter_Count(MyVehicle[playerid]) == 0)
-		return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai masini personale.");
+		return SCM(playerid, COLOR_LGREEN, "Error: Nu ai masini personale.");
 
 	gString[0] = EOS;
 	new x;
@@ -6258,7 +6253,7 @@ YCMD:areagun(playerid, params[], help) {
 }
 YCMD:editraport(playerid, params[], help) {
 	new fid , string[180];
-	if(PlayerInfo[playerid][pAdmin] < 6) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai acces la aceasta comanda!");
+	if(PlayerInfo[playerid][pAdmin] < 6) return SCM(playerid, COLOR_LGREEN, "Error: Nu ai acces la aceasta comanda!");
 	if(sscanf(params, "i", fid)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/editraport <faction>");
 	if(fid < 1 || fid > 15) return SCM(playerid, COLOR_GREY, "Invalid faction! (1-15)");
 	format(string, sizeof(string), "Rank 1\t%d\nRank 2\t%d\nRank 3\t%d\nRank 4\t%d\nRank 5\t%d\nRank 6\t%d", FactionInfo[fid][fRank1], FactionInfo[fid][fRank2],
@@ -6271,7 +6266,7 @@ YCMD:editraport(playerid, params[], help) {
 }
 YCMD:setrankname(playerid, params[], help) {
 	new string[180], name[180], fid, rank;
-	if(PlayerInfo[playerid][pAdmin] < 5) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai acces la aceasta comanda!");
+	if(PlayerInfo[playerid][pAdmin] < 5) return SCM(playerid, COLOR_LGREEN, "Error: Nu ai acces la aceasta comanda!");
 	if(sscanf(params, "iis[180]", fid, rank, name)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/setrankname <faction> <rank (1-7)> <name>");
 	if(rank < 1 || rank > 7) return SCM(playerid, -1, "Rank invalid! (1-7)");
 	if(fid < 1 || fid > 16) return SCM(playerid, COLOR_GREY, "Invalid faction! (1-15)");
@@ -6299,7 +6294,7 @@ YCMD:count(playerid, params[], help) {
 	new number;
 	if(sscanf(params, "i", number)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/count <nr>");
 	if(PlayerInfo[playerid][pAdmin] < 1) return SCM(playerid, COLOR_GREY, "Nu ai acces la aceasta comanda.");
-	if(number < 2 && number >= 360) return SCM(playerid, COLOR_LGREEN, "Eroare: Numar invalid. (1-360)");
+	if(number < 2 && number >= 360) return SCM(playerid, COLOR_LGREEN, "Error: Numar invalid. (1-360)");
 	TextDrawShowForAll(CountTD);
 	Countnr = number;
 	Count();
@@ -6318,7 +6313,7 @@ function Count() {
 YCMD:area(playerid, params[], help) {
 	new range, Float:rPos[4], string[180], item[50], players = 0;
 	if(PlayerInfo[playerid][pAdmin] < 1) return true;
-	if(PlayerInfo[playerid][pAdmin] < 7) return SCM(playerid, COLOR_LGREEN, "Nu ai voie sa folosesti aceasta comanda atata timp cat esti in arena de curse!");
+	if(PlayerInfo[playerid][pAdmin] < 7) return SCM(playerid, COLOR_LGREEN, "Ban khong the su dung thao tac nay khi dang trong Race Arena!");
 	if(sscanf(params, "s[50]i", item, range)) {
 		SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/area <name> <range>");
 		if(PlayerInfo[playerid][pAdmin] >= 7) SCM(playerid, COLOR_WHITE, "freeze, unfreeze, disarm, respawn, despawn (personal cars).");
@@ -6503,7 +6498,7 @@ YCMD:checkv(playerid, params[], help) {
 	new id;
 	if(sscanf(params, "u", id)) return SCM(playerid, COLOR_RED, "Syntax: {FFFFFF}/chekcv <playerid/name>");
 	if(!IsPlayerConnected(id)) return SCM(playerid, COLOR_GREY, "Acel player nu este connectat!");
-	if(Iter_Count(MyVehicle[id]) == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Acel player nu are un vehicul!");
+	if(Iter_Count(MyVehicle[id]) == 0) return SCM(playerid, COLOR_LGREEN, "Error: Acel player nu are un vehicul!");
 
 	new szTitle[60], szDialog[3000], x;
 	format(szTitle, sizeof(szTitle), "%s's Vehicles {E3DE31}(%d/%d)", GetName(id), Iter_Count(MyVehicle[id]), GetSlots(id));
@@ -6520,7 +6515,7 @@ YCMD:checkv(playerid, params[], help) {
 ShowPlayerVehicle(playerid, bool:type) {
 	new szTitle[60], szDialog[3000], x = 0;
 	if(Iter_Count(MyVehicle[playerid]) == 0) 
-		return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai un vehicul personal!");
+		return SCM(playerid, COLOR_LGREEN, "Error: Nu ai un vehicul personal!");
 	
 	format(szTitle, sizeof(szTitle), "Your Vehicles {E3DE31}%d/%d", Iter_Count(MyVehicle[playerid]), GetSlots(playerid));
 	strcat(szDialog, "Vehicul\tStatus\tDespawn Time\tOthers details\n");
@@ -7111,7 +7106,7 @@ function InsertEmail(playername[], by[], text[], type) {
 	mysql_query(SQL, szQuery);	
 	
 	new userid = GetPlayerID(playername);
-	if(userid != INVALID_PLAYER_ID) SCM(userid, COLOR_YELLOW, "* Ai primit un nou email! Foloseste comanda /emails pentru a vedea email-ul primit."), PlayerPlaySound(userid, 1052, 0.0, 0.0, 0.0);	
+	if(userid != INVALID_PLAYER_ID) SCM(userid, COLOR_YELLOW, "* Ban nhan duoc un nou email! Foloseste comanda /emails pentru a vedea email-ul primit."), PlayerPlaySound(userid, 1052, 0.0, 0.0, 0.0);	
 	return true;
 }
 function ShowEmails(playerid, type) {
@@ -7698,7 +7693,7 @@ YCMD:so(playerid, params[], help) {
 		SCM(playerid, -1, string);
 		return true;
 	}
-	if(OnDuty[playerid] != 1) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu esti la datorie!");
+	if(OnDuty[playerid] != 1) return SCM(playerid, COLOR_LGREEN, "Error: Nu esti la datorie!");
 	if(sscanf(params,"u",userid)) return SCM(playerid, COLOR_GREY, "{4CA27A}USAGE:{FFFFFF} /so <ID-ul playerului/Numele>");
 	if(!ProxDetectorS(30.0, playerid, userid)) return SCM(playerid, COLOR_GREY, "Acel player nu se afla in raza ta!");
 	if(userid == playerid) return SCM(playerid, COLOR_GREY, "Nu poti folosi aceasta comanda asupra ta!");
@@ -7819,14 +7814,14 @@ YCMD:escape(playerid, params[], help) {
 		PlayerTextDrawSetString(playerid, InfosTD, "Foloseste comanda ~y~/hit~w~~h~ pentru a sparge gardul.");
 		PlayerTextDrawShow(playerid, InfosTD);		
 	}
-	else SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti folosi aceasta coamanda deoarece nu esti la unul dintre garduri.");
+	else SCM(playerid, COLOR_LGREEN, "Error: Nu poti folosi aceasta coamanda deoarece nu esti la unul dintre garduri.");
 	return true;
 }
 YCMD:hit(playerid, params[], help) {
 	if(PlayerInfo[playerid][pAJail] == 1) return true;
 	if(GetPlayerVirtualWorld(playerid) == 0) return true;
 	if(Escape[playerid] == 0 || Escape2[playerid] == 1) return true;
-	if(!PlayerToPoint(5, playerid, 1812.8346,-1536.1892,13.2090) && !PlayerToPoint(5, playerid, 1754.0898,-1582.2433,12.5121)) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti folosi aceasta coamanda deoarece nu esti la unul dintre garduri.");
+	if(!PlayerToPoint(5, playerid, 1812.8346,-1536.1892,13.2090) && !PlayerToPoint(5, playerid, 1754.0898,-1582.2433,12.5121)) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti folosi aceasta coamanda deoarece nu esti la unul dintre garduri.");
 	ApplyAnimation(playerid, "SWORD", "sword_4", 4.0, 1, 1, 1, 0, 0);
 	SetTimerEx("EscapePlayer", 5000, 0, "d", playerid);	
 	Escape2[playerid] = 1;
@@ -8097,7 +8092,7 @@ YCMD:carradio(playerid, params[], help) {
 	return true;
 }
 YCMD:mp3(playerid, params[], help) {
-	if(PlayerInfo[playerid][pMP3] == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai un MP3 Player!");
+	if(PlayerInfo[playerid][pMP3] == 0) return SCM(playerid, COLOR_LGREEN, "Error: Nu ai un MP3 Player!");
 	new szDialog[1024], szDialog2[1024];
 	strcat(szDialog2, "Nume\tAscultatori\n");
 	for(new i = 0; i < sizeof(RadioNames); i++) {
@@ -8110,8 +8105,8 @@ YCMD:mp3(playerid, params[], help) {
 	return true;
 }	
 function ShowTradeTDs(playerid) {
-	PlayerTextDrawSetString(playerid, TradePTD[4], "~r~nepregatit");
-	PlayerTextDrawSetString(playerid, TradePTD[5], "~r~nepregatit");
+	PlayerTextDrawSetString(playerid, TradePTD[4], "~r~chua san sang");
+	PlayerTextDrawSetString(playerid, TradePTD[5], "~r~chua san sang");
 	for(new i = 0; i < sizeof(TradePTD); i++) if(i < 6) PlayerTextDrawShow(playerid, TradePTD[i]);
 	for(new i = 0; i < sizeof(TradeTD); i++) if(i < 11) TextDrawShowForPlayer(playerid, TradeTD[i]);
 	SelectTextDraw(playerid, 0x00BFFFFF);
@@ -8199,7 +8194,7 @@ function FinishTrade(playerid) {
 	new id = TradeID[playerid], string[256], string2[256], query[256], log2[300], items[128];
 	SCM(playerid, COLOR_GOLD, "Afacerea a fost finalizata cu succes!");
 	SCM(id, COLOR_GOLD, "Afacerea a fost finalizata cu succes!");
-	strcat(string, "Ai primit: ");
+	strcat(string, "Ban nhan duoc: ");
 	if(MoneyTrade[playerid] != 0) {
 		GivePlayerCash(id, 1, MoneyTrade[playerid]);
 		GivePlayerCash(playerid, 0, MoneyTrade[playerid]);
@@ -8328,7 +8323,7 @@ function FinishTrade(playerid) {
 	SCM(id, COLOR_GOLD, string);
 	format(log2, sizeof(log2), "%s a dat [%s]", GetName(playerid), items);	
 	items = "";
-	string = "Ai primit: ";
+	string = "Ban nhan duoc: ";
 	if(MoneyTrade[id] != 0) {
 		GivePlayerCash(playerid, 1, MoneyTrade[id]);
 		GivePlayerCash(id, 0, MoneyTrade[id]);
@@ -8598,7 +8593,7 @@ YCMD:trade(playerid, params[], help) {
 		return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/trade <playerid/name>");
 	
 	if(GetPlayerInterior(playerid) != 0 || IsPlayerInAnyVehicle(playerid)) 
-		return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti face o afacere dintr-un interior sau vehicul!");
+		return SCM(playerid, COLOR_LGREEN, "Error: Nu poti face o afacere dintr-un interior sau vehicul!");
 	
 	if(GetDistanceBetweenPlayers(playerid,id) > 5) 
 		return SCM(playerid, COLOR_GREY, "Nu esti langa acel player");
@@ -8631,7 +8626,7 @@ YCMD:findhouse(playerid, params[], help) {
 	CP[playerid] = 43;
 	SetPlayerCheckpointEx(playerid, HouseInfo[id][hEntrancex], HouseInfo[id][hEntrancey], HouseInfo[id][hEntrancez], 5.0);
 	new string[180];
-	format(string, sizeof(string), "Ti-a fost pus un punct rosu pe harta catre casa cu ID-ul %d. Distanta: %0.2fm", id, GetPlayerDistanceFromPoint(playerid, HouseInfo[id][hEntrancex], HouseInfo[id][hEntrancey], HouseInfo[id][hEntrancez]));
+	format(string, sizeof(string), "Ti-a fost pus un punct rosu pe harta catre casa cu ID-ul %d. khoang cach: %0.2fm", id, GetPlayerDistanceFromPoint(playerid, HouseInfo[id][hEntrancex], HouseInfo[id][hEntrancey], HouseInfo[id][hEntrancez]));
 	SCM(playerid, COLOR_YELLOW, string);
 	return true;
 }
@@ -8644,7 +8639,7 @@ YCMD:findbiz(playerid, params[], help) {
 	if(BizzInfo[id][bStatic] == 0) SetPlayerCheckpointEx(playerid, BizzInfo[id][bEntranceX], BizzInfo[id][bEntranceY], BizzInfo[id][bEntranceZ], 5.0);
 	else SetPlayerCheckpointEx(playerid,BizzInfo[id][bEntranceX],BizzInfo[id][bEntranceY],BizzInfo[id][bEntranceZ], 5.0);
 	new string[180];
-	format(string, sizeof(string), "Ti-a fost pus un punct rosu pe harta catre afacerea cu ID-ul %d. Distanta: %0.2fm", id, GetPlayerDistanceFromPoint(playerid, BizzInfo[id][bEntranceX], BizzInfo[id][bEntranceY], BizzInfo[id][bEntranceZ]));
+	format(string, sizeof(string), "Ti-a fost pus un punct rosu pe harta catre afacerea cu ID-ul %d. khoang cach: %0.2fm", id, GetPlayerDistanceFromPoint(playerid, BizzInfo[id][bEntranceX], BizzInfo[id][bEntranceY], BizzInfo[id][bEntranceZ]));
 	SCM(playerid, COLOR_YELLOW, string);
 	return true;
 }
@@ -8653,12 +8648,12 @@ YCMD:stealers(playerid, params[], help) {
 	new string[128], x;
 	foreach(new i: Player) {
 		if(IsPlayerConnected(i) && PlayerInfo[i][pJob] == 3 && JobWorking[i] == 1 && IsAGangCar(GetPlayerVehicleID(i))) {
-			format(string, sizeof(string), "%s (%d) stole a faction vehicle.", GetName(i), i);
+			format(string, sizeof(string), "%s (%d) cuop mot xe thuoc so huu to chuc.", GetName(i), i);
 			SCM(playerid, COLOR_LIGHTBLUE, string);
 			x++;
 		}
 	}
-	if(x == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Niciun rezultat!");
+	if(x == 0) return SCM(playerid, COLOR_LGREEN, "Error: Niciun rezultat!");
 	return true;
 }
 YCMD:editturf(playerid, params[], help) {
@@ -8790,7 +8785,7 @@ YCMD:fdeposit(playerid, params[], help) {
 		if(PlayerInfo[playerid][pMember] != SafeInfo[s][sFactionID])
 			continue;
 
-		if(TradeID[playerid] != -1) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti folosi aceasta comanda atata timp cat esti implicat intr-o afacere!");
+		if(TradeID[playerid] != -1) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti folosi aceasta comanda atata timp cat esti implicat intr-o afacere!");
 		SeifID[playerid] = PlayerInfo[playerid][pMember]-1;
 		Dialog_Show(playerid, DIALOG_FDEPOSIT, DIALOG_STYLE_LIST, "Faction deposit", "Money\nMaterials\nDrugs", "Ok", "Exit");
 	}
@@ -8801,7 +8796,7 @@ YCMD:fwithdraw(playerid, params[], help) {
 		return true;
 
 	if(TradeID[playerid] != -1) 
-		return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti folosi aceasta comanda atata timp cat esti implicat intr-o afacere!");
+		return SCM(playerid, COLOR_LGREEN, "Error: Nu poti folosi aceasta comanda atata timp cat esti implicat intr-o afacere!");
 
 	for(new s = 0; s < sizeof(SafeInfo); s++) {
 		if(!PlayerToPoint(5, playerid, SafeInfo[s][sPosX], SafeInfo[s][sPosY], SafeInfo[s][sPosZ]))
@@ -8837,7 +8832,7 @@ YCMD:government(playerid, params[], help) {
 		if(PlayerInfo[playerid][pMember] == 14) format(string, sizeof(string), "%s %s: %s", GetRankName(playerid), sendername, textgov);
 		MesajLung2(0x5776FFFF, string);
 	}
-	else return SCM(playerid, COLOR_GREY, "Nu faci parte din factiunea politiei sau a primariei.");
+	else return SCM(playerid, COLOR_GREY, "Ban khong thuoc politiei sau a primariei.");
 	return true;
 }
 YCMD:editvehicle(playerid, params[], help) {	
@@ -8990,7 +8985,7 @@ YCMD:setvrank(playerid, params[], help) {
 	if(PlayerInfo[playerid][pLeader] == 0) return SCM(playerid, COLOR_LGREEN, "You are not faction leader!");
 	new id;
 	if(!IsPlayerInAnyVehicle(playerid)) return true;
-	if(!FactionVehicle(playerid)) return SCM(playerid, COLOR_GREY, "Nu esti intr-un vehicul ce apartine factiunii tale!");
+	if(!FactionVehicle(playerid)) return SCM(playerid, COLOR_GREY, "Khong o trong xe ce apartine factiunii tale!");
 	if(sscanf(params, "i", id)) return SCM(playerid, -1, "Syntax: /setvrank <rank>");
 	if(id < 1 || id > 6) return SCM(playerid, -1, "Rank invalid!");
 	new vehicle = GetVehicleID(GetPlayerVehicleID(playerid));
@@ -9006,7 +9001,7 @@ YCMD:order(playerid, params[], help) {
 	if(PlayerInfo[playerid][pMember] == 11 || PlayerInfo[playerid][pLeader] == 11) {
 		new result[30];
 		if(!PlayerToPoint(100, playerid, -2158.6482,642.3111,1052.3750)) return SCM(playerid, COLOR_GREY, "Nu esti in HQ!");
-		if(PlayerHit[playerid] == -1) return SCM(playerid, COLOR_LGREEN, "Eroare: Poti lua arme doar atunci cand ai un contract!");
+		if(PlayerHit[playerid] == -1) return SCM(playerid, COLOR_LGREEN, "Error: Poti lua arme doar atunci cand ai un contract!");
 		if(sscanf(params, "s[30]", result)) {
 			SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/order <id>");
 			SCM(playerid, COLOR_WHITE, "1. Knife (10 $) | 2. SD-Pistol (100 $) | 3. Sniper (200 $)");
@@ -9037,7 +9032,7 @@ YCMD:order(playerid, params[], help) {
 		else return SCM(playerid, COLOR_GREY, "Invalid id!");
 	}	
 	if(!IsMafie(playerid)) return SCM(playerid, COLOR_GREY, "Nu esti membrul unei mafii.");
-	if(PlayerInfo[playerid][pGunLic] == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai licenta de arme.");
+	if(PlayerInfo[playerid][pGunLic] == 0) return SCM(playerid, COLOR_LGREEN, "Error: Ban khong co giay phep su dung sung.");
 	if(GetPlayerInterior(playerid) == 0) return SCM(playerid, COLOR_WHITE,"Nu esti in HQ.");
 	if(!IsAtOrderPlace(playerid)) return true;
 	new x = PlayerInfo[playerid][pMember]-1, var[3];
@@ -9057,7 +9052,7 @@ YCMD:order(playerid, params[], help) {
 		var[2] += ValueMafie[i][0];
 	}
 	SaveSeif(x);
-	format(gString, 100, "(/order) {FFFFFF}Ai primit %d arme si ai dat %s materiale si $%s.", var[0], FormatNumber(var[1]), FormatNumber(var[2]));
+	format(gString, 100, "(/order) {FFFFFF}Ban nhan duoc %d arme si ai dat %s materiale si $%s.", var[0], FormatNumber(var[1]), FormatNumber(var[2]));
 	SCM(playerid, COLOR_LGREEN, gString);		
 	return true;
 }
@@ -9067,7 +9062,7 @@ function IsMafie(playerid) return PlayerInfo[playerid][pMember] == 4 || PlayerIn
 YCMD:setgun(playerid, params[], help) {
 	if(PlayerInfo[playerid][pMember] != 4 && PlayerInfo[playerid][pMember] != 5 && 
 	PlayerInfo[playerid][pMember] != 6 && PlayerInfo[playerid][pMember] != 10) 
-		return SCM(playerid, COLOR_LGREEN, "Eroare: Nu esti intr-o mafie.");
+		return SCM(playerid, COLOR_LGREEN, "Error: Nu esti intr-o mafie.");
 
 	gString[0] = EOS;
 	strcat(gString, "Gun\tStatus\n{FFFFFF}");
@@ -9213,9 +9208,9 @@ YCMD:megaphone(playerid, params[], help) {
 		return true;
 	}
 	if(sscanf(params, "s[250]", textmeg)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/m <text>");
-	if(!IsACop(playerid)) return SCM(playerid, COLOR_GREY, "Nu faci parte din factiunea politiei.");
+	if(!IsACop(playerid)) return SCM(playerid, COLOR_GREY, "Ban khong thuoc politiei.");
 	if(OnDuty[playerid] == 0) return SCM(playerid, COLOR_LGREEN, "Nu poti folosi aceasta comanda deoarece nu esti la datorie!");
-	if(!Copcar2(tmpcar)) return SCM(playerid, COLOR_GREY, "Nu esti intr-un vehicul de-al factiunii.");
+	if(!Copcar2(tmpcar)) return SCM(playerid, COLOR_GREY, "Khong o trong xe de-al factiunii.");
 	if(PlayerInfo[playerid][pMember] == 1||PlayerInfo[playerid][pLeader] == 1) format(string, sizeof(string), "> Ofiter %s: %s <", GetName(playerid), textmeg);
 	else if(PlayerInfo[playerid][pMember] == 2||PlayerInfo[playerid][pLeader] == 2) format(string, sizeof(string), "> Agent %s: %s <", GetName(playerid), textmeg);
 	else if(PlayerInfo[playerid][pMember] == 3||PlayerInfo[playerid][pLeader] == 3) format(string, sizeof(string), "> Soldat %s: %s <", GetName(playerid), textmeg);
@@ -9238,16 +9233,16 @@ YCMD:radio(playerid, params[], help) {
 	else if(PlayerInfo[playerid][pMember] == 3 || PlayerInfo[playerid][pLeader] == 3) format(string, sizeof(string), "* %s %s: %s, over.", GetRankName(playerid), sendername, radiomsj);
 	else if(PlayerInfo[playerid][pMember] == 13 || PlayerInfo[playerid][pLeader] == 13) format(string, sizeof(string), "* %s %s: %s, over.", GetRankName(playerid), sendername, radiomsj);
 	else if(PlayerInfo[playerid][pMember] == 14 || PlayerInfo[playerid][pLeader] == 14) format(string, sizeof(string), "* %s %s: %s, over.", GetRankName(playerid), sendername, radiomsj);
-	else return  SCM(playerid, COLOR_GREY, "Nu faci parte din factiunea politiei.");
+	else return  SCM(playerid, COLOR_GREY, "Ban khong thuoc politiei.");
 	SendRadioMessage(PlayerInfo[playerid][pMember], 0x8D8DFFFF, string);
 	return true;
 }
 YCMD:duty(playerid, params[], help) {
-	if(PlayerInfo[playerid][pGunLic] == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai licenta de arme. Cauta un instructor pentru a obtine licenta.");
+	if(PlayerInfo[playerid][pGunLic] == 0) return SCM(playerid, COLOR_LGREEN, "Error: Ban khong co giay phep su dung sung. Cauta un instructor pentru a obtine licenta.");
 	new house = PlayerInfo[playerid][pHouse],string[200],sendername[MAX_PLAYER_NAME];
 	GetPlayerName(playerid, sendername, sizeof(sendername));
 	if(!IsACop(playerid)) return SCM(playerid, COLOR_GREY, "Nu esti politist.");
-	if(PlayerInfo[playerid][pSleeping] == 1) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti folosi aceasta comanda deoarece esti pe sleep!");
+	if(PlayerInfo[playerid][pSleeping] == 1) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti folosi aceasta comanda deoarece esti pe sleep!");
 	if(GetPlayerVirtualWorld(playerid) == house || IsPlayerInRangeOfPoint(playerid, 150.0, 245.8297,112.4436,1003.2188) || IsPlayerInRangeOfPoint(playerid, 150.0, 236.3031,162.9478,1003.0300)) {
 		if(GetPlayerInterior(playerid) != 0) {
 			if(OnDuty[playerid] == 0) {
@@ -9287,8 +9282,8 @@ YCMD:cf(playerid, params[], help) {
 	if(sscanf(params, "u", id)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/cf <playerid/name>");
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Acel player nu este conectat.");
 	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return true;
-	if(!IsPlayerInVehicle(id, GetPlayerVehicleID(playerid))) return SCM(playerid, COLOR_LGREEN, "Eroare: Acel player nu este in vehiculul tau!");
-	if(PlayerInfo[id][pWantedLevel] == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Acel player nu are wanted!");
+	if(!IsPlayerInVehicle(id, GetPlayerVehicleID(playerid))) return SCM(playerid, COLOR_LGREEN, "Error: Acel player nu este in vehiculul tau!");
+	if(PlayerInfo[id][pWantedLevel] == 0) return SCM(playerid, COLOR_LGREEN, "Error: Acel player nu are wanted!");
 	format(string, sizeof(string), "* %s %s: %s este la mine, over.", GetRankName(playerid), GetName(playerid), GetName(id));
 	SendTeamMessage(3, COLOR_DEPART2, string);
 	SendTeamMessage(2, COLOR_DEPART2, string);
@@ -9322,7 +9317,7 @@ YCMD:departments(playerid, params[], help) {
 	else if(PlayerInfo[playerid][pMember] == 14 || PlayerInfo[playerid][pLeader] == 14) format(string, sizeof(string), "* %s %s: %s, over.", GetRankName(playerid), sendername, text);
 	else if(PlayerInfo[playerid][pScripter] == 2) format(string, sizeof(string), "* Scripter %s: %s, over.", GetRankName(playerid), sendername, text);
 	else if(PlayerInfo[playerid][pAdmin] != 0) format(string, sizeof(string), "* Admin %s: %s, over.", sendername, text);
-	else return SCM(playerid, COLOR_GREY, "Nu faci parte din factiunea politiei.");
+	else return SCM(playerid, COLOR_GREY, "Ban khong thuoc politiei.");
 	SendTeamMessage(3, COLOR_DEPART2, string);
 	SendTeamMessage(2, COLOR_DEPART2, string);
 	SendTeamMessage(1, COLOR_DEPART2, string);
@@ -9343,7 +9338,7 @@ function SendUserMessage(color, text[], userid) {
 }
 
 YCMD:confiscate(playerid, params[], help) {
-	if(!IsACop(playerid)) return SCM(playerid,  COLOR_GREY, "Nu faci parte din factiunea politiei.");
+	if(!IsACop(playerid)) return SCM(playerid,  COLOR_GREY, "Ban khong thuoc politiei.");
 	if(OnDuty[playerid] == 0) return SCM(playerid, COLOR_LGREEN, "Nu poti folosi aceasta comanda deoarece nu esti la datorie!");
 	new item[15],id,string[180],query[180];
 	if(sscanf(params, "us[15]",id,item)) {
@@ -9355,7 +9350,7 @@ YCMD:confiscate(playerid, params[], help) {
 	if(!ProxDetectorS(8.0, playerid, id)) return SCM(playerid, -1, "Acel player nu este langa tine.");
 	if(IsACop(id) && OnDuty[id] == 1) return SCM(playerid, COLOR_GREY, "Nu poti confisca armele unui politist!");
 	if(strcmp(item,"driving",true) == 0) {
-		if(PlayerInfo[id][pCarLic] == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Acel player nu are o licenta de condus!");
+		if(PlayerInfo[id][pCarLic] == 0) return SCM(playerid, COLOR_LGREEN, "Error: Acel player nu are o licenta de condus!");
 		format(string, sizeof(string), "* Ofiter %s ti-a confiscat licenta de condus.", GetName(playerid));
 		SCM(id, COLOR_LIGHTBLUE, string);
 		PlayerInfo[id][pCarLic] = 0;
@@ -9366,14 +9361,14 @@ YCMD:confiscate(playerid, params[], help) {
 		if(IsPlayerInAnyVehicle(playerid)) RemovePlayerFromVehicleEx(playerid);
 	}
 	else if(strcmp(item,"weapons",true) == 0) {
-		if(HaveWeapons(playerid) == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Acel player nu are arme!");
+		if(HaveWeapons(playerid) == 0) return SCM(playerid, COLOR_LGREEN, "Error: Acel player nu are arme!");
 		format(string, sizeof(string), "* Officer %s ti-a confiscat armele.", GetName(playerid));
 		SCM(id, COLOR_LIGHTBLUE, string);
 		ResetWeapons(id);
 		ResetWeapons(id);
 	}
 	else if(strcmp(item,"drugs",true) == 0) {
-		if(PlayerInfo[id][pDrugs] == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Acel player nu are droguri!");
+		if(PlayerInfo[id][pDrugs] == 0) return SCM(playerid, COLOR_LGREEN, "Error: Acel player nu are droguri!");
 		format(string, sizeof(string), "* Officer %s ti-a confiscat drogurile.", GetName(playerid));
 		SCM(id, COLOR_LIGHTBLUE, string);
 		PlayerInfo[id][pDrugs] = 0;
@@ -9391,7 +9386,7 @@ YCMD:confiscate(playerid, params[], help) {
 }
 YCMD:mdc(playerid, params[], help) {
 	if(PlayerInfo[playerid][pAdmin] == 0) {
-		if(!IsACop(playerid)) return SCM(playerid, COLOR_GREY, "Nu faci parte din factiunea politiei.");
+		if(!IsACop(playerid)) return SCM(playerid, COLOR_GREY, "Ban khong thuoc politiei.");
 		if(OnDuty[playerid] == 0) return SCM(playerid, COLOR_LGREEN, "Nu poti folosi aceasta comanda deoarece nu esti la datorie!");
 	}	
 	new id;
@@ -9481,7 +9476,7 @@ YCMD:freepoints(playerid, params[], help) {
 	return true;
 }
 YCMD:wanted(playerid, params[], help) {
-	if(!IsACop(playerid)) return SCM(playerid, COLOR_GREY, "Nu faci parte din factiunea politiei.");
+	if(!IsACop(playerid)) return SCM(playerid, COLOR_GREY, "Ban khong thuoc politiei.");
 	if(OnDuty[playerid] == 0) return SCM(playerid, COLOR_LGREEN, "Nu poti folosi aceasta comanda deoarece nu esti la datorie!");
 	new iString[1024],string[300],count = 0,online[50];
 	strcat(iString, "Name\tWanted level\tChased by\n");
@@ -9544,7 +9539,7 @@ YCMD:buyhouse(playerid, params[], help) {
 			PlayerInfo[playerid][pInt] = HouseInfo[h][hInterior];
 			PlayerInfo[playerid][pLocal] = h;
 			HouseInfo[h][hValue] = 0;
-			SCM(playerid, COLOR_MONEY, "Felicitari! Ti-ai cumparat aceasta casa.");
+			SCM(playerid, COLOR_MONEY, "Chuc mung! Ti-ai cumparat aceasta casa.");
 			Update(playerid,pCashx);
 			Update(playerid,pHousex);
 			mysql_format(SQL,gQuery,sizeof(gQuery),"UPDATE `houses` SET `Owned`='1',`Owner`='%s',`Value`='0' WHERE `ID`='%d'", PlayerInfo[playerid][pUsername],HouseInfo[h][hID]);
@@ -9574,13 +9569,13 @@ YCMD:discord(playerid, params[], help) return SCM(playerid, COLOR_LGREEN, "https
 YCMD:updates(playerid, params[], help) return Dialog_Show(playerid, DIALOG_UPDATES, DIALOG_STYLE_TABLIST_HEADERS, "SERVER UPDATES:", "Update name:\tVersion:\tDate:RO:RPG 2.11.0", "Select", "Cancel");
 YCMD:unrent(playerid, params[], help) {
 	if(IsRentCar[playerid] != 0) { DestroyVehicle(VehicleRent[playerid]), VehicleRent[playerid] = 0, IsRentCar[playerid] = 0, GameTextForPlayer(playerid, "~w~Nu mai ai un vehicul inchiriat.", 5000, 3); }
-	else return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai ai un vehicul inchiriat!");
+	else return SCM(playerid, COLOR_LGREEN, "Error: Nu ai ai un vehicul inchiriat!");
 	return true;
 }
 YCMD:rentveh(playerid, params[], help) {
 	new string[128];
 	if(GetPlayerVirtualWorld(playerid) > 0) return SCM(playerid, COLOR_LGREEN, "Nu poti folosi aceasta comanda cand esti in virtual world!");
-	if(PlayerInfo[playerid][pCarLic] < 1) return SCM(playerid, COLOR_LIGHTGREEN, "Eroare: Nu ai licenta de condus.");
+	if(PlayerInfo[playerid][pCarLic] < 1) return SCM(playerid, COLOR_LIGHTGREEN, "Error: Ban khong co giay phep lai xe.");
 	if(IsRentCar[playerid] != 0) return SCM(playerid, COLOR_WHITE, "Ai deja un vehicul inchiriat.");
 	if(!PlayerToPoint(5, playerid, 2250.7197,-83.0548,26.5266)) return SCM(playerid, COLOR_WHITE, "Nu esti la Rent Bike");
 	format(string, sizeof(string), "Vehicle\tStock\nPremier\t%d\nSuper GT\t%d\nSultan\t%d\nComet\t%d\nSunrise\t%d\nNRG-500\t%d\nFaggio\t%d\nBMX\t%d", RentStock[0], RentStock[1], RentStock[2], RentStock[3], RentStock[4], RentStock[5], RentStock[6], RentStock[7]);
@@ -9831,12 +9826,12 @@ YCMD:evictall(playerid, params[], help) return SCM(playerid, COLOR_LGREEN, "Acea
 
 YCMD:sellhousetostate(playerid, params[], help) {
 		
-	if(TradeID[playerid] != -1) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti folosi aceasta comanda atata timp cat esti implicat intr-o afacere!");
+	if(TradeID[playerid] != -1) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti folosi aceasta comanda atata timp cat esti implicat intr-o afacere!");
 	new playername[25];
 	GetPlayerName(playerid, playername, sizeof(playername));
-	if(PlayerInfo[playerid][pHouse] == 999) return SCM(playerid, COLOR_GREY, "Nu detii o casa.");
-	if(PlayerInfo[playerid][pHouse] != 999 && strcmp(GetName(playerid), HouseInfo[PlayerInfo[playerid][pHouse]][hOwner], true) == 0) Dialog_Show(playerid, DIALOG_SELLHOUSE, DIALOG_STYLE_MSGBOX, "Server:", "Esti sigur ca vrei sa-ti vinzi casa pentru $50,000 la stat?\nDaca apesi pe butonul 'Da', nu mai exista cale de intoarcere!", "Da", "Nu");
-	else SCM(playerid, COLOR_GREY, "Nu detii o casa.");
+	if(PlayerInfo[playerid][pHouse] == 999) return SCM(playerid, COLOR_GREY, "Ban khong so huu mot ngoi nha.");
+	if(PlayerInfo[playerid][pHouse] != 999 && strcmp(GetName(playerid), HouseInfo[PlayerInfo[playerid][pHouse]][hOwner], true) == 0) Dialog_Show(playerid, DIALOG_SELLHOUSE, DIALOG_STYLE_MSGBOX, "Server:", "Esti sigur ca vrei sa-ti vinzi casa pentru $50,000 la stat?\nDaca apesi pe butonul 'Da', nu mai exista cale de intoarcere!", "Co", "Khong");
+	else SCM(playerid, COLOR_GREY, "Ban khong so huu mot ngoi nha.");
 	return true;
 }
 YCMD:sellhouseto(playerid, params[], help) return SCM(playerid, COLOR_LGREEN, "Aceasta comanda a fost dezactivata deoarece acum se pot face afaceri prin intermediul comenzii /trade.");
@@ -9851,7 +9846,7 @@ YCMD:resetraports(playerid, params[], help) {
 			if(CountRaport(i) > 0) {
 				money = CountRaport(i)*5000;
 				GivePlayerCash(i, 1, money);
-				format(string, sizeof(string), "Ai primit $%s pentru comenzile efectuate (%d).", FormatNumber(money), CountRaport(i));
+				format(string, sizeof(string), "Ban nhan duoc $%s pentru comenzile efectuate (%d).", FormatNumber(money), CountRaport(i));
 				SCM(i, COLOR_MONEY, string);
 			}			
 			PlayerInfo[i][pCommands][0] = 0;
@@ -9902,7 +9897,7 @@ YCMD:fpk(playerid, params[], help) {
 	if(PlayerInfo[playerid][pAdmin] < 4) return SCM(playerid, COLOR_WHITE, AdminOnly);
 	new id,string[200],giveplayer[30],sendername[MAX_PLAYER_NAME], fp, reson[50];
 	if(sscanf(params, "uis[50]", id, fp, reson)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/auninvite <playerid/name> <faction punish> <reson>");
-	if(0 < fp > 100) return SCM(playerid, COLOR_LGREEN, "Eroare: Poit da intre 0 si 100 Faction Punish");
+	if(0 < fp > 100) return SCM(playerid, COLOR_LGREEN, "Error: Poit da intre 0 si 100 Faction Punish");
 	if(strlen(reson) > 50) return 1;
 	GetPlayerName(id, giveplayer, sizeof(giveplayer));
 	GetPlayerName(playerid, sendername, sizeof(sendername));
@@ -9964,7 +9959,7 @@ YCMD:spec(playerid, params[], help) {
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Acel player nu este conectat.");
 	if(id == playerid) return SCM(playerid, COLOR_GREY, "Nu poti folosi aceasta comanda asupra ta!");
 	if(PlayerInfo[id][pAdmin] > PlayerInfo[playerid][pAdmin]) return SCM(playerid, COLOR_GREY, "Nu poti folosi aceasta comanda pe acel player.");
-	if(IsPlayerLogged[id] == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Acel player se loghiaza!");
+	if(IsPlayerLogged[id] == 0) return SCM(playerid, COLOR_LGREEN, "Error: Acel player se loghiaza!");
 	Spectate[playerid] = id;
 	SpecPlayers[playerid] ++;					
 	if(SpecPlayers[playerid] == 1) {
@@ -10039,7 +10034,7 @@ YCMD:specoff(playerid, params[], help) {
 	Unspec[playerid][sLocal] = 255;
 	gTeam[playerid] = PlayerInfo[playerid][pTeam];
 	SetPlayerToTeamColor(playerid);
-	SCM(playerid, -1, "Nu mai esti spectator!");
+	SCM(playerid, -1, "Ban khong con spec!");
 	//SpawnPlayer(playerid);
 	Iter_Remove(MySpec[Spectate[playerid]], playerid);
 	Spectate[playerid] = 255;
@@ -10103,7 +10098,7 @@ YCMD:givegp(playerid, params[], help) {
 	PlayerInfo[id][pGiftPoints] += money;
 	format(string, sizeof(string), "%s i-a dat %s Gift points lui %s, motiv: %s.", GetName(playerid),FormatNumber(money),GetName(id), reason);
 	if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(COLOR_YELLOW, string,5);
-	format(string, sizeof(string), "* Ai primit %s Gift points de la administratorul %s, motiv: %s.", FormatNumber(money), GetName(playerid), reason);
+	format(string, sizeof(string), "* Ban nhan duoc %s Gift points de la administratorul %s, motiv: %s.", FormatNumber(money), GetName(playerid), reason);
 	SendClientMessage(id, COLOR_YELLOW, string);
 	Update(id, pGiftPointsx);
 	return true;
@@ -10127,7 +10122,7 @@ YCMD:givepp(playerid, params[], help) {
 	PlayerInfo[id][pPremiumPoints] += money;
 	format(string, sizeof(string), "%s i-a dat %s Premium Points lui %s, motiv: %s.", GetName(playerid),FormatNumber(money),GetName(id), reason);
 	if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(COLOR_YELLOW, string,5);
-	format(string, sizeof(string), "* Ai primit %s Premium Points de la administratorul %s, motiv: %s.", FormatNumber(money), GetName(playerid), reason);
+	format(string, sizeof(string), "* Ban nhan duoc %s Premium Points de la administratorul %s, motiv: %s.", FormatNumber(money), GetName(playerid), reason);
 	SendClientMessage(id, COLOR_YELLOW, string);
 	Update(id, pPremiumPointsx);
 	return true;
@@ -10140,7 +10135,7 @@ YCMD:givehpoints(playerid, params[], help) {
 	PlayerInfo[id][pHpoints] += hp;
 	format(string, sizeof(string), "%s i-a dat %s RPoints lui %s, motiv: %s", GetName(playerid),FormatNumber(hp),GetName(id), reason);
 	if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(COLOR_ERROR, string,5);
-	format(string, sizeof(string), "* Ai primit %s RPoints de la administratorul %s, motiv: %s.", FormatNumber(hp), GetName(playerid), reason);
+	format(string, sizeof(string), "* Ban nhan duoc %s RPoints de la administratorul %s, motiv: %s.", FormatNumber(hp), GetName(playerid), reason);
 	SendClientMessage(id, COLOR_YELLOW, string);
 	Info(id, 0, hp);
 	Update(id, pHpointsx);
@@ -10356,7 +10351,7 @@ function CheckWarns(playerid, id[], reason[]) {
 	gQuery[0] = EOS;
 	mysql_format(SQL, gQuery, sizeof(gQuery),"UPDATE users SET `Warnings`='%d' WHERE `name`='%s'",intid,id);
 	mysql_tquery(SQL, gQuery, "", "");
-	format(gString, sizeof(gString), "Ai primit un warn de la %s, motiv %s.", GetName(playerid), reason);
+	format(gString, sizeof(gString), "Ban nhan duoc un warn de la %s, motiv %s.", GetName(playerid), reason);
 	InsertEmail(id, GetName(playerid), gString, 0);	
 	return true;
 }
@@ -10477,7 +10472,7 @@ YCMD:respawn(playerid, params[], help) {
 	if(PlayerInfo[id][pAdmin] > PlayerInfo[playerid][pAdmin]) return SCM(playerid, -1, "Nu poti folosi comanda aceasta pe acel player.");
 	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s l-a respawnat pe %s.", GetName(playerid), GetName(id));
 	if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(COLOR_WHITE, string,4);
-	format(string, sizeof(string), "* Ai primit respawn de la %s.", GetName(playerid));
+	format(string, sizeof(string), "* Ban nhan duoc respawn de la %s.", GetName(playerid));
 	SCM(id, -1, string);
 	SpawnPlayer(id);
 	return true;
@@ -10789,7 +10784,7 @@ function CheckBans(playerid) {
 			SCM(playerid, COLOR_CLIENT, gString);
 			format(gString, sizeof(gString), "Motivul: %s", reason);
 			SCM(playerid, COLOR_CLIENT, gString);	
-			format(gString, sizeof(gString), "Daca consideri ca ai primit ban aiurea, fa o cerere de unban pe panel!", reason);
+			format(gString, sizeof(gString), "Daca consideri ca Ban nhan duoc ban aiurea, fa o cerere de unban pe panel!", reason);
 			SCM(playerid, COLOR_CLIENT, gString);
 
 			SetPlayerCameraPos(playerid, 1183.0143, -965.7394, 129.6071);
@@ -10805,7 +10800,7 @@ function CheckBans(playerid) {
 				case 1: {
 					TextDrawShowForPlayer(playerid, LoginTD[0]);
 					TextDrawShowForPlayer(playerid, LoginTD[1]);
-					format(gString, 100, "Welcome, %s!\nPlease enter your password below to login your account.", GetName(playerid));
+					format(gString, 100, "Welcome, %s!\nNhap mat khau cua ban de dang nhap.", GetName(playerid));
 					Dialog_Show(playerid, DIALOG_LOGIN2, DIALOG_STYLE_PASSWORD, "Login", gString, "Login", "Quit");
 					login[playerid] = gettime()+60;
 				}
@@ -10853,7 +10848,7 @@ YCMD:fpkoff(playerid, params[], help) {
 	new id[25], msg[80];
 	if(sscanf(params, "s[25]s[80]", id,msg)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/fpkoff <name> <reason>");
 	new cont = MySQLCheckAccount(id);
-	if(cont == 0) return SCM(playerid, COLOR_ERROR, "Eroare: {FFFFFF}Acest nume nu a fost gasit in baza de date!");
+	if(cont == 0) return SCM(playerid, COLOR_ERROR, "Error: {FFFFFF}Acest nume nu a fost gasit in baza de date!");
 	
 	new string[75], query[184];
 	mysql_format(SQL, query,sizeof(query),"UPDATE users SET `Member`='0', `Leader`='0', `Rank`='0', `CChar`='250', `Days`='0'  WHERE `name`='%s'",id);
@@ -10881,7 +10876,7 @@ YCMD:muteo(playerid, params[], help) {
 	mysql_format(SQL, szQuery,sizeof(szQuery),"UPDATE users SET `Muted`='1',`MuteTime`='%d' WHERE `name`='%s'",time*60,id);
 	mysql_tquery(SQL,szQuery, "", "");
 	
-	format(string, sizeof(string), "Ai primit mute de la %s pentru %d minute, motiv %s.", GetName(playerid), time, msg);
+	format(string, sizeof(string), "Ban nhan duoc mute de la %s pentru %d minute, motiv %s.", GetName(playerid), time, msg);
 	InsertEmail(id, GetName(playerid), string, 0);
 	format(string, sizeof(string), "Offline: %s a primit mute de la %s pentru %d minute, motiv: %s", id, GetName(playerid),time,msg);
 	SCMTA(COLOR_LIGHTRED, string);
@@ -10950,7 +10945,7 @@ YCMD:nmute(playerid, params[], help) {
 	new string[180];
 	format(string, sizeof(string), "AdmBot: %s a primit mute %d minute pe /newbie de la %s, motiv: %s", GetName(userID), time, GetName(playerid), result);
 	SCMTA(COLOR_LIGHTRED, string);
-	format(string, sizeof(string), "Ai primit mute pe /newbie pentru %d minute! Motiv: %s", time, result);
+	format(string, sizeof(string), "Ban nhan duoc mute pe /newbie pentru %d minute! Motiv: %s", time, result);
 	SCM(userID, COLOR_WARNING, string);
 	return true;
 }
@@ -10981,7 +10976,7 @@ YCMD:clearallwanted(playerid, params[], help) {
 }
 YCMD:gotoi(playerid, params[], help) {
 	if(PlayerInfo[playerid][pAdmin] < 4) 
-		return SCM(playerid, COLOR_LGREEN, "Eroare: Nu esti autorizat.");
+		return SCM(playerid, COLOR_LGREEN, "Error: Nu esti autorizat.");
 
 	SetPlayerPosEx(false, playerid, 837.0604,-2349.4961,5.8061);
 	SCM(playerid, COLOR_WHITE, "Te-ai teleporat cu succes la insula.");
@@ -11105,8 +11100,8 @@ YCMD:closereport(playerid, params[], help) {
 	new userID, result[180], string[180];
 	if(PlayerInfo[playerid][pAdmin] < 1) return SCM(playerid, COLOR_GREY, "Nu ai acces!");
 	if(AcceptedReport[playerid] != -1) {
-		SCM(playerid, COLOR_YELLOW, "Conversatia a fost terminata!");
-		SCM(AcceptedReport[playerid], COLOR_YELLOW, "Conversatia a fost terminata!");
+		SCM(playerid, COLOR_YELLOW, "Cuoc tro chuyen ket thuc!");
+		SCM(AcceptedReport[playerid], COLOR_YELLOW, "Cuoc tro chuyen ket thuc!");
 		AcceptedReport[AcceptedReport[playerid]] = -1;
 		AcceptedReport[playerid] = -1;	
 		return true;
@@ -11201,7 +11196,7 @@ YCMD:rmute(playerid, params[], help) {
 	PlayerInfo[userID][pReportTime] = time*60;
 	Update(playerid, pReportTimex);
 	new string[180];
-	format(string, sizeof(string), "Ai primit mute pe /report pentru %d minute! Motiv: %s", time, result);
+	format(string, sizeof(string), "Ban nhan duoc mute pe /report pentru %d minute! Motiv: %s", time, result);
 	SCM(userID, -1, string);
 	format(string, sizeof(string), "AdmBot: %s a primit mute %d minute pe /report de la %s, motiv: %s", GetName(userID), time, GetName(playerid), result);
 	SCMTA(COLOR_LIGHTRED, string);
@@ -11276,7 +11271,7 @@ YCMD:dm(playerid, params[], help) {
 		mysql_tquery(SQL, szQuery, "", "");				
 		format(string, sizeof(string), "AdmBot: %s a fost bagat in inchisoare de %s pentru %d minute, motiv: DM #%d", GetName(id), GetName(playerid), minutes, PlayerInfo[id][pDM]);
 		MesajLung2(COLOR_LIGHTRED, string);			
-		format(string, sizeof(string), "Licenta ta de arme a fost confiscata timp de 5 ore deoarece ai primit jail pentru DM!");
+		format(string, sizeof(string), "Licenta ta de arme a fost confiscata timp de 5 ore deoarece Ban nhan duoc jail pentru DM!");
 		SCM(id, COLOR_WARNING, string);
 		
 		PlayerInfo[id][pGunLicS] = 5;
@@ -11340,7 +11335,7 @@ YCMD:report(playerid, params[], help) {
 		
 function CheckReport(playerid) {
 	if(Ajutor[playerid] == 1) {
-		SCM(playerid, COLOR_YELLOW, "Report-ul tau a fost inchis automat deoarece nu ai primit un raspuns.");
+		SCM(playerid, COLOR_YELLOW, "Report-ul tau a fost inchis automat deoarece nu Ban nhan duoc un raspuns.");
 		Ajutor[playerid] = 0;
 		ReportedPlayer[playerid] = -1;
 		SetPVarInt(playerid, "Reported", 0);
@@ -11415,7 +11410,7 @@ YCMD:hduty(playerid, params[], help) {
 YCMD:nreport(playerid, params[], help) {
 	if(PlayerInfo[playerid][pHelper] == 0) return SCM(playerid, COLOR_GREY, "* Nu ai acces la aceasta comanda!");
 	if(HelperDuty[playerid] == 0) return SCM(playerid, COLOR_GREY, "Nu esti la datorie ca helper.");
-	if(HaveHelp[playerid] == -1) return SCM(playerid, COLOR_GREY, "Nu ai primit o intrebare.");
+	if(HaveHelp[playerid] == -1) return SCM(playerid, COLOR_GREY, "Nu Ban nhan duoc o intrebare.");
 	new userID = HaveHelp[playerid];
 	new string[180];
 	format(string, sizeof(string), "AdmCmd: %s a trimis intrebarea lui %s (%d) adminilor.", GetName(playerid), GetName(userID), userID);
@@ -11443,7 +11438,7 @@ YCMD:nreport(playerid, params[], help) {
 YCMD:nskip(playerid, params[], help) {
 	if(PlayerInfo[playerid][pHelper] == 0) return SCM(playerid, COLOR_GREY, "* Nu ai acces la aceasta comanda!");
 	if(HelperDuty[playerid] == 0) return SCM(playerid, COLOR_GREY, "Nu esti la datorie ca helper.");
-	if(HaveHelp[playerid] == -1) return SCM(playerid, COLOR_GREY, "Nu ai primit o intrebare.");
+	if(HaveHelp[playerid] == -1) return SCM(playerid, COLOR_GREY, "Nu Ban nhan duoc o intrebare.");
 	new helpers, string[180];
 	foreach(new i: Player) {
 		if(IsPlayerConnected(i) && IsPlayerLogged[i] == 1) {
@@ -11471,7 +11466,7 @@ YCMD:nskip(playerid, params[], help) {
 }
 	
 YCMD:rnewbie(playerid, params[], help) {
-	if(PlayerInfo[playerid][pAdmin] < 1) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai acces la aceasta comanda!");
+	if(PlayerInfo[playerid][pAdmin] < 1) return SCM(playerid, COLOR_LGREEN, "Error: Nu ai acces la aceasta comanda!");
 	new id;
 	if(sscanf(params, "u", id)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/rnewbie <playerid/name>");
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Acel player nu este conectat!");
@@ -11499,7 +11494,7 @@ YCMD:rnewbie(playerid, params[], help) {
 YCMD:nreply(playerid, params[], help) {
 	if(PlayerInfo[playerid][pHelper] == 0) return SCM(playerid, COLOR_GREY, "* Nu ai acces la aceasta comanda!");
 	if(HelperDuty[playerid] == 0) return SCM(playerid, COLOR_GREY, "Nu esti la datorie ca helper.");
-	if(HaveHelp[playerid] == -1) return SCM(playerid, COLOR_GREY, "Nu ai primit o intrebare.");
+	if(HaveHelp[playerid] == -1) return SCM(playerid, COLOR_GREY, "Nu Ban nhan duoc o intrebare.");
 	new result[250], string[180];
 	if(sscanf(params, "s[250]",result)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/nreply <text>");
 	new userID = HaveHelp[playerid];
@@ -11524,7 +11519,7 @@ YCMD:nreply(playerid, params[], help) {
 YCMD:nr(playerid, params[], help) {
 	if(PlayerInfo[playerid][pHelper] == 0) return SCM(playerid, COLOR_GREY, "* Nu ai acces la aceasta comanda!");
 	if(HelperDuty[playerid] == 0) return SCM(playerid, COLOR_GREY, "Nu esti la datorie ca helper.");
-	if(HaveHelp[playerid] == -1) return SCM(playerid, COLOR_GREY, "Nu ai primit o intrebare.");
+	if(HaveHelp[playerid] == -1) return SCM(playerid, COLOR_GREY, "Nu Ban nhan duoc o intrebare.");
 	new result[250], string[180];
 	if(sscanf(params, "s[250]",result)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/nr <text>");
 	new userID = HaveHelp[playerid];
@@ -11550,7 +11545,7 @@ YCMD:nr(playerid, params[], help) {
 YCMD:checkhelp(playerid, params[], help) {
 	if(PlayerInfo[playerid][pHelper] == 0) return SCM(playerid, COLOR_GREY, "* Nu ai acces la aceasta comanda!");
 	if(HelperDuty[playerid] == 0) return SCM(playerid, COLOR_GREY, "Nu esti la datorie ca helper.");
-	if(HaveHelp[playerid] == -1) return SCM(playerid, COLOR_GREY, "Nu ai primit o intrebare.");
+	if(HaveHelp[playerid] == -1) return SCM(playerid, COLOR_GREY, "Nu Ban nhan duoc o intrebare.");
 	new userID = HaveHelp[playerid], string[180];
 	format(string, sizeof(string), "* %s a intreabat: %s", GetName(userID), HelpText[userID]);
 	SCM(playerid, COLOR_LGREEN, string);
@@ -11559,7 +11554,7 @@ YCMD:checkhelp(playerid, params[], help) {
 YCMD:ndelete(playerid, params[], help) {
 	if(PlayerInfo[playerid][pHelper] == 0) return SCM(playerid, COLOR_GREY, "* Nu ai acces la aceasta comanda!");
 	if(HelperDuty[playerid] == 0) return SCM(playerid, COLOR_GREY, "Nu esti la datorie ca helper.");
-	if(HaveHelp[playerid] == -1) return SCM(playerid, COLOR_GREY, "Nu ai primit o intrebare.");
+	if(HaveHelp[playerid] == -1) return SCM(playerid, COLOR_GREY, "Nu Ban nhan duoc o intrebare.");
 	new result[64], string[256];
 	if(sscanf(params, "s[64]",result)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/ndelete <reason>");
 	new userID = HaveHelp[playerid];
@@ -11867,7 +11862,7 @@ YCMD:setyoutuber(playerid, params[], help) {
 		if(youtuber >= 1) {
 			format(string, sizeof(string), "AdmCmd: %s a fost promovat la gradul de YouTuber de catre adminul %s", GetName(id), GetName(playerid));
 			SendAdminMessage(COLOR_WHITE, string, 1);
-			SCM(id, COLOR_YELLOW, "Felicitari! ai fost promovat la gradul de YouTuber!");
+			SCM(id, COLOR_YELLOW, "Chuc mung! ai fost promovat la gradul de YouTuber!");
 			PlayerInfo[id][pYouTuber] = 1;
 		}
 		else {
@@ -12019,7 +12014,7 @@ YCMD:find(playerid, params[], help) {
 	if(togfind[id] == 1) return SCM(playerid,COLOR_GREY, "Acel player nu poate fi urmarit!");
 	if(GetPVarInt(id, "Undercover") == 1) return SCM(playerid, COLOR_GREY, "Acel player este ocupat!");
 	if(BizRobbed[playerid] != 0) return true;
-	if(togfind[id] == 1 && OnDuty[playerid] == 0 && PlayerHit[playerid] == -1) return SCM(playerid, COLOR_LGREEN, "Eroare: Acel player nu poate fi urmarit!");
+	if(togfind[id] == 1 && OnDuty[playerid] == 0 && PlayerHit[playerid] == -1) return SCM(playerid, COLOR_LGREEN, "Error: Acel player nu poate fi urmarit!");
 	UsedFind[playerid] = 1;
 	new skin = GetPlayerSkin(id);
 	PlayerTextDrawSetPreviewModel(playerid, FindSkinTD, skin);
@@ -12181,7 +12176,7 @@ YCMD:ip(playerid, params[], help) {
 		return SCM(playerid, COLOR_GREY, "Acel player nu este conectat.");
 	
 	if(PlayerInfo[id][pAdmin] >= 4 && PlayerInfo[playerid][pAdmin] < 6) 
-		return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti vedea IP-ul unui admin!");
+		return SCM(playerid, COLOR_LGREEN, "Error: Nu poti vedea IP-ul unui admin!");
 	
 	if(PlayerInfo[id][pAdmin] > PlayerInfo[playerid][pAdmin]) 
 		return SCM(playerid, -1, "Nu poti folosi comanda aceasta pe acel player.");
@@ -12208,7 +12203,7 @@ function SearchIP(playerid) {
 		format(gString, sizeof(gString), "%d. %s (user %d)", x, name, strval(idd));
 		SCM(playerid, COLOR_WHITE, gString);
 	}
-	if(x == 0) SCM(playerid, COLOR_LGREEN, "Eroare: Nu au fost gasite alte conturi de pe acest IP!");
+	if(x == 0) SCM(playerid, COLOR_LGREEN, "Error: Nu au fost gasite alte conturi de pe acest IP!");
 	return true;
 }
 YCMD:getip(playerid, params[], help) {
@@ -12216,7 +12211,7 @@ YCMD:getip(playerid, params[], help) {
 	if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_WHITE, AdminOnly);
 	if(sscanf(params, "u", id)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/getip <playerid>");
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Acel player nu este conectat.");
-	if(PlayerInfo[id][pAdmin] >= 1 && PlayerInfo[playerid][pAdmin] < 6) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti vedea IP-ul unui admin!");
+	if(PlayerInfo[id][pAdmin] >= 1 && PlayerInfo[playerid][pAdmin] < 6) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti vedea IP-ul unui admin!");
 	if(PlayerInfo[id][pAdmin] > PlayerInfo[playerid][pAdmin]) return SCM(playerid, -1, "Nu poti folosi comanda aceasta pe acel player.");
 	GetPlayerIp(id,playersip,sizeof(playersip));
 	format(string, sizeof(string), "%s (%d) IP: %s",GetName(id),id,playersip);
@@ -12456,7 +12451,7 @@ YCMD:fixveh(playerid, params[], help) {
 	return true;
 }
 YCMD:fuelcars(playerid, params[], help) {
-	if(PlayerInfo[playerid][pAdmin] < 6) return SCM(playerid, COLOR_RED, "Eroare: {FFFFFF}Nu ai adminul necesar.");
+	if(PlayerInfo[playerid][pAdmin] < 6) return SCM(playerid, COLOR_RED, "Error: {FFFFFF}Nu ai adminul necesar.");
 	new full, string[60];
 	if(sscanf(params, "i[10]", full)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/fuelcars <procent>");
 	Gas[GetPlayerVehicleID(playerid)] = full;
@@ -12466,8 +12461,8 @@ YCMD:fuelcars(playerid, params[], help) {
 }
 YCMD:calls(playerid, params[], help) {
 	new fid = PlayerInfo[playerid][pMember];
-	if(fid == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu faci parte dintr-o factiune!");
-	if(fid != 12 && fid != 13 && fid != 8 && fid != 7 && fid != 15) return SCM(playerid, COLOR_LGREEN, "Eroare: Aceasta comanda nu este disponibila factiunii tale!");
+	if(fid == 0) return SCM(playerid, COLOR_LGREEN, "Error: Nu faci parte dintr-o factiune!");
+	if(fid != 12 && fid != 13 && fid != 8 && fid != 7 && fid != 15) return SCM(playerid, COLOR_LGREEN, "Error: Aceasta comanda nu este disponibila factiunii tale!");
 	//if(BizRobbed[playerid] != 0) return true;
 	new 
 		szDialog[512], szDialog2[512], x,
@@ -12542,7 +12537,7 @@ YCMD:calls(playerid, params[], help) {
 			}
 		}			
 	}
-	if(x == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Nimeni nu a apelat momentan la serviciile factiunii tale!");
+	if(x == 0) return SCM(playerid, COLOR_LGREEN, "Error: Nimeni nu a apelat momentan la serviciile factiunii tale!");
 	
 	new title[64];
 	format(title, sizeof(title), "%s's calls: %d", FactionName(fid), x);
@@ -12563,7 +12558,7 @@ YCMD:service(playerid, params[], help) {
 	GetPlayer3DZone2(Pos[0], Pos[1], Pos[2], szZone, sizeof(szZone));
 
 	if(strcmp(item,"uber",true) == 0) {
-		if(IsInBlacklist(playerid, 15)) return SCM(playerid, -1, "Esti pe blacklist-ul acestei factiuni, nu poti folosi serviciile acestei factiuni!");
+		if(IsInBlacklist(playerid, 15)) return SCM(playerid, -1, "Ban nam trong danh sach den cua to chuc nay, vi vay ban khong the su dung dich vu to chuc cung cap!");
 		if(TaxiService[1][playerid] == 1) return SCM(playerid, COLOR_GREY, "Ai mai apelat odata la acest serviciu, asteapta un raspuns.");
 		TaxiService[1][playerid] = 1;
 		AcceptedTaxiService[1][playerid] = 0;
@@ -12573,7 +12568,7 @@ YCMD:service(playerid, params[], help) {
 	}
 				
 	if(strcmp(item,"taxi",true) == 0) {
-		if(IsInBlacklist(playerid, 12)) return SCM(playerid, -1, "Esti pe blacklist-ul acestei factiuni, nu poti folosi serviciile acestei factiuni!");
+		if(IsInBlacklist(playerid, 12)) return SCM(playerid, -1, "Ban nam trong danh sach den cua to chuc nay, vi vay ban khong the su dung dich vu to chuc cung cap!");
 		if(TaxiService[0][playerid] == 1) return SCM(playerid, COLOR_GREY, "Ai mai apelat odata la acest serviciu, asteapta un raspuns.");
 		TaxiService[0][playerid] = 1;
 		AcceptedTaxiService[0][playerid] = 0;
@@ -12582,7 +12577,7 @@ YCMD:service(playerid, params[], help) {
 		SCM(playerid, COLOR_WHITE, "Ai apelat la serviciul de taximetristi. Asteapta un raspuns!");
 	}	
 	else if(strcmp(item,"medic",true) == 0) {
-		if(IsInBlacklist(playerid, 14)) return SCM(playerid, -1, "Esti pe blacklist-ul acestei factiuni, nu poti folosi serviciile acestei factiuni!");				
+		if(IsInBlacklist(playerid, 14)) return SCM(playerid, -1, "Ban nam trong danh sach den cua to chuc nay, vi vay ban khong the su dung dich vu to chuc cung cap!");				
 		if(MedicCall[playerid] == playerid) return SCM(playerid, -1, "Ai apelat deja, asteapta un raspuns.");
 		format(string, sizeof(string), "**(( Paramedic Dispatch: %s (%d) are nevoie de un paramedic. Acesta se afla in zona %s. ))**", GetName(playerid),playerid, szZone);
 		SendFactionMessage(13, COLOR_LIGHTBLUE, string);
@@ -12591,7 +12586,7 @@ YCMD:service(playerid, params[], help) {
 		return true;
 	}
 	else if(strcmp(item,"mecanic",true) == 0) {
-		if(IsInBlacklist(playerid, 8)) return SCM(playerid, -1, "Esti pe blacklist-ul acestei factiuni, nu poti folosi serviciile acestei factiuni!");	
+		if(IsInBlacklist(playerid, 8)) return SCM(playerid, -1, "Ban nam trong danh sach den cua to chuc nay, vi vay ban khong the su dung dich vu to chuc cung cap!");	
 		if(MechanicCall[playerid] == playerid) return SCM(playerid, -1, "Ai apelat deja, asteapta un raspuns.");
 		format(string, sizeof(string), "**(( TTC Dispatch: %s (%d) are nevoie de un mecanic. Acesta se afla in zona %s. ))**", GetName(playerid),playerid, szZone);
 		SendFactionMessage(8, COLOR_LIGHTBLUE, string);
@@ -12600,7 +12595,7 @@ YCMD:service(playerid, params[], help) {
 		return true;
 	}	
 	else if(strcmp(item,"instructor",true) == 0) {
-		if(IsInBlacklist(playerid, 7)) return SCM(playerid, -1, "Esti pe blacklist-ul acestei factiuni, nu poti folosi serviciile acestei factiuni!");				
+		if(IsInBlacklist(playerid, 7)) return SCM(playerid, -1, "Ban nam trong danh sach den cua to chuc nay, vi vay ban khong the su dung dich vu to chuc cung cap!");				
 		if(InstructorCall[playerid] == 1) return SCM(playerid, -1, "Ai apelat deja, asteapta un raspuns.");
 		format(string, sizeof(string), "**(( SI Dispatch: %s (%d) are nevoie de un instructor. Acesta se afla in zona %s. ))**", GetName(playerid),playerid, szZone);
 		SendFactionMessage(7, COLOR_LIGHTBLUE, string);
@@ -12660,7 +12655,7 @@ YCMD:cancel(playerid, params[], help) {
 		AcceptedTaxiService[0][AcceptedService[playerid]] = 0;
 		format(string, sizeof(string), "**(( Taxi Dispatch: Taximetristul %s (%d) i-a anulat comanda lui %s (%d). Pentru a o accepta, foloseste (/accept taxi). ))**", GetName(playerid), playerid, GetName(AcceptedService[playerid]), AcceptedService[playerid]);
 		SendFactionMessage(12, 0x2C6CBFFF, string);
-		format(string, sizeof(string), "Ai renuntat la comanda acceptata!");
+		format(string, sizeof(string), "Yeu cau dich vu cua ban da bi huy bo!");
 		SCM(playerid, COLOR_WHITE, string);
 		format(string, sizeof(string), "Taximetristul %s a renuntat la comanda. Asteapta pana cand comanda ta va fi preluata de alti membri.", GetName(playerid));
 		SCM(AcceptedService[playerid], COLOR_YELLOW, string);
@@ -12689,7 +12684,7 @@ YCMD:cancel(playerid, params[], help) {
 		SCM(playerid, -1, "Ai renuntat la acest serviciu.");
 	}		
 	else if(strcmp(item,"trade",true) == 0) {
-		if(TradePlayer[playerid] == -1) return SCM(playerid, -1, "Nu ai primit o oferta!");
+		if(TradePlayer[playerid] == -1) return SCM(playerid, -1, "Nu Ban nhan duoc o oferta!");
 		TradePlayer[playerid] = -1;
 		SCM(playerid, -1, "Afacere anulata!");
 	}		
@@ -12785,7 +12780,7 @@ YCMD:accept(playerid, params[], help) {
 		return true;
 	}
 	if(id == INVALID_PLAYER_ID || !IsPlayerConnected(id)) return SCM(playerid, COLOR_GREY, "Acel player nu este conectat.");
-	if(strcmp(x_job,"medic",true) == 0 || strcmp(x_job,"taxi",true) == 0 || strcmp(x_job,"mecanic",true) == 0 || strcmp(x_job,"instructor",true) == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Aceasta comanda nu mai este disponibila. Foloseste /calls!");
+	if(strcmp(x_job,"medic",true) == 0 || strcmp(x_job,"taxi",true) == 0 || strcmp(x_job,"mecanic",true) == 0 || strcmp(x_job,"instructor",true) == 0) return SCM(playerid, COLOR_LGREEN, "Error: Aceasta comanda nu mai este disponibila. Foloseste /calls!");
 	if(strcmp(x_job,"clan",true) == 0) {
 		if(GetPVarInt(playerid, "OfferedClan") == -1 || GetPVarInt(playerid, "OfferedClan") != id) return SCM(playerid, COLOR_GREY, "Acel player nu ti-a facut o oferta!");
 		if(PlayerInfo[playerid][pClan] != 0) return SCM(playerid, COLOR_GREY, "Esti deja intr-un clan. Foloseste comanda /quitclan pentru a iesi din clanul in care esti acum!");
@@ -12794,7 +12789,7 @@ YCMD:accept(playerid, params[], help) {
 			money = GetPVarInt(playerid, "ClanMoney");
 		if(PlayerInfo[id][pClan] != clan || PlayerInfo[id][pClanRank] < 6) return SCM(playerid, COLOR_GREY, "Acel player nu mai detine clanul care ti l-a oferit!");
 		if(PlayerMoney(playerid, money)) return SCM(playerid, COLOR_GREY, "Nu ai suma necesara pentru a accepta oferta!");
-		format(string, sizeof(string), "%s ti-a acceptat oferta de a lua clanul si ai primit $%s.", GetName(playerid), FormatNumber(money));
+		format(string, sizeof(string), "%s ti-a acceptat oferta de a lua clanul si Ban nhan duoc $%s.", GetName(playerid), FormatNumber(money));
 		SCM(id, COLOR_MONEY, string);
 		format(string, sizeof(string), "Ai acceptat oferta lui %s si ai pierdut $%s.", GetName(id), FormatNumber(money));
 		SCM(playerid, COLOR_MONEY, string);
@@ -12838,7 +12833,7 @@ YCMD:accept(playerid, params[], help) {
 		return true;
 	}
 	if(strcmp(x_job, "license", true) == 0) {
-		if(LicenseOffer[playerid] == -1) return SCM(playerid, -1, "Nu ai primit o oferta!");
+		if(LicenseOffer[playerid] == -1) return SCM(playerid, -1, "Nu Ban nhan duoc o oferta!");
 		if(LicenseOffer[playerid] != id) return SCM(playerid, -1, "Acel player nu ti-a facut o oferta!");
 		if(PlayerInfo[id][pMember] != 7) return SCM(playerid, -1, "Acel player nu este din factiunea School Instructors!");
 		new money, str[180];
@@ -12896,18 +12891,18 @@ YCMD:accept(playerid, params[], help) {
 		for(new m; m < 2; m++) {
 			if(PlayerInfo[id][pDailyMission][m] == 15 || PlayerInfo[id][pDailyMission][m] == 16) CheckMission(id, m);
 		}			
-		format(string, sizeof(string), "Ai acceptat oferta lui %s si ai primit licenta.", GetName(id));
+		format(string, sizeof(string), "Ai acceptat oferta lui %s si Ban nhan duoc licenta.", GetName(id));
 		SCM(playerid, COLOR_MONEY, string);
-		format(string, sizeof(string), "%s ti-a acceptat oferta si ai primit $%s.", GetName(playerid), FormatNumber(money));
+		format(string, sizeof(string), "%s ti-a acceptat oferta si Ban nhan duoc $%s.", GetName(playerid), FormatNumber(money));
 		SCM(id, COLOR_MONEY, string);	
 		return true;
 	}
 	if(strcmp(x_job,"trade",true) == 0) {
-		if(TradePlayer[playerid] == -1) return SCM(playerid, -1, "Nu ai primit o asemenea oferta.");
+		if(TradePlayer[playerid] == -1) return SCM(playerid, -1, "Nu Ban nhan duoc o asemenea oferta.");
 		if(TradePlayer[playerid] != id) return SCM(playerid, -1, "Acel player nu ti-a facut o oferta.");
 		if(TradeMoney[playerid] > 2000000000) return SCM(playerid, COLOR_GREY, "Nu poti transfera o suma mai mare de $2.000.000.000!");
-		if(GetPlayerInterior(playerid) != 0 || IsPlayerInAnyVehicle(playerid)) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti face o afacere dintr-un interior sau vehicul!");
-		if(GetPlayerInterior(id) != 0 || IsPlayerInAnyVehicle(id)) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti face o afacere cu cineva ce se afla intr-un interior sau vehicul!");
+		if(GetPlayerInterior(playerid) != 0 || IsPlayerInAnyVehicle(playerid)) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti face o afacere dintr-un interior sau vehicul!");
+		if(GetPlayerInterior(id) != 0 || IsPlayerInAnyVehicle(id)) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti face o afacere cu cineva ce se afla intr-un interior sau vehicul!");
 		if(TradeID[playerid] != -1) return SCM(playerid, COLOR_WHITE, "Esti deja intr-o afacere!");
 		if(TradeID[id] != -1) return SCM(playerid, COLOR_WHITE, "Acel player este deja intr-o afacere!");					
 		TradePlayer[playerid] = -1;
@@ -13085,7 +13080,7 @@ YCMD:accept(playerid, params[], help) {
 	}
 	else if(strcmp(x_job,"lawyer",true) == 0)
 	{
-		if(AcceptOffer[playerid] == -1) return SCM(playerid, COLOR_GREY, "Nu ai primit o oferta!");
+		if(AcceptOffer[playerid] == -1) return SCM(playerid, COLOR_GREY, "Nu Ban nhan duoc o oferta!");
 		if(AcceptOffer[playerid] != id) return SCM(playerid,-1, "Acel player nu ti-a oferit accept.");
 		if(PlayerMoney(playerid, AcceptPrice[playerid])) return SCM(playerid,COLOR_GREY, "Nu ai banii necesari.");
 		PlayerInfo[playerid][pLawyer] += 15;
@@ -13112,7 +13107,7 @@ YCMD:accept(playerid, params[], help) {
 	}
 	else if(strcmp(x_job,"materials",true) == 0)
 	{
-		if(MatsOffer[playerid] == -1) return SCM(playerid, COLOR_GREY, "Nu ai primit o oferta!");
+		if(MatsOffer[playerid] == -1) return SCM(playerid, COLOR_GREY, "Nu Ban nhan duoc o oferta!");
 		if(MatsOffer[playerid] != id) return SCM(playerid,-1, "Acel player nu ti-a oferit materials.");
 		if(PlayerMoney(playerid, MatsPrice[playerid])) return SCM(playerid,COLOR_GREY, "Nu ai banii necesari.");
 		PlayerInfo[playerid][pMats] += MatsAmmo[playerid];
@@ -13135,7 +13130,7 @@ YCMD:accept(playerid, params[], help) {
 	}
 	else if(strcmp(x_job,"gun",true) == 0)
 	{
-		if(SellgunOffer[playerid] == -1) return SCM(playerid, COLOR_GREY, "Nu ai primit o oferta!");
+		if(SellgunOffer[playerid] == -1) return SCM(playerid, COLOR_GREY, "Nu Ban nhan duoc o oferta!");
 
 		if(SellgunOffer[playerid] != id) return SCM(playerid,-1, "Acel player nu ti-a oferit o arma.");
 		if(PlayerMoney(playerid, SellgunPrice[playerid])) return SCM(playerid,COLOR_GREY, "Nu ai banii necesari.");
@@ -13159,7 +13154,7 @@ YCMD:accept(playerid, params[], help) {
 		GetWeaponNameEx(weaponid,gunname,sizeof(gunname));
 		format(string, sizeof(string), "I-ai dat lui %s, un %s cu %d gloante, pentru %d materiale.", sendername,gunname, ammo,mats);
 		SCM(idoffer, COLOR_GRAD1, string);
-		format(string, sizeof(string), "Ai primit un %s cu %d gloante pentru %s.", gunname, ammo, giveplayer);
+		format(string, sizeof(string), "Ban nhan duoc un %s cu %d gloante pentru %s.", gunname, ammo, giveplayer);
 		SCM(playerid, COLOR_GRAD1, string);
 		format(string, sizeof(string), "* %s a creat o arma si i-a dat-o lui %s.", giveplayer ,sendername);
 		ProxDetector(30.0, playerid, string, COLOR_PURPLE);
@@ -13182,7 +13177,7 @@ YCMD:accept(playerid, params[], help) {
 	}
 	else if(strcmp(x_job,"free",true) == 0)
 	{
-		if(FreeOffer[playerid] == -1) return SCM(playerid, COLOR_GREY, "Nu ai primit o oferta!");
+		if(FreeOffer[playerid] == -1) return SCM(playerid, COLOR_GREY, "Nu Ban nhan duoc o oferta!");
 		if(FreeOffer[playerid] != id) return SCM(playerid,-1, "Acel player nu ti-a oferit free.");
 		if(PlayerMoney(playerid, FreePrice[playerid])) return SCM(playerid,COLOR_GREY, "Nu ai banii necesari.");
 		if(PlayerInfo[id][pLawyer] < 1) return SCM(playerid,-1, "Acel player nu are accept.");
@@ -13190,7 +13185,7 @@ YCMD:accept(playerid, params[], help) {
 		GetPlayerName(FreeOffer[playerid], sendername, sizeof(sendername));
 		format(string, sizeof(string), "* I-ai dat free lui %s si l-ai scos din inchisoare.", giveplayer);
 		SCM(FreeOffer[playerid], COLOR_LIGHTBLUE, string);
-		format(string, sizeof(string), "* Ai primit free de la %s si ai iesit din inchisoare.", sendername);
+		format(string, sizeof(string), "* Ban nhan duoc free de la %s si ai iesit din inchisoare.", sendername);
 		SCM(playerid, COLOR_LIGHTBLUE, string);
 		JailPrice[playerid] = 0;
 		PlayerInfo[playerid][pJailTime] = 1;
@@ -13210,7 +13205,7 @@ YCMD:accept(playerid, params[], help) {
 	}
 	else if(strcmp(x_job,"ticket",true) == 0)
 	{
-		if(TicketOffer[playerid] == 999) return SCM(playerid, COLOR_GREY, "Nu ai primit o oferta!");
+		if(TicketOffer[playerid] == 999) return SCM(playerid, COLOR_GREY, "Nu Ban nhan duoc o oferta!");
 		if(TicketOffer[playerid] != id) return SCM(playerid,-1, "Acel player nu ti-a oferit ticket.");
 		if(!ProxDetectorS(5.0, playerid, TicketOffer[playerid])) return SCM(playerid, -1, "Acel player nu este langa tine.");
 		GetPlayerName(TicketOffer[playerid], giveplayer, sizeof(giveplayer));
@@ -13231,7 +13226,7 @@ YCMD:accept(playerid, params[], help) {
 	}
 	else if(strcmp(x_job,"refill",true) == 0)
 	{
-		if(RefillOffer[playerid] == 999) return SCM(playerid, COLOR_GREY, "Nu ai primit o oferta!");
+		if(RefillOffer[playerid] == 999) return SCM(playerid, COLOR_GREY, "Nu Ban nhan duoc o oferta!");
 		if(RefillOffer[playerid] != id) return SCM(playerid,COLOR_WHITE, "This player has not offered you refill.");
 		if(PlayerMoney(playerid, RefillPrice[playerid])) return SCM(playerid, COLOR_WHITE, "Nu ai banii necesari!");
 		GetPlayerName(playerid, sendername, sizeof(sendername));
@@ -13256,11 +13251,11 @@ YCMD:accept(playerid, params[], help) {
 
 	}
 	else if(strcmp(x_job,"live",true) == 0) {
-		if(LiveOffer[playerid] == 999) return SCM(playerid, COLOR_GREY, "Nu ai primit o oferta!");
+		if(LiveOffer[playerid] == 999) return SCM(playerid, COLOR_GREY, "Nu Ban nhan duoc o oferta!");
 		if(LiveOffer[playerid] != id) return SCM(playerid,COLOR_WHITE, "This player has not offered you live.");
 		if(!ProxDetectorS(5.0, playerid, LiveOffer[playerid])) return SCM(playerid, -1, "Acel player nu este langa tine.");
-		SCM(playerid, COLOR_WHITE, "* Ai primit freeze pana la terminarea live-ului!");
-		SCM(LiveOffer[playerid], COLOR_WHITE, "* Ai primit freeze pana la terminarea live-ului! Pentru a opri live-ul, foloseste comanda (/live) iar.");
+		SCM(playerid, COLOR_WHITE, "* Ban nhan duoc freeze pana la terminarea live-ului!");
+		SCM(LiveOffer[playerid], COLOR_WHITE, "* Ban nhan duoc freeze pana la terminarea live-ului! Pentru a opri live-ul, foloseste comanda (/live) iar.");
 		TogglePlayerControllable(playerid, 0);
 		TogglePlayerControllable(LiveOffer[playerid], 0);
 		TalkingLive[playerid] = LiveOffer[playerid];
@@ -13269,7 +13264,7 @@ YCMD:accept(playerid, params[], help) {
 
 	}
 	else if(strcmp(x_job,"drugs",true) == 0) {
-		if(DrugOffer[playerid] == 999) return SCM(playerid, COLOR_GREY, "Nu ai primit o oferta!");
+		if(DrugOffer[playerid] == 999) return SCM(playerid, COLOR_GREY, "Nu Ban nhan duoc o oferta!");
 		if(DrugOffer[playerid] != id) return SCM(playerid,COLOR_WHITE, "This player has not offered you drugs.");
 		if(PlayerMoney(playerid, DrugPrice[playerid]))  return SCM(playerid, COLOR_WHITE, "Nu ai banii necesari!");
 		if(PlayerInfo[playerid][pDrugs] > 50) return SCM(playerid, COLOR_WHITE, "Ai prea multe droguri!");
@@ -13317,7 +13312,7 @@ YCMD:invite(playerid, params[], help) {
 		new Cache: result = mysql_query(SQL, szQuery);
 		//new test = cache_num_rows();
 		cache_delete(result);
-		//if(test == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti baga un player in factiune care nu are o aplicatie acceptata!");
+		//if(test == 0) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti baga un player in factiune care nu are o aplicatie acceptata!");
 	}
 	format(string, sizeof(string), "Lider %s te-a invitat in factiunea %s. (/accept invite %d)", GetName(playerid), FactionName(PlayerInfo[playerid][pMember]), playerid);
 	SCM(id, COLOR_LIGHTBLUE, string);
@@ -13346,16 +13341,16 @@ YCMD:withdraw(playerid, params[], help) {
 	return true;
 }
 YCMD:deposit(playerid, params[], help) {
-	if(!IsAtBank(playerid)) return SCM(playerid, COLOR_LGREEN, "Eroare: Pentru a putea folosi aceasta comanda, trebuie sa fii intr-o banca!");
+	if(!IsAtBank(playerid)) return SCM(playerid, COLOR_LGREEN, "Error: Pentru a putea folosi aceasta comanda, trebuie sa fii intr-o banca!");
 	new money,string[200];
 	if(sscanf(params, "i", money)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/deposit <Suma>");
-	if(PlayerMoney(playerid, money) || money < 1 || money > 1000000000) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai aceasta suma pe care vrei sa o depozitezi.");
+	if(PlayerMoney(playerid, money) || money < 1 || money > 1000000000) return SCM(playerid, COLOR_LGREEN, "Error: Nu ai aceasta suma pe care vrei sa o depozitezi.");
 	GivePlayerCash(playerid, 0, money);
 	GivePlayerBank(playerid, money);
 	Update(playerid, pBankx);
 	Update(playerid, pMBankx);
 	format(string, sizeof(string), "Ai depozitat $%s in contul tau bancar. Acum ai: $%s.", FormatNumber(money), GetBankMoney(playerid));
-	if(TradeID[playerid] != -1) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti folosi aceasta comanda atata timp cat esti implicat intr-o afacere!");
+	if(TradeID[playerid] != -1) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti folosi aceasta comanda atata timp cat esti implicat intr-o afacere!");
 	SCM(playerid, 0xFAAC25FF, string);
 	if(PlayerInfo[playerid][pShowBanca] == 1) {
 		format(string, sizeof(string), "$%s", GetBankMoney(playerid));
@@ -13364,22 +13359,22 @@ YCMD:deposit(playerid, params[], help) {
 	return true;
 }
 YCMD:balance(playerid, params[], help) {
-	if(!IsAtBank(playerid)) return SCM(playerid, COLOR_LGREEN, "Eroare: Pentru a putea folosi aceasta comanda, trebuie sa fii intr-o banca!");
+	if(!IsAtBank(playerid)) return SCM(playerid, COLOR_LGREEN, "Error: Pentru a putea folosi aceasta comanda, trebuie sa fii intr-o banca!");
 	new string[128];
 	format(string, sizeof(string), "Ai $%s in contul tau.", GetBankMoney(playerid));
 	SCM(playerid, COLOR_WHITE, string);
 	return true;
 }
 YCMD:transfer(playerid, params[], help) {
-	if(PlayerInfo[playerid][pLevel] < 5) return SCM(playerid, COLOR_LGREEN, "Eroare: Pentru a putea folosi aceasta comanda, ai nevoie de minim level 5.");
-	if(!IsAtBank(playerid)) return SCM(playerid, COLOR_LGREEN, "Eroare: Pentru a putea folosi aceasta comanda, trebuie sa fii intr-o banca!");
+	if(PlayerInfo[playerid][pLevel] < 5) return SCM(playerid, COLOR_LGREEN, "Error: Pentru a putea folosi aceasta comanda, ai nevoie de minim level 5.");
+	if(!IsAtBank(playerid)) return SCM(playerid, COLOR_LGREEN, "Error: Pentru a putea folosi aceasta comanda, trebuie sa fii intr-o banca!");
 
 	new id,moneytransfer,string[100];
-	if(TradeID[playerid] != -1) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti folosi aceasta comanda atata timp cat esti implicat intr-o afacere!");
+	if(TradeID[playerid] != -1) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti folosi aceasta comanda atata timp cat esti implicat intr-o afacere!");
 	if(sscanf(params, "ui", id,moneytransfer)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/transfer <playerid/name> <Suma>");
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Acel player nu este conectat.");
 	if(playerid == id) return SCM(playerid, COLOR_GREY, "Nu poti executa aceasta comanda asupra ta!");
-	if(moneytransfer < 10000 || moneytransfer > 500000000) return SCM(playerid, COLOR_LGREEN, "Eroare: Poti transfera minim $10,000 si maxim $500,000,000!");
+	if(moneytransfer < 10000 || moneytransfer > 500000000) return SCM(playerid, COLOR_LGREEN, "Error: Poti transfera Toi thieu $10,000 si va toi da $500,000,000!");
 	if(GetPlayerBank(playerid) < moneytransfer) return SCM(playerid, COLOR_LGREEN, "Fonduri insuficiente.");
 	TransferOffer[playerid] = id;
 	TransferMoney[playerid] = moneytransfer;	
@@ -13431,14 +13426,14 @@ YCMD:factions(playerid, params[], help) {
 }
 stock GetFactionStatus(fid) {
 	new szStatus[180];
-	if(DynamicFactions[fid][fApp] == 1) format(szStatus, 256, "{FF0000}Inchise{FFFFFF}");
-	else format(szStatus, 256, "{2FC914}Deschise{FFFFFF}");
+	if(DynamicFactions[fid][fApp] == 1) format(szStatus, 256, "{FF0000}Dong cua{FFFFFF}");
+	else format(szStatus, 256, "{2FC914}Mo{FFFFFF}");
 	return szStatus;
 }
 stock GetFactionStatus2(fid) {
 	new szStatus[180];
-	if(DynamicFactions[fid][fApp] == 0) format(szStatus, 256, "Inchise");
-	else format(szStatus, 256, "Deschise");
+	if(DynamicFactions[fid][fApp] == 0) format(szStatus, 256, "Dong cua");
+	else format(szStatus, 256, "Mo");
 	return szStatus;
 }
 new Float: VipPos[3], VipText;	
@@ -13475,7 +13470,7 @@ YCMD:flip(playerid, params[], help) {
 	if(PlayerInfo[playerid][pAdmin] < 1 && PlayerInfo[playerid][pVip] == 0 && PlayerInfo[playerid][pYouTuber] < 1) return true;
 	if(!IsPlayerInAnyVehicle(playerid)) return true;
 	if(PlayerInfo[playerid][pVip] > 0 && PlayerInfo[playerid][pWantedLevel] != 0) return  SCM(playerid, -1, "Nu poti folosi aceasta comanda atata timp cat ai wanted!");
-	if(PlayerInfo[playerid][pAdmin] < 7) return SCM(playerid, COLOR_LGREEN, "Nu ai voie sa folosesti aceasta comanda atata timp cat esti in arena de curse!");
+	if(PlayerInfo[playerid][pAdmin] < 7) return SCM(playerid, COLOR_LGREEN, "Ban khong the su dung thao tac nay khi dang trong Race Arena!");
 	new Float:angle;
 	GetVehicleZAngle(GetPlayerVehicleID(playerid), angle);
 	SetVehicleZAngleEx(GetPlayerVehicleID(playerid), angle);
@@ -13498,13 +13493,13 @@ function valid_vip_vehicle(vehid) {
 YCMD:vipname(playerid, params[], help) {
 	if(!IsPlayerInAnyVehicle(playerid)) return SCM(playerid, COLOR_GREY, "Nu esti in vehiculul tau!");
 	new car = GetPlayerVehicleID(playerid);
-	if(Iter_Count(MyVehicle[playerid]) == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai un vehicul personal!");
-	if(PersonalCar(playerid) == -1) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu esti in unul dintre vehiculele tale personale!");
+	if(Iter_Count(MyVehicle[playerid]) == 0) return SCM(playerid, COLOR_LGREEN, "Error: Nu ai un vehicul personal!");
+	if(PersonalCar(playerid) == -1) return SCM(playerid, COLOR_LGREEN, "Error: Nu esti in unul dintre vehiculele tale personale!");
 	new idd = PersonalCar(playerid);
-	if(CarInfo[idd][Spawned] != car) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu esti in vehiculul tau.");
-	if(strlen(CarInfo[idd][cText]) < 3) return SCM(playerid, COLOR_LGREEN, "Eroare: Acest vehicul nu este unul VIP!");
+	if(CarInfo[idd][Spawned] != car) return SCM(playerid, COLOR_LGREEN, "Error: Nu esti in vehiculul tau.");
+	if(strlen(CarInfo[idd][cText]) < 3) return SCM(playerid, COLOR_LGREEN, "Error: Acest vehicul nu este unul VIP!");
 	if(GetPVarInt(playerid, "Engine") != 0) 
-		return SCM(playerid, COLOR_LGREEN, "Eroare: Trebuie sa ai motorul oprit.");
+		return SCM(playerid, COLOR_LGREEN, "Error: Trebuie sa ai motorul oprit.");
 	Dialog_Show(playerid, DIALOG_VIPNAME, DIALOG_STYLE_LIST, "{FCD482}VIP{FFFFFF} Menu", "Change vip name text\nChange text color\nSet text position\nReset to default", "Select", "Cancel");
 	return true;
 }
@@ -13575,7 +13570,7 @@ function attach_vip_text(idd) {
 }
 YCMD:vipwheels(playerid, params[], help) {
 	if(PlayerInfo[playerid][pVip] == 0) return true;
-	if(!IsPlayerInAnyVehicle(playerid)) return SCM(playerid, COLOR_LGREEN, "Nu esti intr-un vehicul!");
+	if(!IsPlayerInAnyVehicle(playerid)) return SCM(playerid, COLOR_LGREEN, "Khong o trong xe!");
 	new idd = PersonalCar(playerid);
 	if(idd == -1) return true;
 	Dialog_Show(playerid, DIALOG_WHEELS, DIALOG_STYLE_LIST, "legendary Wheels", "Shadow\nCutter\nSwitch\nDollar", "Ok", "Exit");
@@ -13623,7 +13618,7 @@ YCMD:nos(playerid, params[], help) {
 	return true;
 }
 YCMD:setgoal(playerid, params[], help) {
-	if(PlayerInfo[playerid][pScripter] < 1) return SCM(playerid, COLOR_RED, "Eroare: {FFFFF}Nu ai acces la aceasta comanda!");
+	if(PlayerInfo[playerid][pScripter] < 1) return SCM(playerid, COLOR_RED, "Error: {FFFFF}Nu ai acces la aceasta comanda!");
 	new amount, string[64];
 	if(sscanf(params, "i", amount)) return SCM(playerid, COLOR_RED, "Usage: {FFFFFF}/setgoal <amount>");
 	MAXGOAL = amount;
@@ -13639,7 +13634,7 @@ YCMD:fish(playerid, params[], help) {
 		return SCM(playerid, COLOR_GREY, "Nu esti in zona in care poti pescui.");
 
 	if(IsPlayerInAnyVehicle(playerid)) 
-		return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti aceasta comanda dintr-un vehicul!");
+		return SCM(playerid, COLOR_LGREEN, "Error: Nu poti aceasta comanda dintr-un vehicul!");
 
 	if(PlayerInfo[playerid][pBackpack] < 2) {
 		if(HaveFish[0][playerid] != 0) return SCM(playerid, -1, "Ai prins deja un peste! Dute si vinde pestele la Fish Shop (/gps).");
@@ -13721,7 +13716,7 @@ YCMD:apark(playerid, params[], help) {
 YCMD:jobs(playerid, params[], help) {
 	
 	if(JobWorking[playerid] == 1) 
-		return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti folosi aceasta coamnda cand muncesti.");
+		return SCM(playerid, COLOR_LGREEN, "Error: Nu poti folosi aceasta coamnda cand muncesti.");
 	
 	new szDialog2[1024], szTitle[50], xx, Owner[30];
 	strcat(szDialog2, "Job name\tLevel\tOwner\tDistance\n");
@@ -13800,7 +13795,7 @@ YCMD:heal(playerid, params[], help) {
 		if(!IsAnAmbulance(playambu) || playambu != giveambu) return SCM(playerid, COLOR_WHITE, "Acel player nu este in ambulanta.");
 		new Float:tempheal;
 		GetPlayerHealthEx(id,tempheal);
-		if(tempheal >= 98.0) return SCM(playerid, COLOR_LGREEN, "Eroare: Acel player are viata plina!");
+		if(tempheal >= 98.0) return SCM(playerid, COLOR_LGREEN, "Error: Acel player are viata plina!");
 		GivePlayerCash(playerid, 1,price);
 		GivePlayerCash(id, 0,price);
 		SetPlayerHealthEx(id, 99);
@@ -13810,7 +13805,7 @@ YCMD:heal(playerid, params[], help) {
 		format(string, sizeof(string), "**(( Paramedic Dispatch: Paramedic %s (%d) i-a oferit heal lui %s (%d) pentru suma de %s$. ))**",GetName(playerid), playerid, GetName(id), id, FormatNumber(price));
 		SendFactionMessage(13, COLOR_LIGHTBLUE,string);
 		
-		format(string, sizeof(string), "Ai primit viata pentru %s$.",FormatNumber(price));
+		format(string, sizeof(string), "Ban nhan duoc viata pentru %s$.",FormatNumber(price));
 		SCM(id, COLOR_MONEY,string);
 		format(string, sizeof(string), "I-ai dat viata lui %s in schimbul sumei de $%s.", GetName(id), FormatNumber(price));
 		SCM(playerid, COLOR_MONEY, string);
@@ -14220,7 +14215,7 @@ YCMD:jailo(playerid, params[], help) {
 	new timej = minutes*60;
 	format(string, sizeof(string), "Offline: %s a fost bagat in inchisoare de %s pentru %d minute, motiv: %s", id, sendername,minutes,reason);
 	SCMTA(COLOR_LIGHTRED, string);
-	format(string, sizeof(string), "Ai primit jail de la %s pentru %d minute, motiv %s.", GetName(playerid), minutes, reason);
+	format(string, sizeof(string), "Ban nhan duoc jail de la %s pentru %d minute, motiv %s.", GetName(playerid), minutes, reason);
 	InsertEmail(id, GetName(playerid), string, 0);		
 	new str1[184];		
 	mysql_format(SQL, str1,sizeof(str1),"UPDATE users SET `Jailed`='2',`JailTime`='%d',`WantedLevel`='0' WHERE `name`='%s'",timej,id);
@@ -14271,7 +14266,7 @@ YCMD:unjail(playerid, params[], help) {
 	new id,string[128];
 	if(sscanf(params, "u", id)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/unjail <playerid/name>");
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Acel player nu este conectat.");
-	if(PlayerInfo[id][pJailTime] == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Acel player nu este in jail!");
+	if(PlayerInfo[id][pJailTime] == 0) return SCM(playerid, COLOR_LGREEN, "Error: Acel player nu este in jail!");
 	ResetWeapons(id);
 	ResetWeapons(id);
 	PlayerInfo[id][pJailed] = 0;
@@ -14301,7 +14296,7 @@ YCMD:aclear(playerid, params[], help) {
 	if(PlayerInfo[playerid][pAdmin] < 2) return true;
 	if(sscanf(params, "u", id)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/aclear <playerid/name>");
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Acel player nu este conectat.");
-	if(PlayerInfo[id][pWantedLevel] == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Acel player nu are wanted!");
+	if(PlayerInfo[id][pWantedLevel] == 0) return SCM(playerid, COLOR_LGREEN, "Error: Acel player nu are wanted!");
 	format(string, sizeof(string), "Admin %s has cleared all your warrants!", GetName(playerid));
 	SCM(id, COLOR_LIGHTRED, string);
 	format(string, sizeof(string), "Dispatch: Admin %s has cleared all the warrants on %s.", GetName(playerid), GetName(id));
@@ -14316,12 +14311,12 @@ YCMD:aclear(playerid, params[], help) {
 	return true;
 }
 YCMD:clear(playerid, params[], help) {
-	if(!IsACop(playerid)) return SCM(playerid, COLOR_GREY, "Nu faci parte din factiunea politiei.");
+	if(!IsACop(playerid)) return SCM(playerid, COLOR_GREY, "Ban khong thuoc politiei.");
 	new id,string[128],giveplayer[30],sendername[30];
 	if(sscanf(params, "u", id)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/clear <playerid/name>");
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Acel player nu este conectat.");
 	if(id == playerid) return SCM(playerid, COLOR_WHITE, "You cannot clear yourself.");
-	if(PlayerInfo[id][pWantedLevel] == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Acel player nu are wanted!");
+	if(PlayerInfo[id][pWantedLevel] == 0) return SCM(playerid, COLOR_LGREEN, "Error: Acel player nu are wanted!");
 	GetPlayerName(id, giveplayer, sizeof(giveplayer));
 	GetPlayerName(playerid, sendername, sizeof(sendername));
 	format(string, sizeof(string), "%s has cleared all your warrants!", sendername);
@@ -14373,7 +14368,7 @@ YCMD:bonus(playerid, params[], help) {
 	save_vouchers(playerid);
 	GivePlayerCash(playerid, 1, 200000000);
 	GiveVehicle(playerid, 541, 0, 0, 0, 0, 0);
-	SCM(playerid, COLOR_GOLD, "Server Bonus: {FFFFFF}Ai primit $200,000,000 si 2 Vouchere Legendary, level 5, Bullet.");
+	SCM(playerid, COLOR_GOLD, "Server Bonus: {FFFFFF}Ban nhan duoc $200,000,000 si 2 Vouchere Legendary, level 5, Bullet.");
 	return true;
 }
 YCMD:tog(playerid, params[], help) {
@@ -14431,7 +14426,7 @@ YCMD:stoplesson(playerid, params[], help) {
 	return true;
 }
 YCMD:insertcar(playerid, params[], help) {
-	if(PlayerInfo[playerid][pAdmin] < 7) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai acces la aceasta comanda.");
+	if(PlayerInfo[playerid][pAdmin] < 7) return SCM(playerid, COLOR_LGREEN, "Error: Nu ai acces la aceasta comanda.");
 	new model, price, dsstock;
 	if(sscanf(params, "iii", model, price, dsstock)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/insertcar <model> <price> <stock>");
 	if(model < 400 || model > 611) return SCM(playerid,COLOR_WHITE, "Invalid car ID.");
@@ -14653,7 +14648,7 @@ YCMD:freqmembers(playerid, params[], help) {
 	return true;
 }
 YCMD:arrest(playerid, params[], help)  {
-	if(!IsACop(playerid)) return SCM(playerid, COLOR_GREY, "Nu faci parte din factiunea politiei.");
+	if(!IsACop(playerid)) return SCM(playerid, COLOR_GREY, "Ban khong thuoc politiei.");
 	if(OnDuty[playerid] == 0) return SCM(playerid, COLOR_LGREEN, "Nu poti folosi aceasta comanda deoarece nu esti la datorie!");
 	new id,string[186];
 	if(sscanf(params, "u", id)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/arrest <playerid/name>");
@@ -14700,12 +14695,12 @@ YCMD:arrest(playerid, params[], help)  {
 	return true;
 }
 YCMD:trival(playerid, params[], help) {
-	if(PlayerInfo[playerid][pAdmin] < 6) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu esti autorizat sa folosesti aceasta comanda");
-	if(TrivalEvent != 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Este deja un trival event activ.");
+	if(PlayerInfo[playerid][pAdmin] < 6) return SCM(playerid, COLOR_LGREEN, "Error: Nu esti autorizat sa folosesti aceasta comanda");
+	if(TrivalEvent != 0) return SCM(playerid, COLOR_LGREEN, "Error: Este deja un trival event activ.");
 	new text[30], premium;
 	if(sscanf(params, "is[30]", premium, text)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/trival <parize> <text>");
-	if(strlen(text) < 5 || strlen(text) >= 30) return SCM(playerid, COLOR_LGREEN, "Eroare: Texctu trebuie sa fie intre 5 si 30 de caractere.");
-	if(premium < 1 || premium > 2000000000) return SCM(playerid, COLOR_LGREEN, "Eroare: Poti pune intre $1 si $2.000.000.000.");
+	if(strlen(text) < 5 || strlen(text) >= 30) return SCM(playerid, COLOR_LGREEN, "Error: Texctu trebuie sa fie intre 5 si 30 de caractere.");
+	if(premium < 1 || premium > 2000000000) return SCM(playerid, COLOR_LGREEN, "Error: Poti pune intre $1 si $2.000.000.000.");
 	format(TrivalText, 30, text);
 	TrivalPremium = premium;
 	TrivalEvent = 1;
@@ -14793,7 +14788,7 @@ YCMD:rob(playerid, params[], help) {
 	if(PlayerInfo[playerid][pRob] < 10) return SCM(playerid, -1, "Nu poti da rob deoarece nu ai 10 puncte.");
 	if(PlayerInfo[playerid][pWantedLevel] != 0) return SCM(playerid, -1, "Nu poti da rob deoarece ai wanted.");
 	if(targetfind[playerid] != -1) return Dialog_Show(playerid, DIALOG_CHECKPOINT, DIALOG_STYLE_MSGBOX, "Checkpoint", "Ai deja un checkpoint activ.\nDoresti sa-l anulezi? Daca da, apasa pe 'Ok'.", "Ok", "Exit");
-	if(PlayerInfo[playerid][pLevel] < 5) return SCM(playerid, COLOR_LGREEN, "Eroare: Pentru a putea folosi aceasta comanda, ai nevoie de minim level 5.");
+	if(PlayerInfo[playerid][pLevel] < 5) return SCM(playerid, COLOR_LGREEN, "Error: Pentru a putea folosi aceasta comanda, ai nevoie de minim level 5.");
 	PlayerInfo[playerid][pRob] -= 10;
 	Update(playerid, pRobx);
 	new id = InBussines[playerid], string[180];
@@ -14884,7 +14879,7 @@ YCMD:weather(playerid, params[], help) {
 	return true;
 }
 YCMD:sett(playerid, params[], help) {
-	if(PlayerInfo[playerid][pVip] < 1) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai cont VIP!");
+	if(PlayerInfo[playerid][pVip] < 1) return SCM(playerid, COLOR_LGREEN, "Error: Nu ai cont VIP!");
 	new hour, string[30];
 	if(sscanf(params, "i", hour)) return SCM(playerid, COLOR_GREY, "Usage: {FFFFFF}/sett <time>");
 	if(hour < 0 || hour > 23) return SCM(playerid, COLOR_GREY, "Invalid (0 - 23).");
@@ -14894,7 +14889,7 @@ YCMD:sett(playerid, params[], help) {
 	return true;
 }
 YCMD:setw(playerid, params[], help) {
-	if(PlayerInfo[playerid][pVip] < 1) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai cont VIP!");
+	if(PlayerInfo[playerid][pVip] < 1) return SCM(playerid, COLOR_LGREEN, "Error: Nu ai cont VIP!");
 	new weather, string[30];
 	if(sscanf(params, "i", weather)) return SCM(playerid, COLOR_GREY, "Usage: {FFFFFF}/setw <weather>");
 	if(weather < 0 || weather > 45) return SCM(playerid, COLOR_GREY, "Invalid (1 - 45).");
@@ -15055,7 +15050,7 @@ YCMD:mute(playerid, params[], help) {
 	if(PlayerInfo[id][pAdmin] > PlayerInfo[playerid][pAdmin]) return SCM(playerid, -1, "Acel player are adminul mai mare ca tine!");
 	PlayerInfo[id][pMuted] = 1;
 	PlayerInfo[id][pMuteTime] = time*60;
-	format(string, sizeof(string), "* Ai primit mute de la %s pentru %d minute, motiv: %s.", GetName(playerid),time,reason);
+	format(string, sizeof(string), "* Ban nhan duoc mute de la %s pentru %d minute, motiv: %s.", GetName(playerid),time,reason);
 	SCM(id, COLOR_WHITE, string);
 	format(string, sizeof(string), "AdmCmd: %s a primit mute de la %s pentru %d minute, motiv: %s.", GetName(id), GetName(playerid),time, reason);
 	SCMTA(COLOR_LIGHTRED, string);
@@ -15078,7 +15073,7 @@ YCMD:unmute(playerid, params[], help) {
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Acel player nu este conectat.");
 	PlayerInfo[id][pMuted] = 0;
 	PlayerInfo[id][pMuteTime] = 0;
-	format(string, sizeof(string), "* Ai primit unmute de la Adminul %s.", GetName(playerid));
+	format(string, sizeof(string), "* Ban nhan duoc unmute de la Adminul %s.", GetName(playerid));
 	SCM(id, COLOR_WHITE, string);
 	format(string, sizeof(string), "AdmCmd: %s i-a dat unmute lui %s.", GetName(playerid),GetName(id));
 	if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(COLOR_WHITE, string,3);
@@ -15147,19 +15142,19 @@ YCMD:exam(playerid, params[], help) {
 		return Dialog_Show(playerid, DIALOG_CHECKPOINT, DIALOG_STYLE_MSGBOX, "Checkpoint", "Ai deja un checkpoint activ.\nDoresti sa-l anulezi? Daca da, apasa pe 'Ok'.", "Ok", "Exit");
 	
 	if(!PlayerToPoint(2, playerid, 2183.7578,2295.5403,10.8203)) 
-		return SCM(playerid, COLOR_LGREEN, "Eroare: Nu esti in locul potrivit.");
+		return SCM(playerid, COLOR_LGREEN, "Error: Nu esti in locul potrivit.");
 
 	if(PlayerInfo[playerid][pCarLic] > 0) 
 		
-		return SCM(playerid, COLOR_LGREEN, "Eroare: Ai deja licenta de condus.");
+		return SCM(playerid, COLOR_LGREEN, "Error: Ai deja licenta de condus.");
 	if(PlayerInfo[playerid][pCarLicS] > 0) 
-		return SCM(playerid, COLOR_LGREEN, "Eroare: Permisul ti-a fost confiscat recent, nu-l poti lua inca!");
+		return SCM(playerid, COLOR_LGREEN, "Error: Permisul ti-a fost confiscat recent, nu-l poti lua inca!");
 	
 	if(InExamen[playerid] == 1) 
 		return SCM(playerid, -1, "Esti deja in examen!");
 
 	if(PlayerMoney(playerid, 1000)) 
-		return SCM(playerid, COLOR_LGREEN, "Eroare: Ai nevoie de $1.000 pentru a da examenul!");
+		return SCM(playerid, COLOR_LGREEN, "Error: Ai nevoie de $1.000 pentru a da examenul!");
 
 	InExamen[playerid] = 1;
 	SetPlayerInterior(playerid, 0);
@@ -15350,7 +15345,7 @@ YCMD:checkweapons(playerid, params[], help) {
 		if(Player_Weapons[i] != 0) {
 			new weaponName[180];
 			GetWeaponName(Player_Weapons[i],weaponName,255);
-			format(string,255,"* %s - Arma: %s, Gloante: %d",GetName(i),weaponName,Player_Ammos[i]);
+			format(string,255,"* %s - vu khi: %s, Gloante: %d",GetName(i),weaponName,Player_Ammos[i]);
 			SCM(playerid,0xFFFFFFAA,string);
 		}
 	}
@@ -15401,7 +15396,7 @@ YCMD:tie(playerid, params[], help) {
 		TogglePlayerControllable(id, 0);
 		PlayerTied[id] = 1;
 	}
-	else SCM(playerid, COLOR_GREY, "Nu este in vehiculul tau sau nu esti soferul.");
+	else SCM(playerid, COLOR_GREY, "Nu este in vehiculul tau sau Ban khong o tren xe.");
 	return true;
 }
 YCMD:untie(playerid, params[], help) {
@@ -15458,7 +15453,7 @@ YCMD:cmc(playerid, params[], help) {
 	return true;
 }
 YCMD:guns(playerid, params[], help) {
-	if(PlayerInfo[playerid][pGunLic] == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai licenta de arme. Cauta un instructor pentru a obtine licenta.");
+	if(PlayerInfo[playerid][pGunLic] == 0) return SCM(playerid, COLOR_LGREEN, "Error: Ban khong co giay phep su dung sung. Cauta un instructor pentru a obtine licenta.");
 	if(InTraining[playerid] == 0) return SCM(playerid, COLOR_LGREEN, "Nu esti in sala de antrenament!");
 	Dialog_Show(playerid, DIALOG_BUYGUN2, DIALOG_STYLE_LIST, "Training guns", "Deagle\nM4\nAK47\nMicro SMG\nShotgun\nBaseball Bat", "Buy", "Exit");
 	return true;
@@ -15487,7 +15482,7 @@ YCMD:whisper(playerid, params[], help) {
 	return true;
 }
 YCMD:setmanager(playerid, params[], help) {
-	if(PlayerInfo[playerid][pScripter] < 1) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai acces la aceasta comanda.");
+	if(PlayerInfo[playerid][pScripter] < 1) return SCM(playerid, COLOR_LGREEN, "Error: Nu ai acces la aceasta comanda.");
 	new id, type;
 	if(sscanf(params, "ii", id, type)) {
 		SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/setmanager <playerid> <type>");
@@ -15609,7 +15604,7 @@ stock TTCFunction(playerid) {
 					if(CP[playerid] != 0 || targetfind[playerid] != -1) return Dialog_Show(playerid, DIALOG_CHECKPOINT, DIALOG_STYLE_MSGBOX, "Checkpoint", "Ai deja un checkpoint activ.\nDoresti sa-l anulezi? Daca da, apasa pe 'Ok'.", "Ok", "Anuleaza");
 					new Float: hp;
 					GetVehicleHealth(vid, hp);
-					if(hp >= 900) return SCM(playerid, COLOR_LGREEN, "Eroare: Vehiculul pe care vrei sa-l tractezi are peste 900.0 HP!");
+					if(hp >= 900) return SCM(playerid, COLOR_LGREEN, "Error: Vehiculul pe care vrei sa-l tractezi are peste 900.0 HP!");
 					SetPVarFloat(playerid, "VehHP", hp);
 					AttachTrailerToVehicle(vid,GetPlayerVehicleID(playerid));
 					new rand;
@@ -15679,7 +15674,7 @@ YCMD:punish(playerid, params[], help) {
 	FreezeTime[id] = time;
 	PlayerInfo[id][pJailTime] += time;
 	SpawnPlayer(id);
-	format(string, sizeof(string), "Ai primit punish de la %s pentru %d secunde.", GetName(playerid), time);
+	format(string, sizeof(string), "Ban nhan duoc punish de la %s pentru %d secunde.", GetName(playerid), time);
 	SCM(id, COLOR_LIGHTBLUE, string);
 	format(string, sizeof(string), "I-ai dat punish lui %s pentru %d secunde.", GetName(id), time);
 	SCM(playerid, COLOR_LIGHTBLUE, string);					
@@ -15737,7 +15732,7 @@ YCMD:fill(playerid, params[], help) {
 	if(Refueling[playerid] == 1) return true;
 	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return true;
 	if(GetPVarInt(playerid, "Engine") == 1) return SCM(playerid,COLOR_GREY,"* Motorul este pornit, opreste-l.");
-	if(Gas[idcar] == 100) return SCM(playerid, COLOR_LGREEN, "Eroare: Ai facut deja plinul.");
+	if(Gas[idcar] == 100) return SCM(playerid, COLOR_LGREEN, "Error: Ai facut deja plinul.");
 	new gasid = GetGasStationID(playerid);
 	if(gasid != -1) {
 		TogglePlayerControllable(playerid, false);
@@ -15787,7 +15782,7 @@ YCMD:fare(playerid, params[], help) {
 
 	new string[180], price, x;
 	if(!FactionVehicle(playerid)) 
-		return SCM(playerid, COLOR_GREY, "Nu esti intr-un vehicul ce apartine factiunii tale!");
+		return SCM(playerid, COLOR_GREY, "Khong o trong xe ce apartine factiunii tale!");
 
 	if(TaxiDuty[playerid] == 1) {
 		Fare[playerid] = 0;
@@ -15795,7 +15790,7 @@ YCMD:fare(playerid, params[], help) {
 		foreach(new i: Player) {
 			if(IsPlayerConnected(i) && TaxiDriver[i] == playerid) UpdateTaxiTextdraw(i);
 		}
-		format(string, sizeof(string), "Acum nu mai esti la datorie si ai primit $%s, banii facuti de tine.", FormatNumber(TaxiMoney[playerid]));
+		format(string, sizeof(string), "Acum nu mai esti la datorie si Ban nhan duoc $%s, banii facuti de tine.", FormatNumber(TaxiMoney[playerid]));
 		SCM(playerid, COLOR_WHITE, string);
 		GivePlayerCash(playerid, 1, TaxiMoney[playerid]);
 		TaxiMoney[playerid] = 0;
@@ -15820,7 +15815,7 @@ YCMD:fare(playerid, params[], help) {
 		if(GetPlayerState(i) == PLAYER_STATE_PASSENGER) {
 			if(IsPlayerInVehicle(i, GetPlayerVehicleID(playerid))) {
 				if(PlayerMoney(playerid, Fare[playerid])) {
-					if(PlayerInfo[playerid][pMember] == 12) format(string, sizeof(string), "Nu ai $%d pentru a intra in acest taxi.", Fare[playerid]);
+					if(PlayerInfo[playerid][pMember] == 12) format(string, sizeof(string), "Ban khong co so tien $%d de vao taxi nay.", Fare[playerid]);
 					else if(PlayerInfo[playerid][pMember] == 15) format(string, sizeof(string), "Nu ai $%d pentru a intra in acest uber.", Fare[playerid]);
 					SCM(playerid, COLOR_GREY, string);
 			 		RemovePlayerFromVehicle(playerid);
@@ -15849,7 +15844,7 @@ function UpdateFare(playerid) {
 			AcceptedService[TaxiDriver[playerid]] = -1;	
 			foreach(new i: Player) {
 				if(IsNearPlayer(playerid, i)) {
-					if(PlayerInfo[playerid][pMember] == 12) format(string, sizeof(string), "* %s a platit taximetristului %s suma de $%s pentru cursa efectuata.", GetName(playerid), GetName(TaxiDriver[playerid]), FormatNumber(TaxiMoney[playerid]));
+					if(PlayerInfo[playerid][pMember] == 12) format(string, sizeof(string), "* %s da tra cho tai xe %s so tien $%s chi phi taxi.", GetName(playerid), GetName(TaxiDriver[playerid]), FormatNumber(TaxiMoney[playerid]));
 					else if(PlayerInfo[playerid][pMember] == 15) format(string, sizeof(string), "* %s a platit uberului %s suma de $%s pentru cursa efectuata.", GetName(playerid), GetName(TaxiDriver[playerid]), FormatNumber(TaxiMoney[playerid]));
 					SCM(i, COLOR_PURPLE, string);
 				}
@@ -15922,7 +15917,7 @@ YCMD:engine(playerid, params[], help) {
 	if(Gas[idcar] == 0) return SCM(playerid,-1, "Acest vehicul nu are benzina.");
 	if(IsABike(idcar)) return SCM(playerid,COLOR_WHITE,"Nu poti folosi aceasta comanda intr-o bicicleta.");
 	if(FindSpawnID(idcar) != 0) {
-		if(CarInfo[FindSpawnID(idcar)][cPoints] == 0) return SCM(playerid, COLOR_GREY, "Acest vehicul nu are asigurarea platita!");
+		if(CarInfo[FindSpawnID(idcar)][cPoints] == 0) return SCM(playerid, COLOR_GREY, "Chiec xe nay chua thanh toan tien bao hiem");
 	}
 	new vehicle = GetVehicleModel(idcar) - 400;
 	if(Refueling[playerid] != 0) return SCM(playerid,COLOR_WHITE,"Iti faci plinul, asteapta.");
@@ -16181,7 +16176,7 @@ YCMD:pay(playerid, params[], help) {
 	new playermoney;
 	playermoney = GetPlayerCash(playerid);
 	if(moneys > 0 && playermoney >= moneys) {
-		if(TradeID[playerid] != -1) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti folosi aceasta comanda atata timp cat esti implicat intr-o afacere!");
+		if(TradeID[playerid] != -1) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti folosi aceasta comanda atata timp cat esti implicat intr-o afacere!");
 		GivePlayerCash(playerid, 0, moneys);
 		GivePlayerCash(id, 1, moneys);
 		PlayerPlaySound(id, 1052, 0.0, 0.0, 0.0);
@@ -16191,7 +16186,7 @@ YCMD:pay(playerid, params[], help) {
 		format(string, sizeof(string), "I-ai trimis lui %s suma de $%s.", giveplayer, FormatNumber(moneys));
 		SCM(playerid, COLOR_WHITE, string);
 		PlayerPlaySound(playerid, 1052, 0.0, 0.0, 0.0);
-		format(string, sizeof(string), "Ai primit $%s de la %s.", FormatNumber(moneys), GetName(playerid));
+		format(string, sizeof(string), "Ban nhan duoc $%s de la %s.", FormatNumber(moneys), GetName(playerid));
 		SCM(id, COLOR_WHITE, string);
 		Update(id, pCashx);
 		Update(playerid, pCashx);
@@ -16339,7 +16334,7 @@ YCMD:givegun(playerid, params[], help) {
 	if(sscanf(params, "uii",id,gun,ammo)) return SCM(playerid,COLOR_GREY, "Sintaxa: {FFFFFF}/givegun <Nume/ID> <Weapon ID> <Gloante>");
 	if(gun < 1||gun > 46||gun==19||gun==20||gun==21||gun==45) return SCM(playerid,COLOR_WHITE,"Invalid weapond ID.");
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Acel player nu este conectat.");
-	if(PlayerInfo[id][pGunLic] == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Acel player nu are licenta de arme.");
+	if(PlayerInfo[id][pGunLic] == 0) return SCM(playerid, COLOR_LGREEN, "Error: Acel player nu are licenta de arme.");
 	ServerWeapon(id, gun, ammo);
 	GetPlayerName(id, giveplayer, sizeof(giveplayer));
 	GetPlayerName(playerid, sendername, sizeof(sendername));
@@ -16361,7 +16356,7 @@ YCMD:usedrugs(playerid, params[], help) {
 	if(PlayerToPoint(300, playerid, -1423.5153,935.8321,1036.4756)) return SCM(playerid, -1, "Nu poti folosi droguri in arena de evente.");
 	if(PaintType[playerid] != 0) return SCM(playerid, -1, "Nu poti folosi aceasta comanda in paintball!");
 	if(PlayerInfo[playerid][pDrugs] < 1) return SCM(playerid, COLOR_GREY, "Nu ai destule droguri.");
-	if(IsPlayerInAnyVehicle(playerid)) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti folosi droguri dintr-un vehicul!");
+	if(IsPlayerInAnyVehicle(playerid)) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti folosi droguri dintr-un vehicul!");
 	PlayerStoned[playerid] += 2;
 	new sendername[25];
 	GetPlayerName(playerid, sendername, sizeof(sendername));
@@ -16445,7 +16440,7 @@ YCMD:buylevel(playerid, params[], help) {
 	GivePlayerCash(playerid, 0, costlevel);
 	PlayerInfo[playerid][pLevel]++;
 	PlayerInfo[playerid][pExp] -= expamount;
-	format(string, sizeof(string), "Felicitari! Acum, ai nivel %d.",PlayerInfo[playerid][pLevel]);
+	format(string, sizeof(string), "Chuc mung! Acum, ai nivel %d.",PlayerInfo[playerid][pLevel]);
 
 	SCM(playerid,COLOR_LIGHTBLUE,string);
 	format(string, sizeof(string), "%s are acum nivel %d.", GetName(playerid), PlayerInfo[playerid][pLevel]);
@@ -16469,8 +16464,8 @@ YCMD:buylevel(playerid, params[], help) {
 		foreach(new i: Player) {
 			if(IsPlayerConnected(i) && PlayerInfo[i][pSQLID] == PlayerInfo[playerid][pReferral]) {
 				type = 1;
-				if(money != 0 && rp != 0) format(string, sizeof(string), "Ai primit $%s si %d RP-uri deoarece %s(%d) a avansat la nivel %d.", FormatNumber(money), rp, GetName(playerid), playerid, PlayerInfo[playerid][pLevel]);
-				else format(string, sizeof(string), "Ai primit $%s deoarece %s(%d) a avansat la nivel %d.", FormatNumber(money), GetName(playerid), playerid, PlayerInfo[playerid][pLevel]);
+				if(money != 0 && rp != 0) format(string, sizeof(string), "Ban nhan duoc $%s si %d RP-uri deoarece %s(%d) a avansat la nivel %d.", FormatNumber(money), rp, GetName(playerid), playerid, PlayerInfo[playerid][pLevel]);
+				else format(string, sizeof(string), "Ban nhan duoc $%s deoarece %s(%d) a avansat la nivel %d.", FormatNumber(money), GetName(playerid), playerid, PlayerInfo[playerid][pLevel]);
 				SCM(i, COLOR_MONEY, string);
 				PlayerInfo[i][pExp] += rp;
 				GivePlayerBank(i, money);	
@@ -16486,8 +16481,8 @@ YCMD:buylevel(playerid, params[], help) {
 			cache_get_value_name(0, "name", szResult); format(name, 64, szResult);
 			cache_delete(result);
 
-			if(money != 0 && rp != 0) format(string, sizeof(string), "Ai primit $%s si %d RP-uri deoarece %s a avansat la nivel %d.", FormatNumber(money), rp, GetName(playerid), PlayerInfo[playerid][pLevel]);
-			else format(string, sizeof(string), "Ai primit $%s deoarece %s a avansat la nivel %d.", FormatNumber(money), GetName(playerid), PlayerInfo[playerid][pLevel]);				
+			if(money != 0 && rp != 0) format(string, sizeof(string), "Ban nhan duoc $%s si %d RP-uri deoarece %s a avansat la nivel %d.", FormatNumber(money), rp, GetName(playerid), PlayerInfo[playerid][pLevel]);
+			else format(string, sizeof(string), "Ban nhan duoc $%s deoarece %s a avansat la nivel %d.", FormatNumber(money), GetName(playerid), PlayerInfo[playerid][pLevel]);				
 			InsertEmail(name, "AdmBot", string, 0);
 		}
 		new query[256];
@@ -16696,10 +16691,10 @@ YCMD:startwork(playerid, params[], help) {
 		return SCM(playerid, -1, "Foloseste /fish pentru a incepe munca la acest job!");
 	
 	if(IsPlayerInAnyVehicle(playerid)) 
-		return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti aceasta comanda dintr-un vehicul!");
+		return SCM(playerid, COLOR_LGREEN, "Error: Nu poti aceasta comanda dintr-un vehicul!");
 
 	if(PlayerInfo[playerid][pJob] == 0) 
-		return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai un job.");
+		return SCM(playerid, COLOR_LGREEN, "Error: Nu ai un job.");
 
 	if(JobWorking[playerid] == 1) 
 		return SCM(playerid, COLOR_GREY, "Muncesti deja.");
@@ -16722,7 +16717,7 @@ YCMD:startwork(playerid, params[], help) {
 					return SCM(playerid, COLOR_GREY, "Ai deja un sac de faina.");
 				
 				if(PlayerInfo[playerid][pCarLic] == 0) 
-					return SCM(playerid, COLOR_LGREEN, "Eroare: Ai nevoie de o licenta de condus!");
+					return SCM(playerid, COLOR_LGREEN, "Error: Ai nevoie de o licenta de condus!");
 				
 				JobSeconds[playerid] = 60;
 				CarAngle = 153.1984;
@@ -16740,7 +16735,7 @@ YCMD:startwork(playerid, params[], help) {
 		case 2: {
 			if(PlayerToPoint(7, playerid, 1636.2758,698.3583,10.8203)) {
 				if(PlayerInfo[playerid][pCarLic] == 0) 
-					return SCM(playerid, COLOR_LGREEN, "Eroare: Ai nevoie de o licenta de condus!");
+					return SCM(playerid, COLOR_LGREEN, "Error: Ai nevoie de o licenta de condus!");
 
 				CarAngle = 2.3953;
 				CP[playerid] = 52;
@@ -16748,12 +16743,12 @@ YCMD:startwork(playerid, params[], help) {
 
 				new szDialog2[400];				
 				strcat(szDialog2, "Category\tType\tSkill\n");
-				strcat(szDialog2, "Clothes\t{35DE1F}Legal\t1+\n");
-				strcat(szDialog2, "Food\t{35DE1F}Legal\t1+\n");
-				strcat(szDialog2, "Furniture\t{35DE1F}Legal\t1+\n");
-				strcat(szDialog2, "Explosible\t{35DE1F}Legal\t2+\n");
-				strcat(szDialog2, "Guns\t{F21313}Illegal\t3+\n");
-				strcat(szDialog2, "Stolen cars\t{F21313}Illegal\t3+\n");
+				strcat(szDialog2, "Clothes\t{35DE1F}Hop phap\t1+\n");
+				strcat(szDialog2, "Food\t{35DE1F}Hop phap\t1+\n");
+				strcat(szDialog2, "Furniture\t{35DE1F}Hop phap\t1+\n");
+				strcat(szDialog2, "Explosible\t{35DE1F}Hop phap\t2+\n");
+				strcat(szDialog2, "Guns\t{F21313}Bat hop phap\t3+\n");
+				strcat(szDialog2, "Stolen cars\t{F21313}Bat hop phap\t3+\n");
 				Dialog_Show(playerid, DIALOG_TRUCKER, DIALOG_STYLE_TABLIST_HEADERS, "Choose destination:", szDialog2, "Select", "Cancel");			
 			}
 			else {
@@ -16790,15 +16785,15 @@ YCMD:startwork(playerid, params[], help) {
 		}
 		case 4: {
 			if(PlayerInfo[playerid][pWantedLevel] != 0) 
-				return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti munci deoarece ai wanted!");
+				return SCM(playerid, COLOR_LGREEN, "Error: Nu poti munci deoarece ai wanted!");
 			
 			if(!PlayerToPoint(10, playerid, 2770.2822,-1610.9043,11.0418)) {				
-				SCM(playerid, COLOR_GREY, "Nu esti la locul unde poti incepe munca. Ti-am pus un checkpoint, du-te la el!");
+				SCM(playerid, COLOR_GREY, "Nu esti la locul unde poti incepe munca. Ti-am pus un checkpoint, Den diem el!");
 				SetPlayerCheckpointEx(playerid, 2770.2822,-1610.9043,11.0418, 10.0);
 				CP[playerid] = 53;
 				return true;
 			}
-			if(PlayerInfo[playerid][pCarLic] == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Ai nevoie de o licenta de condus pentru a putea munci la acest job!");
+			if(PlayerInfo[playerid][pCarLic] == 0) return SCM(playerid, COLOR_LGREEN, "Error: Ai nevoie de o licenta de condus pentru a putea munci la acest job!");
 			CP[playerid] = 156;
 			new rand = random(3);			
 			switch(rand) {
@@ -16808,7 +16803,7 @@ YCMD:startwork(playerid, params[], help) {
 				case 3: SetPlayerCheckpointEx(playerid, 681.2267,-442.6591,16.3633, 5.0);
 			}
 			
-			format(string, sizeof(string), "Du-te la checkpoint-ul de pe mapa pentru a livra materialele!");
+			format(string, sizeof(string), "Den diem checkpoint tren ban do de livra materialele!");
 			PlayerTextDrawSetString(playerid, InfosTD, string);
 			defer HideTextdraw(playerid);
 			PlayerTextDrawShow(playerid, InfosTD);
@@ -16821,13 +16816,13 @@ YCMD:startwork(playerid, params[], help) {
 		case 5..6: return true;
 		case 7: {
 			if(PlayerToPoint(7, playerid, -2667.0920,270.6440,3.9366)) {
-				if(PlayerInfo[playerid][pCarLic] == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Ai nevoie de o licenta de condus pentru a putea munci la acest job!");
+				if(PlayerInfo[playerid][pCarLic] == 0) return SCM(playerid, COLOR_LGREEN, "Error: Ai nevoie de o licenta de condus pentru a putea munci la acest job!");
 				CarAngle = 0;
 				CP[playerid] = 155;
 				new j = random(housess)+1;
 				if(j == 0) j = 1;
 				SetPlayerCheckpointEx(playerid, HouseInfo[j][hEntrancex],HouseInfo[j][hEntrancey],HouseInfo[j][hEntrancez], 7.0);
-				format(string, sizeof(string), "Du-te la punctul ~r~~h~rosu~w~~h~ de pe mapa pentru a livra pizza.~n~Distanta: ~y~%0.1fm.", GetPlayerDistanceFromPoint(playerid, HouseInfo[j][hEntrancex],HouseInfo[j][hEntrancey],HouseInfo[j][hEntrancez]));
+				format(string, sizeof(string), "Den diem ~r~~h~rosu~w~~h~ tren ban do de giao pizza.~n~khoang cach: ~y~%0.1fm.", GetPlayerDistanceFromPoint(playerid, HouseInfo[j][hEntrancex],HouseInfo[j][hEntrancey],HouseInfo[j][hEntrancez]));
 				PlayerTextDrawSetString(playerid, InfosTD, string);
 				defer HideTextdraw(playerid);
 				PlayerTextDrawShow(playerid, InfosTD);				
@@ -16835,19 +16830,19 @@ YCMD:startwork(playerid, params[], help) {
 			else {
  				if(CP[playerid] != 0) return Dialog_Show(playerid, DIALOG_CHECKPOINT, DIALOG_STYLE_MSGBOX, "Checkpoint", "Ai deja un checkpoint activ.\nDoresti sa-l anulezi? Daca da, apasa pe 'Ok'.", "Ok", "Exit");
 			  	CP[playerid] = 53;
-				SCM(playerid, COLOR_GREY, "Nu esti la locul unde poti incepe munca. Ti-am pus un checkpoint, du-te la el!");
+				SCM(playerid, COLOR_GREY, "Nu esti la locul unde poti incepe munca. Ti-am pus un checkpoint, Den diem el!");
 				SetPlayerCheckpointEx(playerid,-2667.0920,270.6440,3.9366, 7.0);
 				return true;
 			}
 		}	
 		case 8: {
 			if(!PlayerToPoint(6, playerid, 2198.6216,929.7672,10.8876)) {
-				SCM(playerid, COLOR_GREY, "Nu esti la locul unde poti incepe munca. Ti-am pus un checkpoint, du-te la el!");
+				SCM(playerid, COLOR_GREY, "Nu esti la locul unde poti incepe munca. Ti-am pus un checkpoint, Den diem el!");
 				SetPlayerCheckpointEx(playerid, 2198.6216,929.7672,10.8876, 6.0);
 				CP[playerid] = 53;
 				return true;
 			}
-			if(PlayerInfo[playerid][pCarLic] == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Ai nevoie de o licenta de condus pentru a putea munci la acest job!");
+			if(PlayerInfo[playerid][pCarLic] == 0) return SCM(playerid, COLOR_LGREEN, "Error: Ai nevoie de o licenta de condus pentru a putea munci la acest job!");
 			CP[playerid] = 57;
 			
 			new rand = random(3);
@@ -16863,20 +16858,20 @@ YCMD:startwork(playerid, params[], help) {
 			Pos[2] = 10.8888; 
 			CarAngle = 180.7365;
 
-			PlayerTextDrawSetString(playerid, InfosTD, "Du-te la punctul ~r~rosu~w~~h~ pentru a incarca coletele!");
+			PlayerTextDrawSetString(playerid, InfosTD, "Den diem ~r~rosu~w~~h~ pentru a incarca coletele!");
 			defer HideTextdraw(playerid);
 			PlayerTextDrawShow(playerid, InfosTD);	
 		}	
 		case 9: return true;	
 		case 10: {
 			if(!PlayerToPoint(7, playerid, 981.3931,2162.7891,10.5850)) {
-				SCM(playerid, COLOR_GREY, "Nu esti la locul unde poti incepe munca. Ti-am pus un checkpoint, du-te la el!");
+				SCM(playerid, COLOR_GREY, "Nu esti la locul unde poti incepe munca. Ti-am pus un checkpoint, Den diem el!");
 				SetPlayerCheckpointEx(playerid, 981.3931,2162.7891,10.5850, 7.0);
 				CP[playerid] = 53;
 				return true;
 			}	
-			if(PlayerInfo[playerid][pCarLic] == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Ai nevoie de o licenta de condus pentru a putea munci la acest job!");
-			PlayerTextDrawSetString(playerid, InfosTD, "Du-te la ~r~~h~checkpoint-ul~w~~h~ de pe mapa pentru a lua marfa!");
+			if(PlayerInfo[playerid][pCarLic] == 0) return SCM(playerid, COLOR_LGREEN, "Error: Ai nevoie de o licenta de condus pentru a putea munci la acest job!");
+			PlayerTextDrawSetString(playerid, InfosTD, "Den diem ~r~~h~checkpoint~w~~h~ tren ban do de lua marfa!");
 			defer HideTextdraw(playerid);
 			PlayerTextDrawShow(playerid, InfosTD);			
 			DisablePlayerCheckpointEx(playerid);
@@ -17155,7 +17150,7 @@ YCMD:stopwork(playerid, params[], help) {
 	DisablePlayerCheckpointEx(playerid);
 	JobWorking[playerid] = 0;
 	if(HaveFish[0][playerid] != 0) {
-		SCM(playerid, COLOR_YELLOW, "Du-te la checkpoint-ul de pe mapa!");
+		SCM(playerid, COLOR_YELLOW, "Den diem checkpoint de pe mapa!");
 		SetPlayerCheckpointEx(playerid, 840.5792,-2150.7822,1.1482, 10.0);
 		CP[playerid] = 373;	
 	}
@@ -17512,7 +17507,7 @@ YCMD:givevehicle(playerid, params[], help) {
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_GREY, "Acel player nu este conectat.");
 	else if(GetSlots(id) <= Iter_Count(MyVehicle[id])) return SCM(playerid, -1, "Acel player are numarul maxim de masini personale! Isi poate cumpara un slot din /shop.");
 	
-	format(string, sizeof(string), "* Ai primit un %s de la administratorul %s.", aVehicleNames[model-400], GetName(playerid));
+	format(string, sizeof(string), "* Ban nhan duoc un %s de la administratorul %s.", aVehicleNames[model-400], GetName(playerid));
 	SCM(id, COLOR_YELLOW, string);
 	format(string, sizeof(string), "* I-ai dat lui %s un %s.", GetName(id), aVehicleNames[model-400]);
 	SCM(playerid, COLOR_YELLOW, string);				
@@ -17594,7 +17589,7 @@ YCMD:quitclan(playerid, params[], help) {
 	new clanid = PlayerInfo[playerid][pClan];
 	if(clanid == 0) return SCM(playerid, COLOR_GREY, "Nu faci parte dintr-un clan!");
 	if(PlayerInfo[playerid][pClanRank] == 6) return SCM(playerid, -1, "Nu poti parasi clanul deoarece esti lider!");
-	Dialog_Show(playerid, DIALOG_QUITCLAN, DIALOG_STYLE_MSGBOX, "Server:", "Esti sigur ca vrei sa parasesti acest clan?", "Da", "Nu");
+	Dialog_Show(playerid, DIALOG_QUITCLAN, DIALOG_STYLE_MSGBOX, "Server:", "Esti sigur ca vrei sa parasesti acest clan?", "Co", "Khong");
 	return true;
 }
 YCMD:clanduty(playerid, params[], help) {
@@ -17604,7 +17599,7 @@ YCMD:clanduty(playerid, params[], help) {
 		case 0: SCM(playerid, -1, "Acum, esti la datoria clanului!"), ClanDuty[playerid] = 1;
 		case 1: {
 			if(StartedSpray[playerid] == 1 || ClanDuty[playerid] == 1) {
-				SCM(playerid, COLOR_LGREEN, "Eroare: Nu mai esti la datoria clanului!");
+				SCM(playerid, COLOR_LGREEN, "Error: Nu mai esti la datoria clanului!");
 				GraffitiInfo[StartedSpray2[playerid]][gfAttacked] = 0;
 				StartedSpray[playerid] = 0;
 				StartedSpray2[playerid] = 0;
@@ -17617,8 +17612,8 @@ YCMD:clanduty(playerid, params[], help) {
 	return true;
 }
 YCMD:createclanhq(playerid, params[], help) {
-	if(PlayerInfo[playerid][pAdmin] < 7) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu esti autorizat sa folosesti aceasta comanda.");
-	if(clanhqid >= MAX_CLANHQ) return SCMf(playerid, COLOR_LGREEN, "Eroare: Poti pune maxim %d clan HQ.", MAX_CLANHQ);
+	if(PlayerInfo[playerid][pAdmin] < 7) return SCM(playerid, COLOR_LGREEN, "Error: Nu esti autorizat sa folosesti aceasta comanda.");
+	if(clanhqid >= MAX_CLANHQ) return SCMf(playerid, COLOR_LGREEN, "Error: Poti pune maxim %d clan HQ.", MAX_CLANHQ);
 	new price;
 	if(sscanf(params, "i", price)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/createclanhq <price>");
 	gQuery[0] = EOS;
@@ -17666,7 +17661,7 @@ YCMD:findclanhq(playerid, params[], help) {
 	return true;
 }
 YCMD:moveclanhq(playerid, params[], help) {
-	if(PlayerInfo[playerid][pAdmin] < 7) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu esti autorizat sa folosesti aceasta comanda.");
+	if(PlayerInfo[playerid][pAdmin] < 7) return SCM(playerid, COLOR_LGREEN, "Error: Nu esti autorizat sa folosesti aceasta comanda.");
 	new id;
 	if(sscanf(params, "i", id)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/moveclanhq <HQ id>");
 	new Float: Pos[3], query[128];
@@ -17692,13 +17687,13 @@ YCMD:gotoclanhq(playerid, params[], help) {
 	return true;
 }
 YCMD:buyclanhq(playerid, params[], help) {
-	if(PlayerInfo[playerid][pClan] == 0 && PlayerInfo[playerid][pClanRank] != 6) return SCM(playerid, COLOR_LGREEN, "Eroare: Doar leader-ul clanului poate cumpara un clan.");
+	if(PlayerInfo[playerid][pClan] == 0 && PlayerInfo[playerid][pClanRank] != 6) return SCM(playerid, COLOR_LGREEN, "Error: Doar leader-ul clanului poate cumpara un clan.");
 	new idd = PlayerInfo[playerid][pClan];
-	if(ClanInfo[idd][clHQ] > 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Ai deja un clan HQ!");
+	if(ClanInfo[idd][clHQ] > 0) return SCM(playerid, COLOR_LGREEN, "Error: Ai deja un clan HQ!");
 	for(new i = 1; i < sizeof(ClanHQInfo); i++) {
 		if(PlayerToPoint(2, playerid, ClanHQInfo[i][cPosX], ClanHQInfo[i][cPosY], ClanHQInfo[i][cPosZ])) {
-			if(ClanHQInfo[i][cClan] != 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Acest clan este cumparat deja.");
-			if(ClanInfo[idd][clPremiumPoints] < ClanHQInfo[i][cPrice]) return SCM(playerid, COLOR_LGREEN, "Eroare: Fonduri insuficiente!");
+			if(ClanHQInfo[i][cClan] != 0) return SCM(playerid, COLOR_LGREEN, "Error: Acest clan este cumparat deja.");
+			if(ClanInfo[idd][clPremiumPoints] < ClanHQInfo[i][cPrice]) return SCM(playerid, COLOR_LGREEN, "Error: Fonduri insuficiente!");
 			ClanInfo[idd][clPremiumPoints] -= ClanHQInfo[i][cPrice];
 			ClanHQInfo[i][cClan] = PlayerInfo[playerid][pClan];
 			ClanInfo[idd][clHQ] = i;
@@ -17763,9 +17758,9 @@ YCMD:spray(playerid, params[], help) {
 	if(hour >= 00 && hour < 8) return SCM(playerid, -1, "Nu poti folosi aceasta comanda in intervalul 00-08.");
 	for(new h = 0; h < MAX_SAFEZONES; h++) {
 		if(PlayerToPoint(8, playerid, GraffitiInfo[h][gfX], GraffitiInfo[h][gfY], GraffitiInfo[h][gfZ])) {
-			if(StartedSprayOn[playerid] != 0 && StartedSprayOn[playerid] != h) SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti desena pe acest perete!");
-			else if(GraffitiInfo[h][gfOwned] == PlayerInfo[playerid][pClan]) SCM(playerid, COLOR_LGREEN, "Eroare: Acest perete este detinut de clanul tau!");
-			//else if(CountWallSpray(h) == 1) SCM(playerid, COLOR_LGREEN, "Eroare: Mai este o persoana care deseneaza pe acest perete!");
+			if(StartedSprayOn[playerid] != 0 && StartedSprayOn[playerid] != h) SCM(playerid, COLOR_LGREEN, "Error: Nu poti desena pe acest perete!");
+			else if(GraffitiInfo[h][gfOwned] == PlayerInfo[playerid][pClan]) SCM(playerid, COLOR_LGREEN, "Error: Acest perete este detinut de clanul tau!");
+			//else if(CountWallSpray(h) == 1) SCM(playerid, COLOR_LGREEN, "Error: Mai este o persoana care deseneaza pe acest perete!");
 			else {
 				if(StartedSpray[playerid] == 0) {
 					if(GraffitiInfo[h][gfOwned] == 0) format(string, sizeof(string), "Ai inceput sa scrii pe peretele cu id-ul %d, detinut de clanul: Server", h);
@@ -17840,7 +17835,7 @@ YCMD:sellclan(playerid, params[], help) {
 	if(sscanf(params, "ui", id, money)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/sellclan <playerid/name> <money>");
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Acel player nu este conectat!");
 	if(id == playerid) return SCM(playerid, COLOR_GREY, "Nu poti folosi aceasta comanda asupra ta!");
-	if(money < 500000 || money > 100000000) return SCM(playerid, COLOR_GREY, "Un clan se poate vinde pe minim $500,000 si maxim $100,000,000.");
+	if(money < 500000 || money > 100000000) return SCM(playerid, COLOR_GREY, "Un clan se poate vinde pe Toi thieu $500,000 si va toi da $100,000,000.");
 	if(PlayerInfo[id][pClan] != 0) return SCM(playerid, COLOR_GREY, "Acel player este deja intr-un clan!");
 	if(PlayerMoney(id, money)) return SCM(playerid, COLOR_GREY, "Acel player nu are suma de bani necesara!");
 	new string[180];
@@ -18250,14 +18245,14 @@ YCMD:alias(playerid, params[], help) {
 YCMD:tpevent(playerid, params[], help) {
 	if(EventStatus == 0) return SCM(playerid, COLOR_GREY, "Nu este un event activ!");
 	if(InEvent[playerid] == 1) return true;
-	if(JobWorking[playerid] == 1) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti participa la eveniment deoarece muncesti!");
-	if(OnDuty[playerid] == 1) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti participa la eveniment deoarece esti la datorie!");
-	if(PlayerInfo[playerid][pJailTime] != 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti participa la eveniment deoarece esti in inchisoare!");
-	if(PlayerInfo[playerid][pWantedLevel] != 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti participa la eveniment deoarece esti urmarit de politie!");
+	if(JobWorking[playerid] == 1) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti participa la eveniment deoarece muncesti!");
+	if(OnDuty[playerid] == 1) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti participa la eveniment deoarece esti la datorie!");
+	if(PlayerInfo[playerid][pJailTime] != 0) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti participa la eveniment deoarece esti in inchisoare!");
+	if(PlayerInfo[playerid][pWantedLevel] != 0) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti participa la eveniment deoarece esti urmarit de politie!");
 	if(PlayerInfo[playerid][pSleeping] == 1) return true;
-	if(InWar[PlayerInfo[playerid][pMember]] == 1) return SCM(playerid, COLOR_LGREEN, "Eroare: Esti la war, nu poti veni participa la eveniment!");
-	if(PaintType[playerid] != 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti participa la eveniment deoarece esti in paintball. (/paintleave)");
-	if(Escape[playerid] == 1) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti merge la event deoarece evadezi!");
+	if(InWar[PlayerInfo[playerid][pMember]] == 1) return SCM(playerid, COLOR_LGREEN, "Error: Esti la war, nu poti veni participa la eveniment!");
+	if(PaintType[playerid] != 0) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti participa la eveniment deoarece esti in paintball. (/paintleave)");
+	if(Escape[playerid] == 1) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti merge la event deoarece evadezi!");
 	SCM(playerid, COLOR_YELLOW, "Bine ai venit la event!");
 	SetPlayerInterior(playerid, EventInt);
 	SetPlayerVirtualWorld(playerid, EventVW);
@@ -18268,7 +18263,7 @@ YCMD:tpevent(playerid, params[], help) {
 }
 YCMD:starttp(playerid, params[], help) {
 	new result[180], szMessage[180];
-	if(PlayerInfo[playerid][pAdmin] < 1) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai acces!");
+	if(PlayerInfo[playerid][pAdmin] < 1) return SCM(playerid, COLOR_LGREEN, "Error: Nu ai acces!");
 	if(EventStatus == 0) {
 		if(sscanf(params, "s[180]", result)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/starttp <text>");
 		if(FaceReclama(result)) return RemoveFunction(playerid, result);
@@ -18369,8 +18364,8 @@ YCMD:auctions(playerid, params[], help) {
 YCMD:bid(playerid, params[], help) {
 	new suma, string[180];
 	if(Licitatie == 0) return SCM(playerid, -1, "Nu este o licitatie activa!");
-	if(PlayerInfo[playerid][pLevel] < 5 && TipLicitatie == 1) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti licita pentru o casa daca nu ai level 5+!");
-	if(PlayerInfo[playerid][pLevel] < 7 && TipLicitatie == 2) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti licita pentru o afacere daca nu ai level 5+!");
+	if(PlayerInfo[playerid][pLevel] < 5 && TipLicitatie == 1) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti licita pentru o casa daca nu ai level 5+!");
+	if(PlayerInfo[playerid][pLevel] < 7 && TipLicitatie == 2) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti licita pentru o afacere daca nu ai level 5+!");
 	if(sscanf(params, "i", suma)) {
 		SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/bid <suma>");
 		new id = IDLicitatie;
@@ -18399,7 +18394,7 @@ YCMD:bid(playerid, params[], help) {
 	}
 	else if(TipLicitatie == 2 && PlayerInfo[playerid][pBizz] != 255) return SCM(playerid, -1, "Nu poti licita deoarece ai o afacere.");
 	format(string, sizeof(string), "Esti sigur ca vrei sa pui $%s la licitatie?", FormatNumber(suma));
-	Dialog_Show(playerid, DIALOG_BID, DIALOG_STYLE_MSGBOX, "Server:", string, "Da", "Nu");
+	Dialog_Show(playerid, DIALOG_BID, DIALOG_STYLE_MSGBOX, "Server:", string, "Co", "Khong");
 	SelectedMoney[playerid] = suma;
 	return true;
 }
@@ -18422,16 +18417,16 @@ YCMD:acover(playerid, params[], help) {
 	SetPlayerScore(playerid, 1+random(2));
 	SetPlayerSkinEx(playerid, 1+random(100));
 	SetPlayerName(playerid, name);
-	SCM(playerid, -1, "Esti sub acoperire!");
+	SCM(playerid, -1, "Ban dang cai trang (undercover)!");
 	return true;
 }
 YCMD:acoveroff(playerid, params[], help) {
 	if(PlayerInfo[playerid][pAdmin] < 5) return true;
-	if(GetPVarInt(playerid, "Cover") == 0) return SCM(playerid, -1, "Nu esti sub acoperire!");
+	if(GetPVarInt(playerid, "Cover") == 0) return SCM(playerid, -1, "Nu Ban dang cai trang (undercover)!");
 	SetPVarInt(playerid, "Cover", 0);
 	new clanid = PlayerInfo[playerid][pClan];
 	new string[180];
-	SCM(playerid, -1, "Nu mai esti sub acoperire!");
+	SCM(playerid, -1, "Nu mai Ban dang cai trang (undercover)!");
 	if(PlayerInfo[playerid][pClan] != 0 && PlayerInfo[playerid][pTag] == -1) {
 		format(string, sizeof(string), "%s", PlayerInfo[playerid][pUsername]);
 		SetPlayerName(playerid, string);
@@ -18561,7 +18556,7 @@ YCMD:dice(playerid, params[], help) {
 	if(PlayerMoney(playerid, money)) return SCM(playerid,COLOR_WHITE,"Nu ai destui bani!");
 	if(PlayerMoney(userID, money)) return SCM(playerid,COLOR_WHITE,"Acest player nu are destui bani.");
 	if(!ProxDetectorS(10.0, playerid, userID)) return SCM(playerid, COLOR_GREY, "Nu te esti langa acel jucator.");
-	if(DiceMoney[userID] == playerid) return SCM(playerid, COLOR_LGREEN, "Eroare: I-ai trimis deja o invitatie acestui player!");
+	if(DiceMoney[userID] == playerid) return SCM(playerid, COLOR_LGREEN, "Error: I-ai trimis deja o invitatie acestui player!");
 	DiceMoney[userID] = money;
 	DiceID[userID] = playerid;
 	format(szMessage, 256, "%s(%d) te-a invitat sa joci barbut cu el pe suma de $%s! (/accept dice %d).", GetName(playerid), playerid, FormatNumber(money), playerid);
@@ -18577,7 +18572,7 @@ YCMD:puthelmet(playerid, params[], help) {
 	if(Helmet[playerid] == 1) {
 		RemovePlayerAttachedObject(playerid, 3);
 		Helmet[playerid] = 0;
-		format(szMessage, sizeof(szMessage), "* %s si-a scos casca de pe cap.", GetName(playerid));
+		format(szMessage, sizeof(szMessage), "* %s keo non bao hiem ra khoi dau.", GetName(playerid));
 		ProxDetector(30.0, playerid, szMessage, COLOR_PURPLE);
 	}
 	else {
@@ -18696,7 +18691,7 @@ YCMD:setfpo(playerid, params[], help) {
 	new id[25], fp;
 	if(sscanf(params, "s[25]i",id,fp)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/setfp <name> <FP>");
 	new cont = MySQLCheckAccount(id);
-	if(cont == 0) return SCM(playerid, COLOR_ERROR, "Eroare: {FFFFFF}Acest nume nu a fost gasit in baza de date!");
+	if(cont == 0) return SCM(playerid, COLOR_ERROR, "Error: {FFFFFF}Acest nume nu a fost gasit in baza de date!");
 	new query[128];
 	mysql_format(SQL, query,sizeof(query),"UPDATE users SET `FPunish`='%d' WHERE `name`='%s'",fp,id);
 	mysql_tquery(SQL,query, "", "");
@@ -18852,7 +18847,7 @@ function DisablePlayerRaceCheckpointEx(playerid) {
 
 YCMD:gotocp(playerid, params[], help) {
 	if(PlayerInfo[playerid][pAdmin] < 6) return true;
-	if(CP[playerid] == 0) return SCM(playerid, COLOR_RED, "Eroare: Nu ai un checkpoints activ");
+	if(CP[playerid] == 0) return SCM(playerid, COLOR_RED, "Error: Nu ai un checkpoints activ");
 	if(GetPlayerState(playerid) == 2) SetVehiclePosEx(playerid, GetPlayerVehicleID(playerid), CheckpointPos[playerid][0], CheckpointPos[playerid][1], CheckpointPos[playerid][2]);
 	else SetPlayerPosEx(false, playerid, CheckpointPos[playerid][0], CheckpointPos[playerid][1], CheckpointPos[playerid][2]);
 	new vw = GetPlayerVirtualWorld(playerid);
@@ -18917,7 +18912,7 @@ YCMD:cw(playerid, params[], help) {
 	return true;
 }
 YCMD:endlive(playerid, params[], help) {
-	if(PlayerInfo[playerid][pMember] != 9) return SCM(playerid, COLOR_GREY, "Nu faci parte din factiunea News Reporters.");
+	if(PlayerInfo[playerid][pMember] != 9) return SCM(playerid, COLOR_GREY, "Ban khong thuoc News Reporters.");
 	if(TalkingLive[playerid] == 255) return true;
 	SCM(playerid, COLOR_LIGHTBLUE, "* Conversatie terminata.");
 	SCM(TalkingLive[playerid], COLOR_LIGHTBLUE, "* Conversatie terminata.");
@@ -18933,7 +18928,7 @@ YCMD:endlive(playerid, params[], help) {
 	return true;
 }
 YCMD:live(playerid, params[], help) {
-	if(PlayerInfo[playerid][pMember] != 9) return SCM(playerid, COLOR_GREY, "Nu faci parte din factiunea News Reporters.");
+	if(PlayerInfo[playerid][pMember] != 9) return SCM(playerid, COLOR_GREY, "Ban khong thuoc News Reporters.");
 	if(TalkingLive[playerid] != 255) return SCM(playerid, COLOR_GREY, "Esti deja intr-un live.");
 	if(PlayerInfo[playerid][pRank] < 3) return SCM(playerid, -1, "Trebuie sa ai minim rank 3 pentru a da live!");
 	new id;
@@ -19305,7 +19300,7 @@ YCMD:setskin(playerid, params[], help) {
 YCMD:ticket(playerid, params[], help) {
 	if(!IsACop(playerid)) return SCM(playerid, COLOR_GREY, "Nu esti politist.");
 	if(PlayerInfo[playerid][pMember] == 2 || PlayerInfo[playerid][pMember] == 3) return SCM(playerid, COLOR_LGREEN, "Nu poti folosi aceasta comanda!");
-	if(OnDuty[playerid] != 1) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu esti la datorie!");
+	if(OnDuty[playerid] != 1) return SCM(playerid, COLOR_LGREEN, "Error: Nu esti la datorie!");
 	new id,string[128];
 	if(sscanf(params, "u",id)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/ticket <playerid/name>");
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Acel player nu este conectat.");
@@ -19653,7 +19648,7 @@ function GiveJobSalary(playerid) {
 	}
 	MoneyEarned[playerid] += TotalMoneyy;
 	CurseFacute[playerid] ++;
-	format(gString, sizeof(gString), "%s a primit $%s pentru munca efectuata la job-ul %s.", GetName(playerid), FormatNumber(TotalMoneyy), JobInfo[PlayerInfo[playerid][pJob]][jName]);
+	format(gString, sizeof(gString), "%s da nhan duoc $%s cho cong suc da bo ra cho cong viec %s.", GetName(playerid), FormatNumber(TotalMoneyy), JobInfo[PlayerInfo[playerid][pJob]][jName]);
 	InsertLog(playerid, gString, LOG_MONEY);		
 	PlayerTextDrawSetString(playerid, PayDayPTD[1], "Job Status");
 	format(gString, sizeof(gString), "~n~Castig: ~g~$%s~w~~h~~n~%s%s%s%sCastig total: ~g~$%s~n~", FormatNumbers(money), premium, boost, skins, clans, FormatNumbers(TotalMoneyy));
@@ -19666,7 +19661,7 @@ function GiveJobSalary(playerid) {
 	
 	WorkingTime[playerid] = 0;
 	if(JoPlayPoints(playerid) == GetNeedPoints4(playerid, PlayerInfo[playerid][pJob])) {
-		format(gString, sizeof(gString), "* Felicitari! Noul tau skill la acest job este %d.", GetPlayerSkill(playerid));
+		format(gString, sizeof(gString), "* Chuc mung! Noul tau skill la acest job este %d.", GetPlayerSkill(playerid));
 		SCM(playerid, COLOR_YELLOW, gString);
 	} else {
 		if(togjob[playerid] == 0) JobProgress(playerid);	
@@ -19748,9 +19743,9 @@ YCMD:skills(playerid, params[], help) {
 	return true;
 }
 YCMD:creategun(playerid, params[], help) {
-	if(PlayerInfo[playerid][pJob] != 4) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai jobul Arms Dealer!");
-	if(GetPlayerSkill(playerid) < 5) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai skill 5!");
-	if(IsPlayerInAnyVehicle(playerid)) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti folosi aceasta comanda dintr-un vehicul");
+	if(PlayerInfo[playerid][pJob] != 4) return SCM(playerid, COLOR_LGREEN, "Error: Nu ai jobul Arms Dealer!");
+	if(GetPlayerSkill(playerid) < 5) return SCM(playerid, COLOR_LGREEN, "Error: Nu ai skill 5!");
+	if(IsPlayerInAnyVehicle(playerid)) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti folosi aceasta comanda dintr-un vehicul");
 	
 	new result[64];
 	if(sscanf(params, "s[64]", result)) {
@@ -19896,10 +19891,10 @@ YCMD:aq(playerid, params[], help) {
 	return true;
 }
 YCMD:news(playerid, params[], help) {
-	if(PlayerInfo[playerid][pMember] != 9) return SCM(playerid, COLOR_GREY, "Nu faci parte din factiunea News Reporters.");
+	if(PlayerInfo[playerid][pMember] != 9) return SCM(playerid, COLOR_GREY, "Ban khong thuoc News Reporters.");
 	new string[128], hour, minute, second;
 	gettime(hour, minute, second);
-	if(minute < 50 || minute > 59) return SCMf(playerid, COLOR_LGREEN, "Eroare: Poti pune anuturi intre de la %d:50 pana la %d:00", hour, hour+1);
+	if(minute < 50 || minute > 59) return SCMf(playerid, COLOR_LGREEN, "Error: Poti pune anuturi intre de la %d:50 pana la %d:00", hour, hour+1);
 	if(PlayerInfo[playerid][pMuted] == 1) {
 		format(string, sizeof(string), "You can't talk right now! You are muted. (%d seconds)",PlayerInfo[playerid][pMuteTime]);
 		SCM(playerid, COLOR_GREY, string);
@@ -19908,7 +19903,7 @@ YCMD:news(playerid, params[], help) {
 	if(DeelayCommand[playerid][16] != 0) return DeelayTime(playerid, 16);
 	new result[250];
 	if(sscanf(params, "s[250]",result)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/news <text>");
-	if(!FactionVehicle(playerid)) return SCM(playerid, COLOR_GREY, "Nu esti intr-un vehicul ce apartine factiunii tale!");
+	if(!FactionVehicle(playerid)) return SCM(playerid, COLOR_GREY, "Khong o trong xe ce apartine factiunii tale!");
 	format(string, sizeof(string), "News %s: %s", GetName(playerid), result);
 	OOCNews(COLOR_NEWS,string);				
 	UpdateFactionRaport(playerid, 0);	
@@ -20097,10 +20092,10 @@ function GetSkinRare(skin) {
 }
 YCMD:myskins(playerid, params[], help) {
 	if(IsPlayerInAnyVehicle(playerid)) 
-		return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti aceasta comanda dintr-un vehicul!");
+		return SCM(playerid, COLOR_LGREEN, "Error: Nu poti aceasta comanda dintr-un vehicul!");
 	
 	if(OnDuty[playerid] == 1)
-		return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti folosi aceasta comanda cand esti duti.");
+		return SCM(playerid, COLOR_LGREEN, "Error: Nu poti folosi aceasta comanda cand esti duti.");
 
 	for(new i = 0; i < 10; i++) {
 		if(PlayerInfo[playerid][pSkins][i] != -1) PlayerTextDrawSetPreviewModel(playerid, SkinsPTD[i], PlayerInfo[playerid][pSkins][i]);
@@ -20190,7 +20185,7 @@ public OnPlayerModelSelection(playerid, response, listid, modelid) {
 			PlayerInfo[playerid][pChar] = modelid;
 			if(IsACop(playerid) && OnDuty[playerid] == 0) SetPlayerSkinEx(playerid, 250);
 			else SetPlayerSkinEx(playerid, PlayerInfo[playerid][pChar]);
-			if(IsACop(playerid) && OnDuty[playerid] == 0) SCM(playerid, COLOR_CLIENT, "Ti-ai ales skin-ul cu succes. Nu l-ai primit deoarece nu esti la datorie.");
+			if(IsACop(playerid) && OnDuty[playerid] == 0) SCM(playerid, COLOR_CLIENT, "Ti-ai ales skin-ul cu succes. Nu l-Ban nhan duoc deoarece nu esti la datorie.");
 			GivePlayerCash(playerid, 0,1000);
 			new str2[128];
 			mysql_format(SQL, str2,sizeof(str2),"UPDATE users SET `Money`='%d', `MStore`='%d',`CChar`='%d' WHERE `ID`='%d'",MoneyMoney[playerid], StoreMoney[playerid],PlayerInfo[playerid][pChar],PlayerInfo[playerid][pSQLID]);
@@ -20229,7 +20224,7 @@ YCMD:frisk(playerid, params[], help) {
 		if(Player_Weapons[i] != 0) {
 			new weaponName[180];
 			GetWeaponName(Player_Weapons[i],weaponName,255);
-			format(string,255,"* %s, Arma:{FFFFFF} %s, Gloanta:{FFFFFF} %d",GetName(id),weaponName,Player_Ammos[i]);
+			format(string,255,"* %s, vu khi:{FFFFFF} %s, Gloanta:{FFFFFF} %d",GetName(id),weaponName,Player_Ammos[i]);
 			SCM(playerid,0xFFFFFFAA,string);
 		}
 	}
@@ -20241,7 +20236,7 @@ YCMD:contract(playerid, params[], help) {
 	new userID, money, szMessage[180];
 	if(sscanf(params, "ui", userID, money)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/contract <playerid/name> <money>");
 	if(!IsPlayerConnected(userID) && userID == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Acel player nu este conectat.");
-	if(money < 1000 || money > 1000000) return SCM(playerid, COLOR_GREY, "Poti pune un contract pe minim $1,000 sau maxim $1,000,000.");
+	if(money < 1000 || money > 1000000) return SCM(playerid, COLOR_GREY, "Poti pune un contract pe Toi thieu $1,000 sau va toi da $1,000,000.");
 	if(PlayerMoney(playerid, money)) return SCM(playerid, COLOR_GREY, "Nu ai aceasta suma de bani!");
 	if(userID == playerid) return SCM(playerid, COLOR_GREY, "Nu poti pune un contract pe tine!");
 	if(PlayerInfo[userID][pMember] == 11 || PlayerInfo[userID][pLeader] == 11) return SCM(playerid, COLOR_GREY, "Nu poti pune un contract pe un Hitman!");
@@ -20283,9 +20278,9 @@ YCMD:contracts(playerid, params[], help) {
 
 stock FailRaport(playerid, id) {
 	switch(id) {
-		case 0: SCM(playerid, COLOR_YELLOW, "Ai primit un punct de raport invalid deoarece nu ai telefonul inchis.");
-		case 1: SCM(playerid, COLOR_YELLOW, "Ai primit un punct de raport invalid deoarece nu esti undercover.");
-		case 2: SCM(playerid, COLOR_YELLOW, "Ai primit un punct de raport invalid deoarece distanta dintre tine si tinta este mai mica de 100m.");
+		case 0: SCM(playerid, COLOR_YELLOW, "Ban nhan duoc un punct de raport invalid deoarece nu ai telefonul inchis.");
+		case 1: SCM(playerid, COLOR_YELLOW, "Ban nhan duoc un punct de raport invalid deoarece nu esti undercover.");
+		case 2: SCM(playerid, COLOR_YELLOW, "Ban nhan duoc un punct de raport invalid deoarece khoang cach dintre tine si tinta este mai mica de 100m.");
 	}
 	PlayerInfo[playerid][pInvalidCommands] ++;
 	UpdateVar(playerid, "InvalidCommands", PlayerInfo[playerid][pInvalidCommands]);
@@ -20299,13 +20294,13 @@ YCMD:undercover(playerid, params[], help) {
 		SetPVarInt(playerid, "Undercover", 1);		
 		format(string, sizeof(string), "**(( HA Dispatch: Hitman %s (%d) este acum sub acoperire. ))**", GetName(playerid), playerid);
 		SendTeamMessage(11, 0x2C6CBFFF, string);
-		SCM(playerid, COLOR_WHITE, "Acum esti sub acoperire. Playerii nu iti mai vor vedea numele.");
+		SCM(playerid, COLOR_WHITE, "Acum Ban dang cai trang (undercover). Playerii nu iti mai vor vedea numele.");
 		foreach(new i: Player) ShowPlayerNameTagForPlayer(i, playerid, false);
 		PlayerTextDrawShow(playerid, UndercoverTD);
 	}
 	else {
 		SetPVarInt(playerid, "Undercover", 0);
-		SCM(playerid, COLOR_WHITE, "Acum nu mai esti sub acoperire.");
+		SCM(playerid, COLOR_WHITE, "Acum nu mai Ban dang cai trang (undercover).");
 		foreach(new i: Player) ShowPlayerNameTagForPlayer(i, playerid, true);
 		PlayerTextDrawHide(playerid, UndercoverTD);
 	}	
@@ -20329,7 +20324,7 @@ YCMD:gethit(playerid, params[], help) {
 	if(contracts == 0) return SCM(playerid, COLOR_WHITE, "Momentan, nu sunt contracte.");
 	if(contracts == 1) userID = playerID[1];
 	else userID = random(contracts);
-	if(PlayerInfo[userID][pMember] == 11) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti folosi aceasta comanda acum!");
+	if(PlayerInfo[userID][pMember] == 11) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti folosi aceasta comanda acum!");
 	UsedContract[userID] = 1;
 	PlayerHit[playerid] = userID;
 	format(szMessage, sizeof(szMessage), "**(( HA Dispatch: Hitman %s (%d) a preluat un nou contract pentru suma de %d$. ))**", GetName(playerid), playerid, HeadValue[userID]);
@@ -20358,11 +20353,11 @@ YCMD:mycontract(playerid, params[], help) {
 YCMD:quitfaction(playerid, params[], help) {
 	if(PlayerInfo[playerid][pMember] == 0 && PlayerInfo[playerid][pLeader] == 0) return true;
 	if(PlayerInfo[playerid][pLeader] != 0) return SCM(playerid, -1, "Nu poti iesi din aceasta factiune deoarece esti lider!");
- 	Dialog_Show(playerid, DIALOG_QUITFACTION, DIALOG_STYLE_MSGBOX, "Server:", "Esti sigur ca vrei sa parasesti acesta factiune?\nDaca factiunea nu are lider, nu vei primi FP iar daca are vei primi 20 FP!", "Da", "Nu");
+ 	Dialog_Show(playerid, DIALOG_QUITFACTION, DIALOG_STYLE_MSGBOX, "Server:", "Esti sigur ca vrei sa parasesti acesta factiune?\nDaca factiunea nu are lider, nu vei primi FP iar daca are vei primi 20 FP!", "Co", "Khong");
 	return true;
 }
 YCMD:blockfc(playerid, params[], help) {
-	if(PlayerInfo[playerid][pRank] < 6) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai acces la aceasta comanda!");
+	if(PlayerInfo[playerid][pRank] < 6) return SCM(playerid, COLOR_LGREEN, "Error: Nu ai acces la aceasta comanda!");
 	new string[180];
 	switch(FactionChat[PlayerInfo[playerid][pMember]]) {
 		case 0: {
@@ -20849,11 +20844,11 @@ YCMD:sellbiz(playerid, params[], help) return SCM(playerid, COLOR_LGREEN, "Aceas
 YCMD:sellbizto(playerid, params[], help) return SCM(playerid, COLOR_LGREEN, "Aceasta comanda a fost dezactivata deoarece acum se pot face afaceri prin intermediul comenzii /trade.");
 YCMD:sellbiztostate(playerid, params[], help) {
 		
-	if(TradeID[playerid] != -1) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti folosi aceasta comanda atata timp cat esti implicat intr-o afacere!");
+	if(TradeID[playerid] != -1) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti folosi aceasta comanda atata timp cat esti implicat intr-o afacere!");
 	new playername[25];
 	GetPlayerName(playerid, playername, sizeof(playername));
 	if(PlayerInfo[playerid][pBizz] == 255) return SCM(playerid, COLOR_GREY, "Nu detii o afacere.");
-	Dialog_Show(playerid, DIALOG_SELLBIZ, DIALOG_STYLE_MSGBOX, "Server:", "Esti sigur ca vrei sa-ti vinzi afacearea pentru $100,000 la stat?\nDaca apesi pe butonul 'Da', nu mai exista cale de intoarcere!", "Da", "Nu");
+	Dialog_Show(playerid, DIALOG_SELLBIZ, DIALOG_STYLE_MSGBOX, "Server:", "Esti sigur ca vrei sa-ti vinzi afacearea pentru $100,000 la stat?\nDaca apesi pe butonul 'Da', nu mai exista cale de intoarcere!", "Co", "Khong");
 	return true;
 }
 YCMD:buybiz(playerid, params[], help) {
@@ -20895,7 +20890,7 @@ YCMD:buybiz(playerid, params[], help) {
 			mysql_tquery(SQL, gQuery, "", "");
 			UpdateLabel(2,b);
 			finishAchievement(playerid, 2);	
-			SCM(playerid, COLOR_MONEY, "Felicitari! Ai cumparat aceasta afacere.");
+			SCM(playerid, COLOR_MONEY, "Chuc mung! Ai cumparat aceasta afacere.");
 		}
 	}
 	return true;
@@ -21105,10 +21100,10 @@ AntiFlood_Check( playerid, bool:inc=true ) {
 	AntiFlood_Data[playerid][floodRate] = AntiFlood_Data[playerid][floodRate] < 0 ? 0 : AntiFlood_Data[playerid][floodRate];
 	if( AntiFlood_Data[playerid][floodRate] >= RATE_MAX ) {
 		#if THRESOLD_ACTION == 1
-			SCM(playerid,COLOR_WARNING,"Ai primit kick deoarece ai facut spam!");
+			SCM(playerid,COLOR_WARNING,"Ban nhan duoc kick deoarece ai facut spam!");
 			KickEx(playerid);
 		#elseif THRESOLD_ACTION == 2
-			SCM(playerid,COLOR_WARNING,"Ai primit kick deoarece ai facut spam!");
+			SCM(playerid,COLOR_WARNING,"Ban nhan duoc kick deoarece ai facut spam!");
 			KickEx(playerid);
 		#else
 			SCM(playerid,COLOR_WARNING,"Inceteaza sa mai faci spam!");
@@ -21207,7 +21202,7 @@ function CuvinteCheie(text[]) {
 
 function Reclama(playerid, text[]) {
 	if(PlayerInfo[playerid][pAdmin] > 5) return true;
-	SCM(playerid, -1, "Ai primit mute timp de 2 minute deoarece ai facut reclama.");
+	SCM(playerid, -1, "Ban nhan duoc mute timp de 2 minute deoarece ai facut reclama.");
 	PlayerInfo[playerid][pMuteTime] += 2*60;
 	PlayerInfo[playerid][pMuted] = 1;
 	new str[180];
@@ -21249,7 +21244,7 @@ function UnFreezeStation2(playerid) {
 	if(j == 0) j = 1;
 	SetPlayerCheckpointEx(playerid, HouseInfo[j][hEntrancex],HouseInfo[j][hEntrancey],HouseInfo[j][hEntrancez], 7.0);
 	new string[170];
-	format(string, sizeof(string), "Du-te la punctul ~r~~h~rosu~w~~h~ de pe mapa pentru a livra coletul.~n~Pentru a lua coletul, apasa tasta Y in spatele vehiculului!~n~Distanta: ~y~%0.1fm.", GetPlayerDistanceFromPoint(playerid, HouseInfo[j][hEntrancex],HouseInfo[j][hEntrancey],HouseInfo[j][hEntrancez]));
+	format(string, sizeof(string), "Den diem ~r~~h~rosu~w~~h~ tren ban do de giao buu kien.~n~De lay goi hang, ra sau xe va bam Y!~n~khoang cach: ~y~%0.1fm.", GetPlayerDistanceFromPoint(playerid, HouseInfo[j][hEntrancex],HouseInfo[j][hEntrancey],HouseInfo[j][hEntrancez]));
 	PlayerTextDrawSetString(playerid, InfosTD, string);
 	defer HideTextdraw(playerid);
 	PlayerTextDrawShow(playerid, InfosTD);	
@@ -21669,15 +21664,15 @@ function Copcar2(carid) return ServerVehicles[carid][vFaction] == 1 || ServerVeh
 
 YCMD:picklock(playerid, params[], help) {
 	if(JobWorking[playerid] == 0 || PlayerInfo[playerid][pJob] != 4) return true;
-	if(GetPlayerSkill(playerid) != 4) return SCM(playerid, COLOR_LGREEN, "Eroare: Ai nevoie de skill 4 pentru a folosi aceasta comanda!");
+	if(GetPlayerSkill(playerid) != 4) return SCM(playerid, COLOR_LGREEN, "Error: Ai nevoie de skill 4 pentru a folosi aceasta comanda!");
 	if(IsPlayerInAnyVehicle(playerid)) return true;
 	new idd, car;
 	car = GetClosestVehicle(playerid);
 	idd = FindSpawnID(car);
 	if(CarInfo[idd][Spawned] == 0) return SCM(playerid, COLOR_GREY, "Vehicul invalid!");
 	if(CarInfo[idd][cLock] == 0) return SCM(playerid, COLOR_GREY, "Acest vehicul nu este inchis!");
-	if(CarInfo[idd][Userid] == PlayerInfo[playerid][pSQLID]) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu iti poti fura propria masina!");
-	if(IsAFLYCar(car) || IsABOATCar(car)) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu poti folosi aceasta comanda pe un avion/barca/elicopter!");
+	if(CarInfo[idd][Userid] == PlayerInfo[playerid][pSQLID]) return SCM(playerid, COLOR_LGREEN, "Error: Nu iti poti fura propria masina!");
+	if(IsAFLYCar(car) || IsABOATCar(car)) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti folosi aceasta comanda pe un avion/barca/elicopter!");
 	
 	new engine,lights,alarm,doors,bonnet,boot,objective;
 	CarInfo[idd][cLock] = 0;
@@ -22756,7 +22751,7 @@ task LocalTimer[1000]() {
 						case 1: {
 							format(string, sizeof(string), "Ai pierdut casa (%d) deoarece a fost licitata din cauza inactivitatii tale.", IDLicitatie);
 							InsertEmail(HouseInfo[IDLicitatie][hOwner], "AdmBot", string, 0);
-							format(string, sizeof(string), "Ai primit casa %d cu succes. Felicitari!", IDLicitatie);
+							format(string, sizeof(string), "Ban nhan duoc casa %d cu succes. Chuc mung!", IDLicitatie);
 							SCM(LastPlayer, COLOR_YELLOW, string);
 							finishAchievement(LastPlayer, 3);	
 							mysql_format(SQL, query, sizeof(query), "UPDATE `users` SET `House`='999' WHERE `House`='%d'", IDLicitatie);
@@ -22788,7 +22783,7 @@ task LocalTimer[1000]() {
 						case 2: {
 							format(string, sizeof(string), "Ai pierdut afacerea (%d) deoarece a fost licitata din cauza inactivitatii tale.", IDLicitatie);
 							InsertEmail(BizzInfo[IDLicitatie][bOwner], "AdmBot", string, 0);					
-							format(string, sizeof(string), "Ai primit afacerea %d cu succes. Felicitari!", IDLicitatie);
+							format(string, sizeof(string), "Ban nhan duoc afacerea %d cu succes. Chuc mung!", IDLicitatie);
 							SCM(LastPlayer, COLOR_YELLOW, string);
 							finishAchievement(LastPlayer, 2);	
 							mysql_format(SQL, query, sizeof(query), "UPDATE `users` SET `Bizz`='255' WHERE `Bizz`='%d'", IDLicitatie);
@@ -22962,7 +22957,7 @@ function nearPNS2(playerid) {
 YCMD:tutorial(playerid, params[], help) {
 	switch(PlayerInfo[playerid][pTutorial]) {
 		case 1..2: {
-			SCM(playerid, COLOR_LIGHTGOLD, "Mergi la checkpoint-ul marcat pe minimap si tasteaza </exam> pentru a obtine permisul de conducere auto.");
+			SCM(playerid, COLOR_LIGHTGOLD, "Mergi la checkpoint marcat pe minimap si tasteaza </exam> pentru a obtine permisul de conducere auto.");
 			if(InExamen[playerid] < 1) {
 				CP[playerid] = 53;
 				SetPlayerCheckpointEx(playerid, 2333.3345,-17.7633,26.4844, 2.0);
@@ -23022,7 +23017,7 @@ YCMD:setjobowner(playerid, params[], help) {
 	UpdateVar(id, "JobOwner", PlayerInfo[playerid][pJobOwner]);
 	format(string, sizeof(string), "AdmBot: Adminul %s i-a setat lui %s owner la jobul %s", GetName(playerid), JobInfo[job][jOwner], JobInfo[job][jName]);
 	SendAdminMessage(COLOR_ADMCHAT, string,1);
-	format(string, sizeof(string), "Felicitari! Esti noul owner la jobul %s.", JobInfo[job][jName]);
+	format(string, sizeof(string), "Chuc mung! Esti noul owner la jobul %s.", JobInfo[job][jName]);
 	SCM(id, COLOR_YELLOW, string);
 	mysql_format(SQL, query, sizeof(query),"UPDATE jobs SET Owner='%s' WHERE ID='%d'",JobInfo[job][jOwner],job);
 	mysql_tquery(SQL, query, "", "");
@@ -23053,7 +23048,7 @@ YCMD:movejob(playerid, params[], help) {
 }
 YCMD:givecrate(playerid, params[], help) {
 	new id;
-	if(PlayerInfo[playerid][pAdmin] < 6) return SCM(playerid, COLOR_ERROR, "Eroare: {FFFFFF}Nu ai adminul necesar pentru a folosi aceasta comanda.");
+	if(PlayerInfo[playerid][pAdmin] < 6) return SCM(playerid, COLOR_ERROR, "Error: {FFFFFF}Nu ai adminul necesar pentru a folosi aceasta comanda.");
 	if(sscanf(params, "u", id)) return SCM(playerid, COLOR_ERROR, "Usage: {FFFFFF}/givecrate <playerid/name>");
 	if(!IsPlayerConnected(id)) return SCM(playerid, COLOR_WHITE, "Invalid");
 	SetPVarInt(playerid, "id", id);
@@ -23103,8 +23098,8 @@ function GiveBet(playerid, prize, linie, type) {
 		case 4: TotalBet[playerid] = BetPacanele[playerid] * 6;
 		case 5: TotalBet[playerid] = BetPacanele[playerid] * 5;
 	}
-	if(type == 0) format(string, sizeof(string), "Felicitari! Ai castigat $%s (daca vrei, ii poti dubla) [ linie (#%d) ]", FormatNumbers(TotalBet[playerid]), linie);
-	else if(type == 1) format(string, sizeof(string), "Felicitari! Ai castigat $%s (daca vrei, ii poti dubla) [ diagonala (#%d) ]", FormatNumbers(TotalBet[playerid]), linie);
+	if(type == 0) format(string, sizeof(string), "Chuc mung! Ai castigat $%s (daca vrei, ii poti dubla) [ linie (#%d) ]", FormatNumbers(TotalBet[playerid]), linie);
+	else if(type == 1) format(string, sizeof(string), "Chuc mung! Ai castigat $%s (daca vrei, ii poti dubla) [ diagonala (#%d) ]", FormatNumbers(TotalBet[playerid]), linie);
 	SCM(playerid, COLOR_LGREEN, string);
 	GivePlayerCash(playerid, 1, TotalBet[playerid]);
 	GameTextForPlayer(playerid, "~g~YOU WIN", 1000, 6);
@@ -23119,7 +23114,7 @@ function Dublaje(playerid) {
 	IsPacanele[playerid] = 0;
 	IsDublaj[playerid] ++;
 	for(new i = 0; i < 7; i++) PlayerTextDrawShow(playerid, DublajTD[i]);
-	format(string, sizeof(string), "You win: ~g~$%s~n~~w~~h~Press RED or BLACK to double your win.", FormatNumbers(TotalBet[playerid]));
+	format(string, sizeof(string), "You win: ~g~$%s~n~~w~~h~Nhan RED hoac BLACK de nhan doi chien thang cua ban.", FormatNumbers(TotalBet[playerid]));
 	PlayerTextDrawSetString(playerid, DublajTD[2], string);
 	return true;
 }
@@ -23430,7 +23425,7 @@ function UpdateJobGoal(update) {
 				switch(rand) {
 					case 0..10: {
 						amount = RandomEx(50, 100);
-						format(gString, 100, "Job Goal: {FFFFFF}Felicitari! Ai primit %d Gift Points pentru ca sa umplut golul.", amount);
+						format(gString, 100, "Job Goal: {FFFFFF}Chuc mung! Ban nhan duoc %d Gift Points pentru ca sa umplut golul.", amount);
 						SCM(b, 0xF5C738FF, gString);
 						PlayerInfo[b][pGiftPoints] += amount;
 						if(PlayerInfo[b][pGiftPoints] >= 500) PlayerInfo[b][pGiftPoints] = 500;
@@ -23438,14 +23433,14 @@ function UpdateJobGoal(update) {
 					}
 					case 11..19: {
 						amount = RandomEx(15, 30);
-						format(gString, 100, "Job Goal: {FFFFFF}Felicitari! Ai primit %d Premium Points pentru ca sa umplut golul.", amount);
+						format(gString, 100, "Job Goal: {FFFFFF}Chuc mung! Ban nhan duoc %d Premium Points pentru ca sa umplut golul.", amount);
 						SCM(b, 0xF5C738FF, gString);
 						PlayerInfo[b][pPremiumPoints] += amount;
 						Update(b, pPremiumPointsx);		
 					}
 					default: {
 						amount = RandomEx(200, 300);
-						format(gString, 100, "Job Goal: {FFFFFF}Felicitari! Ai primit %d RPoints pentru ca sa umplut golul.", amount);
+						format(gString, 100, "Job Goal: {FFFFFF}Chuc mung! Ban nhan duoc %d RPoints pentru ca sa umplut golul.", amount);
 						SCM(b, 0xF5C738FF, gString);
 						PlayerInfo[b][pHpoints] += amount;
 						Update(b, pHpointsx);
@@ -23475,7 +23470,7 @@ function UpdateGift(i) {
 			new money = RandomEx(3000000, 15000000);
 			format(ParizeRandom, 30, "~g~$%s", FormatNumbers(money));
 			if(GiftStep[i] == 15) { 
-				format(gString, 100, "GiftBox: {FFFFFF}Felicitari! Ai primit $%s.", FormatNumbers(money));
+				format(gString, 100, "GiftBox: {FFFFFF}Chuc mung! Ban nhan duoc $%s.", FormatNumbers(money));
 				SCM(i, COLOR_GREEN, gString); 
 				GivePlayerCash(i, 1, 3000000);
 				PlayerInfo[i][pGiftPoints] -= 200;
@@ -23532,7 +23527,7 @@ task Timers[1000]() {
 	foreach(new i : Rainbows[3]) ChangeRainbowColors(i);
 
 	foreach(new i: Player) {
-		if(login[i] < gettime() && login[i] != -1) SCM(i, COLOR_WARNING, "Ai primit kick deoarece nu ti-ai logat/inregistrat la timp!!"), KickEx(i);
+		if(login[i] < gettime() && login[i] != -1) SCM(i, COLOR_WARNING, "Ban nhan duoc kick deoarece nu ti-ai logat/inregistrat la timp!!"), KickEx(i);
 		
 		if(IsPlayerLogged[i] != 1)
 			continue;
@@ -23576,7 +23571,7 @@ task Timers[1000]() {
 		if(JobLeftTime[i] > 0) {
 			JobLeftTime[i] --;
 			if(JobLeftTime[i] == 0) {
-				SendClientMessage(i, COLOR_GREY, "Job esuat! Ai parasit vehiculul.");
+				SendClientMessage(i, COLOR_GREY, "Cong viec that bai! Ban da roi khoi xe.");
 				if(playerObject[i] != 0) DestroyPlayerObject(i, playerObject[i]), playerObject[i] = 0;
 				if(playerObject2[i] != 0) DestroyObject(playerObject2[i]), playerObject2[i] = 0;
 				JobWorking[i] = 0;
@@ -23804,7 +23799,7 @@ task Timers[1000]() {
 				if(JobSeconds[i] == 0) {
 					new rand = 10 + random(30);
 					KG[i] = rand;
-					format(string, sizeof(string), "Ai primit %d kilograme de faina. Du-te la un Burger Shot pentru a vinde faina.", KG[i]);
+					format(string, sizeof(string), "Ban nhan duoc %d kilograme de faina. Den diem un Burger Shot pentru a vinde faina.", KG[i]);
 					SCM(i, COLOR_MONEY, string);
 					SCM(i, COLOR_WHITE, "Pentru a afla unde este un Burger Shot, foloseste comanda /locations.");
 					JobWorking[i] = 0;
@@ -24457,7 +24452,7 @@ function GetPlayers() {
 YCMD:jetpack(playerid, params[], help) {
 	if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_GREY, "Nu ai acces!");
 	SetPlayerSpecialAction(playerid, 2);
-	SCM(playerid, COLOR_WHITE, "Ai primit un jetpack.");
+	SCM(playerid, COLOR_WHITE, "Ban nhan duoc un jetpack.");
 	return true;
 }
 function GetReports() {
@@ -24638,7 +24633,7 @@ timer Fillup[RefuelWait](playerid) {
 		else {
 			TogglePlayerControllable(playerid, 1);
 			Refueling[playerid] = 0;
-			format(string, sizeof(string), "Eroare: {FFFFFF}Ai nevoie de $%d pentru a face plinul.",FillUp);
+			format(string, sizeof(string), "Error: {FFFFFF}Ai nevoie de $%d pentru a face plinul.",FillUp);
 			SCM(playerid,COLOR_ERROR,string);
 		}
 	}
@@ -25384,7 +25379,7 @@ function CheckMission(playerid, id) {
 		if(PlayerInfo[playerid][pProgress][id] == PlayerInfo[playerid][pNeedProgress][id]) {
 			format(string, sizeof(string), "Misiunea '%s' a fost terminata.", missionName(playerid, PlayerInfo[playerid][pDailyMission][id], id));
 			SCM(playerid, COLOR_YELLOW, string);
-			format(string, sizeof(string), "Ai primit $%s si un RP.", FormatNumber(money));
+			format(string, sizeof(string), "Ban nhan duoc $%s si un RP.", FormatNumber(money));
 			SCM(playerid, COLOR_YELLOW, string);
 			PlayerInfo[playerid][pExp] ++;
 			GivePlayerCash(playerid, 1, money);
@@ -25467,10 +25462,10 @@ function finishAchievement(playerid, id) {
 	PlayerInfo[playerid][pExp] ++;
 	Update(playerid, pRP);
 	
-	format(string, sizeof(string), "(Achievements): {FFFFFF}Felicitari! Realizarea '%s' a fost deblocata.", achievementNames(id));
+	format(string, sizeof(string), "(Achievements): {FFFFFF}Chuc mung! Realizarea '%s' a fost deblocata.", achievementNames(id));
 	SCM(playerid, 0x87E32BFF, string);
 			
-	format(string, sizeof(string), "~n~Realizare deblocata!~n~~y~\"%s\"~w~~h~~n~Ai primit: $%d si 1 respect point.~n~", achievementNames(id), money);
+	format(string, sizeof(string), "~n~Realizare deblocata!~n~~y~\"%s\"~w~~h~~n~Ban nhan duoc: $%d si 1 respect point.~n~", achievementNames(id), money);
 	PlayerTextDrawSetString(playerid, AchivPTD[0], string);
 	PlayerTextDrawShow(playerid, AchivPTD[0]);
 	TextDrawShowForPlayer(playerid, AchivTD[0]);
@@ -25604,7 +25599,7 @@ task SyncUp[60000]() {
 				}
 			}
 		}
-		format(string, sizeof(string), "Server Bonus: {FFFFFF}Ai primit %s din partea server-ului", premiums);
+		format(string, sizeof(string), "Server Bonus: {FFFFFF}Ban nhan duoc %s din partea server-ului", premiums);
 		SCMTA(COLOR_NICEGREEN, string);
 		ServerPremium = random(3);
 		switch(ServerPremium) {
@@ -25743,7 +25738,7 @@ function PayDay(bool: Types) {
 				new checks = PlayerInfo[i][pLevel]*2500+random(3000);
 				if(PlayerInfo[i][pDailyLogin] == 0) {
 					checks += checks*2;
-					SCM(i, COLOR_GOLD, "Daily Login: Ai primit de doua ori mai multe respect points si bani pentru primul tau Payday de astazi.");
+					SCM(i, COLOR_GOLD, "Daily Login: Ban nhan duoc de doua ori mai multe respect points si bani pentru primul tau Payday de astazi.");
 					PlayerInfo[i][pExp] ++;
 				}
 				GivePlayerCash(i, 1, checks);
@@ -25803,7 +25798,7 @@ function PayDay(bool: Types) {
 								PlayerInfo[i][pPremiumPoints] += gold;
 								Update(i, pPremiumPointsx);
 								GivePlayerCash(i, 1, money);
-								format(gString, sizeof(gString), "Ai primit %d Premium Points si $%s deoarece clanul tau are peste 10 teriotrii.", gold, FormatNumber(money));
+								format(gString, sizeof(gString), "Ban nhan duoc %d Premium Points si $%s deoarece clanul tau are peste 10 teriotrii.", gold, FormatNumber(money));
 								SCM(i, COLOR_MONEY, gString);
 							}
 						}				
@@ -26377,7 +26372,7 @@ function CheckAccounts(playerid) {
 		GivePlayerCash(playerid, 1, money);
 		PlayerInfo[playerid][pExp] += rp;
 		Update(playerid, pRP);
-		SCM(playerid, COLOR_WHITE, "{CEED5C}Daily Bonus: {FFFFFF}Felicitari! Ai primit un bonus pentru ca te-ai connectat pe server.");
+		SCM(playerid, COLOR_WHITE, "{CEED5C}Daily Bonus: {FFFFFF}Chuc mung! Ban nhan duoc un bonus pentru ca te-ai connectat pe server.");
 		format(string, sizeof(string), "{CEED5C}Daily Bonus: {FFFFFF}Bonusul consta in %d Respect points si $%s.", rp, FormatNumber(money));
 		SCM(playerid, -1, string);
 		PlayerInfo[playerid][pDailyBonus] = days;
@@ -26400,7 +26395,7 @@ function CheckAccounts(playerid) {
 	}
 	switch(PlayerInfo[playerid][pTutorial]) {
 		case 1..2: {
-			SCM(playerid, COLOR_LIGHTGOLD, "Mergi la checkpoint-ul marcat pe minimap si tasteaza </exam> pentru a obtine permisul de conducere auto.");
+			SCM(playerid, COLOR_LIGHTGOLD, "Mergi la checkpoint marcat pe minimap si tasteaza </exam> pentru a obtine permisul de conducere auto.");
 			if(InExamen[playerid] < 1) {
 				CP[playerid] = 53;
 				SetPlayerCheckpointEx(playerid, 2333.3345,-17.7633,26.4844, 2.0);
@@ -26894,7 +26889,7 @@ public OnPlayerShootDynamicObject(playerid, weaponid, objectid, Float:x, Float:y
 				SetPlayerFreeze(playerid, 2);
 				RemovePlayerWeapon(playerid, 23);
 				SetPlayerPosEx(false, playerid, 2639.8896,-970.0893,39.8281);
-				SCMf(playerid, COLOR_LGREEN, "[Licenses] {FFFFFF} Ai primit licenta de weapon pentru 100 de ore.");
+				SCMf(playerid, COLOR_LGREEN, "[Licenses] {FFFFFF} Ban nhan duoc licenta de weapon pentru 100 de ore.");
 				gQuery[0] = EOS;
 				mysql_format(SQL, gQuery, sizeof(gQuery), "UPDATE `users` SET `GunLic`='1', `GunLicT`='100' WHERE `id`='%d'", PlayerInfo[playerid][pSQLID]);
 				mysql_tquery(SQL, gQuery, "", "");
@@ -27145,7 +27140,7 @@ YCMD:addsafezone(playerid, params[], help) {
 	new range, Float: Pos[3];
 	if(PlayerInfo[playerid][pAdmin] < 6) return SCM(playerid, COLOR_WHITE, "Nu ai acces!");
 	if(sscanf(params, "i", range)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/addsafezone <raza>");
-	if(range < 15) return SCM(playerid, COLOR_ERROR, "Eroare: {FFFFFF}Raza prea mica. (minim 15m)");
+	if(range < 15) return SCM(playerid, COLOR_ERROR, "Error: {FFFFFF}Raza prea mica. (minim 15m)");
 	GetPlayerPos(playerid, Pos[0], Pos[1], Pos[2]);
 	gQuery[0] = EOS;
 	mysql_format(SQL, gQuery, sizeof(gQuery), "INSERT INTO `safezones` (`X`, `Y`, `Z`, `Range`) VALUES ('%f', '%f', '%f', '%d')", Pos[0], Pos[1], Pos[2], range);
@@ -27280,9 +27275,9 @@ YCMD:startquest(playerid, params[], help) {
 	if(PlayerInfo[playerid][pQuestFinish] == 1)
 		return SCM(playerid, COLOR_LGREEN, "Already finished a quest.");
 
-	if(PlayerInfo[playerid][pLevel] < 3) return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai level 3.");
-	if(PlayerInfo[playerid][pBoatLic] == 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Ai nevoie de licenta de barca pentru a incepe quest-ul.");
-	if(StartQuest[playerid] != 0) return SCM(playerid, COLOR_LGREEN, "Eroare: Ai inceput deja quest-ul.");
+	if(PlayerInfo[playerid][pLevel] < 3) return SCM(playerid, COLOR_LGREEN, "Error: Nu ai level 3.");
+	if(PlayerInfo[playerid][pBoatLic] == 0) return SCM(playerid, COLOR_LGREEN, "Error: Ai nevoie de licenta de barca pentru a incepe quest-ul.");
+	if(StartQuest[playerid] != 0) return SCM(playerid, COLOR_LGREEN, "Error: Ai inceput deja quest-ul.");
 	if(CheckObjects(playerid) == sizeof(QuestPos)) {
 		SetPlayerRaceCheckpoint(playerid, 1, 2257.2080,-1340.5638,23.9833, 0.0, 0.0, 0.0, 5.0);
 		CP[playerid] = 669;
@@ -27306,7 +27301,7 @@ YCMD:startquest(playerid, params[], help) {
 	else {
 		CP[playerid] = 43;
 		SetPlayerCheckpointEx(playerid, 2233.9841,-1333.1261,23.9815, 2.0);
-		SCM(playerid, COLOR_LGREEN, "Eroare: Nu esti in zona de unde poti lua quest-ul");
+		SCM(playerid, COLOR_LGREEN, "Error: Nu esti in zona de unde poti lua quest-ul");
 		return true;
 	}
 	return true;
@@ -27336,7 +27331,7 @@ YCMD:stopquest(playerid, params[], help) {
 }
 YCMD:questinfo(playerid, params[], help) {
 	if(PlayerInfo[playerid][pLevel] < 3)
-		return SCM(playerid, COLOR_LGREEN, "Eroare: Nu ai level 3.");
+		return SCM(playerid, COLOR_LGREEN, "Error: Nu ai level 3.");
 
 	SCMEx(playerid, COLOR_WHITE, "{31d6e4}Winter Quest: %d/25 progress.", CheckObjects(playerid));
 	SCM(playerid, COLOR_WHITE, "La acest quest missiunea ta este de a colecta toate cele 25 de cadouri.");
