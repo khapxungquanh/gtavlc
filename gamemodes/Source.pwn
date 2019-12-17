@@ -9345,7 +9345,7 @@ function ShowMDC(playerid, targetid) {
 	MDCOn[playerid] = id;
 	if(PlayerInfo[id][pWantedLevel] == 0) return SCM(playerid, COLOR_GREY, "Nguoi choi do khong bi truy na!");
 	SCM(playerid, -1, "------------------------------------------- MDC -------------------------------------------");	
-	format(string, sizeof(string), "Name: %s (%d) | Wanted: {FFFB00}%d{FFFFFF} | Wanted Time: %d minutes | Chased by %d cops", GetName(id), id, PlayerInfo[id][pWantedLevel], 10-WantedTime[id], ChasedBy(id));
+	format(string, sizeof(string), "Name: %s (%d) | Wanted: {FFFB00}%d{FFFFFF} | Wanted Time: %d minutes | Truy duoi boi %d cops", GetName(id), id, PlayerInfo[id][pWantedLevel], 10-WantedTime[id], ChasedBy(id));
 	SCM(playerid, -1, string);
 	new mdc[256];
 	if(strcmp(PlayerInfo[id][pCrime1],  "Vo toi", false) == 0) { }
@@ -9405,14 +9405,14 @@ YCMD:setwanted(playerid, params[], help) {
 	PlayerInfo[id][pWantedLevel] = nivel;
 	SetPlayerWantedLevel(id, nivel);
 	Update(id, pWantedLevelx);
-	format(string, sizeof(string), "* Warning Adminul %s ia dat lui %s wanted %d, ly do: %s", GetName(playerid), GetName(id), nivel,reason);
+	format(string, sizeof(string), "* Warning: Admin %s set wanted level %d cho %s, ly do: %s", GetName(playerid), nivel, GetName(id), reason);
 	SendAdminMessage(COLOR_WARNING, string ,1);
-	format(string, sizeof(string), "Adminul %s ti-a dat wanted %d, ly do: %s", GetName(playerid), nivel, reason);
+	format(string, sizeof(string), "Admin %s set wanted level %d cho ban, ly do: %s", GetName(playerid), nivel, reason);
 	SCM(playerid, COLOR_YELLOW, string);
 	return true;
 }
 YCMD:freepoints(playerid, params[], help) {
-	if(!IsACop(playerid)) return SCM(playerid, COLOR_GREY, "Ban khong phai la canh sat de politie!");
+	if(!IsACop(playerid)) return SCM(playerid, COLOR_GREY, "Ban khong phai la canh sat!");
 	new string[180];
 	format(string, sizeof(string), "Free points: %d/10", PlayerInfo[playerid][pLawyer]);
 	SCM(playerid, COLOR_LGREEN, string);
@@ -9422,7 +9422,7 @@ YCMD:wanted(playerid, params[], help) {
 	if(!IsACop(playerid)) return SCM(playerid, COLOR_GREY, "Ban khong thuoc to chuc canh sat.");
 	if(OnDuty[playerid] == 0) return SCM(playerid, COLOR_LGREEN, "Ban khong the su dung lenh nay vi ban khong lam viec (onduty)!");
 	new iString[1024],string[300],count = 0,online[50];
-	strcat(iString, "Name\tWanted level\tChased by\n");
+	strcat(iString, "Name\tWanted level\tTruy duoi boi\n");
 	if(IsPlayerConnected(playerid)) {
 		foreach(new i: Player) {
 			if(PlayerInfo[i][pWantedLevel] >= 1) {
@@ -9434,7 +9434,7 @@ YCMD:wanted(playerid, params[], help) {
 			}
 		}
 		format(online, sizeof(online),"Wanted online: %d",count);
-		if(count == 0) return SCM(playerid,COLOR_GREY, "Nu sunt suspecti conectati.");
+		if(count == 0) return SCM(playerid,COLOR_GREY, "Khong co toi pham dang truc tuyen.");
 		Dialog_Show(playerid, DIALOG_WANTED, DIALOG_STYLE_TABLIST_HEADERS, online, iString , "Ok", "Exit");
 	}
 	return true;
@@ -9446,12 +9446,12 @@ YCMD:buyhouse(playerid, params[], help) {
 		if(PlayerToPoint(2, playerid, HouseInfo[h][hEntrancex], HouseInfo[h][hEntrancey], HouseInfo[h][hEntrancez])) {
 			if(HouseInfo[h][hValue] == 0) return true;
 			if(PlayerInfo[playerid][pLevel] < HouseInfo[h][hLevel]) {
-				format(string, sizeof(string), "Ai nevoie de nivel %d pentru a cumpara.", HouseInfo[h][hLevel]);
+				format(string, sizeof(string), "Ban can dat level %d de mua house nay.", HouseInfo[h][hLevel]);
 				SCM(playerid, COLOR_WHITE, string);
 				return true;
 			}
 			if(PlayerInfo[playerid][pHouse] != 999 && strcmp(GetName(playerid), HouseInfo[PlayerInfo[playerid][pHouse]][hOwner], true) == 0) return SCM(playerid, COLOR_WHITE, "Ai deja o casa.");
-			if(PlayerMoney(playerid, HouseInfo[h][hValue])) return SCM(playerid, COLOR_GREY, "Ban khong du tien pentru a cumpara aceasta casa.");
+			if(PlayerMoney(playerid, HouseInfo[h][hValue])) return SCM(playerid, COLOR_GREY, "Ban khong du tien de mua house nay.");
 			id = GetPlayerID(HouseInfo[h][hOwner]);
 			gQuery[0] = EOS;
 			if(id != INVALID_PLAYER_ID) {
@@ -9460,7 +9460,7 @@ YCMD:buyhouse(playerid, params[], help) {
 				GivePlayerBank(id, HouseInfo[h][hValue]);
 				Update(id, pBankx);
 				Update(id, pMBankx);
-				format(string, sizeof(string), "* %s ti-a cumparat casa pentru {19CF2E}$%s{239931}. Banii au fost transferati in contul tau bancar.", GetName(playerid), FormatNumber(HouseInfo[h][hValue]));
+				format(string, sizeof(string), "* %s mua nha cua ban voi gia {19CF2E}$%s{239931}. So tien da duoc chuyen truc tiep vao tai khoan ngan hang cua ban.", GetName(playerid), FormatNumber(HouseInfo[h][hValue]));
 				SCM(id, 0x239931FF, string);
 				mysql_format(SQL, gQuery,sizeof(gQuery),"UPDATE users SET `Bank`='%d', `MBank`='%d' WHERE `ID`='%d'",PlayerInfo[id][pAccount], PlayerInfo[id][pStoreAccount],PlayerInfo[id][pSQLID]);
 				mysql_tquery(SQL, gQuery, "", "");
@@ -9482,7 +9482,7 @@ YCMD:buyhouse(playerid, params[], help) {
 			PlayerInfo[playerid][pInt] = HouseInfo[h][hInterior];
 			PlayerInfo[playerid][pLocal] = h;
 			HouseInfo[h][hValue] = 0;
-			SCM(playerid, COLOR_MONEY, "Chuc mung! Ti-ai cumparat aceasta casa.");
+			SCM(playerid, COLOR_MONEY, "Chuc mung! Ban da mua mot house moi.");
 			Update(playerid,pCashx);
 			Update(playerid,pHousex);
 			mysql_format(SQL,gQuery,sizeof(gQuery),"UPDATE `houses` SET `Owned`='1',`Owner`='%s',`Value`='0' WHERE `ID`='%d'", PlayerInfo[playerid][pUsername],HouseInfo[h][hID]);
@@ -9511,16 +9511,16 @@ function CheckUsers(type, h) {
 YCMD:discord(playerid, params[], help) return SCM(playerid, COLOR_LGREEN, "https://discord.gg/8Tu8KD");
 YCMD:updates(playerid, params[], help) return Dialog_Show(playerid, DIALOG_UPDATES, DIALOG_STYLE_TABLIST_HEADERS, "SERVER UPDATES:", "Update name:\tVersion:\tDate:RO:RPG 2.11.0", "Select", "Cancel");
 YCMD:unrent(playerid, params[], help) {
-	if(IsRentCar[playerid] != 0) { DestroyVehicle(VehicleRent[playerid]), VehicleRent[playerid] = 0, IsRentCar[playerid] = 0, GameTextForPlayer(playerid, "~w~Nu mai ai un vehicul inchiriat.", 5000, 3); }
-	else return SCM(playerid, COLOR_LGREEN, "Error: Ban khong co ai un vehicul inchiriat!");
+	if(IsRentCar[playerid] != 0) { DestroyVehicle(VehicleRent[playerid]), VehicleRent[playerid] = 0, IsRentCar[playerid] = 0, GameTextForPlayer(playerid, "~w~Ban khong con thue mot chiec xe.", 5000, 3); }
+	else return SCM(playerid, COLOR_LGREEN, "Error: Ban khong thue mot chiec xe!");
 	return true;
 }
 YCMD:rentveh(playerid, params[], help) {
 	new string[128];
-	if(GetPlayerVirtualWorld(playerid) > 0) return SCM(playerid, COLOR_LGREEN, "Nu poti folosi aceasta comanda cand esti in virtual world!");
+	if(GetPlayerVirtualWorld(playerid) > 0) return SCM(playerid, COLOR_LGREEN, "Ban khong the thue xe o virtual world!");
 	if(PlayerInfo[playerid][pCarLic] < 1) return SCM(playerid, COLOR_LIGHTGREEN, "Error: Ban khong co giay phep lai xe.");
-	if(IsRentCar[playerid] != 0) return SCM(playerid, COLOR_WHITE, "Ai deja un vehicul inchiriat.");
-	if(!PlayerToPoint(5, playerid, 2250.7197,-83.0548,26.5266)) return SCM(playerid, COLOR_WHITE, "Nu esti la Rent Bike");
+	if(IsRentCar[playerid] != 0) return SCM(playerid, COLOR_WHITE, "Ban da thue mot chiec xe.");
+	if(!PlayerToPoint(5, playerid, 2250.7197,-83.0548,26.5266)) return SCM(playerid, COLOR_WHITE, "Ban khong o Rent Bike");
 	format(string, sizeof(string), "Vehicle\tStock\nPremier\t%d\nSuper GT\t%d\nSultan\t%d\nComet\t%d\nSunrise\t%d\nNRG-500\t%d\nFaggio\t%d\nBMX\t%d", RentStock[0], RentStock[1], RentStock[2], RentStock[3], RentStock[4], RentStock[5], RentStock[6], RentStock[7]);
 	Dialog_Show(playerid, DIALOG_RENTCAR, DIALOG_STYLE_TABLIST_HEADERS, "SERVER: Rent Car", string, "Select", "Cancel");
 	return true;
@@ -9552,23 +9552,23 @@ YCMD:rentroom(playerid, params[], help) {
 }
 YCMD:bizmenu(playerid, params[], help) {
 	new biz = PlayerInfo[playerid][pBizz];
-	if(biz == 255) return SCM(playerid, COLOR_GREY, "Ban khong co o afacere!");
+	if(biz == 255) return SCM(playerid, COLOR_GREY, "Ban khong o biz!");
 	new string[180], open[64];
-	if(BizzInfo[biz][bLocked] == 0) open = "Inchide usa";
-	else open = "Deschide usa";
-	format(string, sizeof(string), "Informatii\nDepozit\n%s\nSeteaza numele\nSeteaza taxa\nVinde afacerea\nRadio", open);
+	if(BizzInfo[biz][bLocked] == 0) open = "Dong cua";
+	else open = "Mo cua";
+	format(string, sizeof(string), "Thong tin\nGui tien\n%s\nSet ten\nSet phi vao cua\nBan bizz\nRadio", open);
 	Dialog_Show(playerid, DIALOG_BMENU, DIALOG_STYLE_LIST, "Business menu", string, "Ok", "Exit");	
 	return true;
 }
 YCMD:housemenu(playerid, params[], help) {
 	if(PlayerInfo[playerid][pHouse] != 999 && strcmp(GetName(playerid), HouseInfo[PlayerInfo[playerid][pHouse]][hOwner], true) == 0) {
 		new string[180], open[64];
-		if(HouseInfo[PlayerInfo[playerid][pHouse]][hLock] == 0) open = "Inchide usa";
-		else open = "Deschide usa";
-		format(string, sizeof(string), "Informatii\nChiriasi\nDepozit\n%s\nHouse upgrade\nSeteaza numele\nSeteaza chiria\nVinde casa\nRadio\nHouse upgrades", open);
+		if(HouseInfo[PlayerInfo[playerid][pHouse]][hLock] == 0) open = "Dong cua";
+		else open = "Mo cua";
+		format(string, sizeof(string), "Thong tin\nNguoi thue nha\nGui tien\n%s\nHouse upgrade\nSet ten\nDat tien thue nha\nVinde casa\nRadio\nHouse upgrades", open);
 		Dialog_Show(playerid, DIALOG_HMENU, DIALOG_STYLE_LIST, "House menu", string, "Ok", "Exit");
 	}
-	else SCM(playerid, COLOR_GREY, "Ban khong co o casa!");
+	else SCM(playerid, COLOR_GREY, "Ban khong o nha!");
 	return true;
 }
 
@@ -9602,7 +9602,7 @@ function showTenants(playerid) {
 		tmembers++;
 	}
 	cache_delete(result);
-	format(TitleString, sizeof(TitleString), "Chiriasi (%d/%d)", onmembers, tmembers);
+	format(TitleString, sizeof(TitleString), "Nguoi thue nha (%d/%d)", onmembers, tmembers);
 	Dialog_Show(playerid, DIALOG_TENANTS, DIALOG_STYLE_LIST, TitleString, MemberString, "Ok", "Exit");		
 	return true;
 }
@@ -9612,7 +9612,7 @@ YCMD:housename(playerid, params[], help) return SCM(playerid, COLOR_LGREEN, "Len
 YCMD:asellbiz(playerid, params[], help) {
 	new house, string[180], query[180];
 	if(sscanf(params, "d", house)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/asellbiz <Biz ID>");
-	if(PlayerInfo[playerid][pAdmin] < 5) return SCM(playerid, COLOR_GREY, "Ban khong co nivelul necesar de admin pentru a face asta.");
+	if(PlayerInfo[playerid][pAdmin] < 5) return SCM(playerid, COLOR_GREY, "Ban khong the su dung lenh nay.");
 	foreach(new i: Player) {
 		if(IsPlayerConnected(i) && PlayerInfo[i][pBizz] == house) {
 			PlayerInfo[i][pBizz] = 255;
@@ -9627,7 +9627,7 @@ YCMD:asellbiz(playerid, params[], help) {
 	mysql_format(SQL,query,sizeof(query),"UPDATE users SET `Bizz`='255' WHERE `name`='%s'",BizzInfo[house][bOwner]);
 	mysql_tquery(SQL,query, "", "");
 	strmid(BizzInfo[house][bOwner], "The State", 0, strlen("The State"), 255);	
-	format(string, sizeof(string), "* Bizz-ul %d a fost vandut cu succes la stat!", house);
+	format(string, sizeof(string), "* Biz %d da duoc ban lai cho nha nuoc!", house);
 	SCM(playerid, COLOR_YELLOW, string);
 	UpdateLabel(2, house);
 	return true;
@@ -9643,9 +9643,9 @@ YCMD:givehouse(playerid, params[], help) {
 	PlayerInfo[id][pHouse] = house;
 	format(query, sizeof(query), "UPDATE `users` SET `House`='%d' WHERE `ID`='%d'", house, PlayerInfo[id][pSQLID]);
 	mysql_tquery(SQL, query, "", "");
-	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a dat lui %s(%d) casa %d.", GetName(playerid), GetName(id), id, house);
+	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s da give %s(%d) house %d.", GetName(playerid), GetName(id), id, house);
 	SendAdminMessage(COLOR_WHITE, string, 1);
-	format(string, sizeof(string), "Administratorul %s ti-a dat casa %d.", GetName(playerid), house);
+	format(string, sizeof(string), "Admin %s give house %d cho ban.", GetName(playerid), house);
 	SCM(id, COLOR_YELLOW, string);
 	HouseInfo[house][hOwned] = 1;
 	format(HouseInfo[house][hOwner], 256, GetName(id));
@@ -9665,9 +9665,9 @@ YCMD:givebiz(playerid, params[], help) {
 	PlayerInfo[id][pBizz] = biz;
 	mysql_format(SQL, query, sizeof(query), "UPDATE `users` SET `Bizz`='%d' WHERE `ID`='%d'", biz, PlayerInfo[id][pSQLID]);
 	mysql_tquery(SQL, query, "", "");
-	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a dat lui %s(%d) afacerea %d.", GetName(playerid), GetName(id), id, biz);
+	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s da give %s(%d) biz %d.", GetName(playerid), GetName(id), id, biz);
 	SendAdminMessage(COLOR_WHITE, string, 1);
-	format(string, sizeof(string), "Administratorul %s ti-a dat afacerea %d.", GetName(playerid), biz);
+	format(string, sizeof(string), "Admin %s da give biz %d cho ban.", GetName(playerid), biz);
 	SCM(id, COLOR_YELLOW, string);
 	BizzInfo[biz][bOwned] = 1;
 	format(BizzInfo[biz][bOwner], 256, GetName(id));
@@ -9681,7 +9681,7 @@ YCMD:givebiz(playerid, params[], help) {
 YCMD:asellhouse(playerid, params[], help) {
 	new house, string[180], query[180];
 	if(sscanf(params, "d", house)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/asellhouse <House ID>");
-	if(PlayerInfo[playerid][pAdmin] < 5) return SCM(playerid, COLOR_GREY, "Ban khong co nivelul necesar de admin pentru a face asta.");
+	if(PlayerInfo[playerid][pAdmin] < 5) return SCM(playerid, COLOR_GREY, "Ban khong the su dung lenh nay.");
 	foreach(new i: Player) {
 		if(IsPlayerConnected(i) && PlayerInfo[i][pHouse] == house) {
 			PlayerInfo[i][pHouse] = 999;
@@ -9701,7 +9701,7 @@ YCMD:asellhouse(playerid, params[], help) {
 	strmid(HouseInfo[house][hOwner], "The State", 0, strlen("The State"), 255);
 	if(HouseInfo[house][hGarage] != 0) strmid(GarageInfo[HouseInfo[house][hGarage]][gOwner], "The State", 0, strlen("The State"), 255);
 	PlayerPlaySound(playerid, 1052, 0.0, 0.0, 0.0);
-	format(string, sizeof(string), "* Casa %d a fost vandut cu succes la stat!", house);
+	format(string, sizeof(string), "* House %d da duoc ban lai cho nha nuoc!", house);
 	SCM(playerid, COLOR_YELLOW, string);
 	UpdateLabel(1, house);
 	return true;
@@ -9711,29 +9711,29 @@ YCMD:addobject(playerid, params[], help) {
 	if(PlayerInfo[playerid][pAdmin] < 2) return true;
 	if(sscanf(params, "ii", obj, money)) {
 		SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/addobject <object id> <money>");
-		SCM(playerid, COLOR_LOGS, "Cadou (19054-19058), Glob (19059-19063), Oua (19341-19345), Dovleac (19320).");
-		SCM(playerid, COLOR_LOGS, "Pentru mai multe obiecte, acceseaza: gamerxserver.com/forum/showthread.php?21-Objects-by-Category");
+		SCM(playerid, COLOR_LOGS, "Gift (19054-19058), Ball (19059-19063), Egg (19341-19345), Pumpkin (19320).");
+		SCM(playerid, COLOR_LOGS, "Ban co the xem them id object, truy cap: gamerxserver.com/forum/showthread.php?21-Objects-by-Category");
 		return true;
 	}	
 	new id = GetObjects(), Float: Pos[3];
-	if(id == MAX_COBJECTS) return SCM(playerid, COLOR_LGREEN, "A fost atinsa limita maxima de obiecte!");
-	if(obj < 1 || obj > 19500) return SCM(playerid, COLOR_GREY, "Object invalid!");
+	if(id == MAX_COBJECTS) return SCM(playerid, COLOR_LGREEN, "Da dat den gioi han object!");
+	if(obj < 1 || obj > 19500) return SCM(playerid, COLOR_GREY, "Toi tuong khong hop le!");
 	if(money < 1 || money > 1000000) return SCM(playerid, COLOR_GREY, "Invalid money! ($1-$1.000.000)");
 	GetPlayerPos(playerid, Pos[0], Pos[1], Pos[2]);
 	ObjectInfo[id][oID] = CreateDynamicPickup(obj, 23, Pos[0], Pos[1], Pos[2], 0, -1, -1, 100.0);
 	ObjectInfo[id][oMoney] = money;
 	new string[180];
-	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s a adaugat un nou obiect iar acum sunt %d obiecte in total. [obj: %d, $%s]", GetName(playerid), id+1, obj, FormatNumber(money));
+	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s da them mot object moi, hien tai co tong cong %d objects. [obj: %d, $%s]", GetName(playerid), id+1, obj, FormatNumber(money));
 	SendAdminMessage(COLOR_WHITE, string, 2);
 	return true;
 }	
 YCMD:removeobjects(playerid, params[], help) {
 	new id = GetObjects();
 	if(PlayerInfo[playerid][pAdmin] < 2) return true;
-	if(id == 0) return SCM(playerid, COLOR_GREY, "Nu sunt obiecte create!");
+	if(id == 0) return SCM(playerid, COLOR_GREY, "Khong co object duoc tao!");
 	new obj = GetObjects();	
 	new string[180];
-	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s a sters toate obiectele create (%d).", GetName(playerid), obj);
+	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s da xoa object (%d).", GetName(playerid), obj);
 	SendAdminMessage(COLOR_WHITE, string, 2);
 	RemoveObjects();
 	return true;
@@ -9777,19 +9777,19 @@ YCMD:sellhousetostate(playerid, params[], help) {
 	else SCM(playerid, COLOR_GREY, "Ban khong so huu mot ngoi nha.");
 	return true;
 }
-YCMD:sellhouseto(playerid, params[], help) return SCM(playerid, COLOR_LGREEN, "Aceasta comanda a fost dezactivata deoarece acum se pot face afaceri prin intermediul comenzii /trade.");
+YCMD:sellhouseto(playerid, params[], help) return SCM(playerid, COLOR_LGREEN, "Lenh da bi vo hieu hoa, ban co the giao dich thong qua lenh /trade.");
 YCMD:setrent(playerid, params[], help) return SCM(playerid, COLOR_LGREEN, "Lenh da duoc chuyen sang /housemenu!");
 YCMD:setrentable(playerid, params[], help) return SCM(playerid, COLOR_LGREEN, "Lenh da duoc chuyen sang /housemenu!");
 YCMD:hu(playerid, params[], help) return SCM(playerid, COLOR_LGREEN, "Lenh da duoc chuyen sang /housemenu!");
 YCMD:resetraports(playerid, params[], help) {
 	new fid = PlayerInfo[playerid][pMember], string[180], membs, money;
-	if(PlayerInfo[playerid][pLeader] == 0) return SCM(playerid, COLOR_GREY, "Nu esti lider!");
+	if(PlayerInfo[playerid][pLeader] == 0) return SCM(playerid, COLOR_GREY, "Ban khong phai la leader!");
 	foreach(new i: Player) {
 		if(IsPlayerConnected(i) && PlayerInfo[i][pMember] == fid) {
 			if(CountRaport(i) > 0) {
 				money = CountRaport(i)*5000;
 				GivePlayerCash(i, 1, money);
-				format(string, sizeof(string), "Ban nhan duoc $%s pentru comenzile efectuate (%d).", FormatNumber(money), CountRaport(i));
+				format(string, sizeof(string), "Ban nhan duoc $%s cho su cong hien cua an voi to chuc (%d).", FormatNumber(money), CountRaport(i));
 				SCM(i, COLOR_MONEY, string);
 			}			
 			PlayerInfo[i][pCommands][0] = 0;
@@ -9797,7 +9797,7 @@ YCMD:resetraports(playerid, params[], help) {
 		}
 	}
 	ResetRaports(PlayerInfo[playerid][pMember]);
-	format(string, sizeof(string), "Ai resetat cu succes rapoartele la %d membri!", membs);
+	format(string, sizeof(string), "Ban da dat lai Report thanh cong cho %d thanh vien!", membs);
 	SCM(playerid, COLOR_YELLOW, string);
 	return true;
 }
@@ -9839,23 +9839,23 @@ function ResetPlayerRaport(playerid) {
 YCMD:fpk(playerid, params[], help) {
 	if(PlayerInfo[playerid][pAdmin] < 4) return SCM(playerid, COLOR_WHITE, AdminOnly);
 	new id,string[200],giveplayer[30],sendername[MAX_PLAYER_NAME], fp, reson[50];
-	if(sscanf(params, "uis[50]", id, fp, reson)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/auninvite <playerid/name> <faction punish> <reson>");
-	if(0 < fp > 100) return SCM(playerid, COLOR_LGREEN, "Error: Poit da intre 0 si 100 Faction Punish");
+	if(sscanf(params, "uis[50]", id, fp, reson)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/auninvite <playerid/name> <faction punish> <reason>");
+	if(0 < fp > 100) return SCM(playerid, COLOR_LGREEN, "Error: Ban co the dat 0 va 100 Faction Punish");
 	if(strlen(reson) > 50) return 1;
 	GetPlayerName(id, giveplayer, sizeof(giveplayer));
 	GetPlayerName(playerid, sendername, sizeof(sendername));
 	if(IsPlayerConnected(id)) {
 		if(id != INVALID_PLAYER_ID) {
-			if(PlayerInfo[id][pMember] == 0) return SCM(playerid, -1, "Acel player nu este intr-o factiune!");
-			format(string, sizeof(string), "Admin-ul %s l-a scos pe %s din factiunea %s (rank %d) si %d zile, %d FP, ly do: %s.", GetName(playerid), GetName(id), FactionName(PlayerInfo[id][pMember]), PlayerInfo[id][pRank], PlayerInfo[id][pDays], fp, reson);
+			if(PlayerInfo[id][pMember] == 0) return SCM(playerid, -1, "Nguoi choi do khong o trong mot to chuc!");
+			format(string, sizeof(string), "Admin %s da kick %s ra khoi to chuc %s (rank %d) sau %d ngay trong to chuc, %d FP, ly do: %s.", GetName(playerid), GetName(id), FactionName(PlayerInfo[id][pMember]), PlayerInfo[id][pRank], PlayerInfo[id][pDays], fp, reson);
 			SendAdminMessage(COLOR_LIGHTRED, string, 4);
 			
-			format(string, sizeof(string), "* Ai fost scos din factiunea %s (rank %d) dupa %d zile de admin-ul %s cu %d FP, ly do: %s.",FactionName(PlayerInfo[id][pMember]), PlayerInfo[id][pRank], PlayerInfo[id][pDays], sendername, fp, reson);
+			format(string, sizeof(string), "* Ban da bi kick khoi to chuc %s (rank %d) sau %d ngay boi admin %s voi %d FP, ly do: %s.",FactionName(PlayerInfo[id][pMember]), PlayerInfo[id][pRank], PlayerInfo[id][pDays], sendername, fp, reson);
 			SCM(id, COLOR_LIGHTBLUE, string);
 			new string2[280], query[256];
 			
 			if(PlayerInfo[id][pAdmin] < 6) {
-				format(string2, sizeof(string2), "%s a fost scos de Adminul %s din %s (rank %d) dupa %d zile, %d FP, motiv %s.", GetName(id),GetName(playerid),FactionName(PlayerInfo[id][pMember]),PlayerInfo[id][pRank],PlayerInfo[id][pDays], fp, reson);
+				format(string2, sizeof(string2), "%s da bi kick boi admin %s khoi to chuc %s (rank %d) sau %d ngay, %d FP, ly do: %s.", GetName(id),GetName(playerid),FactionName(PlayerInfo[id][pMember]),PlayerInfo[id][pRank],PlayerInfo[id][pDays], fp, reson);
 				mysql_format(SQL, query, sizeof(query), "INSERT INTO faction_logs (`text`,`player`,`leader`) VALUES ('%s','%d','%d')", string2, PlayerInfo[id][pSQLID], PlayerInfo[playerid][pSQLID]);
 				mysql_tquery(SQL,query,"","");
 			}
@@ -9864,7 +9864,7 @@ YCMD:fpk(playerid, params[], help) {
 			new faction = PlayerInfo[id][pMember];
 			PlayerInfo[id][pMember]=0;
 			PlayerInfo[id][pLeader]=0;
-			format(string, sizeof(string), "Admin-ul %s l-a scos pe %s din factiunea %s (rank %d) si %d zile, %d FP, ly do: %s.", GetName(playerid), GetName(id), FactionName(faction), PlayerInfo[id][pRank], PlayerInfo[id][pDays], fp, reson);
+			format(string, sizeof(string), "Admin %s da kick %s ra khoi to chuc %s (rank %d) sau %d ngay trong to chuc, %d FP, ly do: %s.", GetName(playerid), GetName(id), FactionName(faction), PlayerInfo[id][pRank], PlayerInfo[id][pDays], fp, reson);
 			SendFactionMessage(faction, COLOR_CLIENT, string);
 			PlayerInfo[id][pRank] = 0;
 			PlayerInfo[id][pChar] = 0;
@@ -9902,7 +9902,7 @@ YCMD:spec(playerid, params[], help) {
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Nguoi choi do khong dang nhap.");
 	if(id == playerid) return SCM(playerid, COLOR_GREY, "Ban khong the su dung lenh nay len chinh minh!");
 	if(PlayerInfo[id][pAdmin] > PlayerInfo[playerid][pAdmin]) return SCM(playerid, COLOR_GREY, "Ban khong the su dung lenh nay len nguoi choi do.");
-	if(IsPlayerLogged[id] == 0) return SCM(playerid, COLOR_LGREEN, "Error: Acel player se loghiaza!");
+	if(IsPlayerLogged[id] == 0) return SCM(playerid, COLOR_LGREEN, "Error: Nguoi choi do khong dang nhap!");
 	Spectate[playerid] = id;
 	SpecPlayers[playerid] ++;					
 	if(SpecPlayers[playerid] == 1) {
@@ -9917,10 +9917,10 @@ YCMD:spec(playerid, params[], help) {
 	if(PlayerInfo[playerid][pAdmin] != 0) rank = "Admin";
 	else rank = "Helper";
 	
-	if(GetPVarInt(id, "ReportType") == 1) format(string, sizeof(string), "%s %s is now spectating %s. (reported for dm, score: %d)", rank, GetName(playerid),GetName(id), GetPVarInt(id, "ReportScore")); 
-	else if(GetPVarInt(id, "ReportType") == 2) format(string, sizeof(string), "%s %s is now spectating %s. (reported for cheats, score: %d)", rank, GetName(playerid),GetName(id), GetPVarInt(id, "ReportScore"));  
-	else if(GetPVarInt(id, "ReportType") == 3)  format(string, sizeof(string), "%s %s is now spectating %s. (stuck)", rank, GetName(playerid),GetName(id));
-	else format(string, sizeof(string), "%s %s is now spectating %s.", rank, GetName(playerid),GetName(id));
+	if(GetPVarInt(id, "ReportType") == 1) format(string, sizeof(string), "%s %s dang spec %s. (reported for dm, score: %d)", rank, GetName(playerid),GetName(id), GetPVarInt(id, "ReportScore")); 
+	else if(GetPVarInt(id, "ReportType") == 2) format(string, sizeof(string), "%s %s dang spec %s. (reported for cheats, score: %d)", rank, GetName(playerid),GetName(id), GetPVarInt(id, "ReportScore"));  
+	else if(GetPVarInt(id, "ReportType") == 3)  format(string, sizeof(string), "%s %s dang spec %s. (ket map)", rank, GetName(playerid),GetName(id));
+	else format(string, sizeof(string), "%s %s dang spec %s.", rank, GetName(playerid),GetName(id));
 	if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(COLOR_YELLOW, string,1);
 	
 	if(GetPVarInt(id, "Reported") == 1 && GetPVarInt(id, "ReportType") != 4 && PlayerInfo[playerid][pAdmin] >= 1) {
@@ -10022,12 +10022,12 @@ YCMD:ah(playerid, params[], help) {
 YCMD:skick(playerid, params[], help) {
 	new id,string[100];
 	if(PlayerInfo[playerid][pAdmin] == 0 && PlayerInfo[playerid][pHelper] < 2) return SCM(playerid, COLOR_WHITE, AdminOnly);
-	if(PlayerInfo[id][pScripter] > 0) return SCM(playerid, COLOR_YELLOW, "Nu poti da kick la Scripter/Fondator.");
+	if(PlayerInfo[id][pScripter] > 0) return SCM(playerid, COLOR_YELLOW, "Ban khong the kick Scripter/Founder.");
 	if(sscanf(params, "u", id)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/skick <playerid/name>");
-	if(id == playerid) return SCM(playerid, COLOR_GREY, "Nu iti poti da kick singur.");
+	if(id == playerid) return SCM(playerid, COLOR_GREY, "Ban khong the kick chinh ban.");
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Nguoi choi do khong dang nhap.");
-	if(PlayerInfo[id][pAdmin] > PlayerInfo[playerid][pAdmin]) return SCM(playerid, -1, "Nu poti folosi comanda aceasta pe acel player.");
-	if(PlayerInfo[id][pAdmin] != 0 && PlayerInfo[playerid][pAdmin] < 6) return SCM(playerid, -1, "Nu poti da kick unui admin!");
+	if(PlayerInfo[id][pAdmin] > PlayerInfo[playerid][pAdmin]) return SCM(playerid, -1, "Ban khong the su dung lenh len nguoi choi nay.");
+	if(PlayerInfo[id][pAdmin] != 0 && PlayerInfo[playerid][pAdmin] < 6) return SCM(playerid, -1, "Ban khong the kick mot admin!");
 	format(string, sizeof(string), "SKick: %s a primit kick de la %s.",GetName(id),GetName(playerid));
 	if(GetPVarInt(playerid, "Cover") == 0) SendStaffMessage(COLOR_RED, string);
 	KickEx(id);
@@ -10039,9 +10039,9 @@ YCMD:givegp(playerid, params[], help) {
 	if(sscanf(params, "uis[64]",id,money,reason)) return SendClientMessage(playerid,COLOR_GREY, "Syntax: {FFFFFF}/givegp <playerid/name> <points> <reason>");
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_GREY, "Nguoi choi do khong dang nhap.");
 	PlayerInfo[id][pGiftPoints] += money;
-	format(string, sizeof(string), "%s i-a dat %s Gift points lui %s, ly do: %s.", GetName(playerid),FormatNumber(money),GetName(id), reason);
+	format(string, sizeof(string), "%s da give %s Gift points cho %s, ly do: %s.", GetName(playerid),FormatNumber(money),GetName(id), reason);
 	if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(COLOR_YELLOW, string,5);
-	format(string, sizeof(string), "* Ban nhan duoc %s Gift points de la administratorul %s, ly do: %s.", FormatNumber(money), GetName(playerid), reason);
+	format(string, sizeof(string), "* Ban nhan duoc %s Gift points tu admin %s, ly do: %s.", FormatNumber(money), GetName(playerid), reason);
 	SendClientMessage(id, COLOR_YELLOW, string);
 	Update(id, pGiftPointsx);
 	return true;
@@ -10052,8 +10052,8 @@ YCMD:rentstock(playerid, params[], help) {
 	if(sscanf(params, "i",amount)) return SendClientMessage(playerid,COLOR_GREY, "Syntax: {FFFFFF}/rentstock <amount>");
 	if(amount < 1 || amount > 15) SCM(playerid, COLOR_GREY, "Invalid amount, 1 - 15");
 	for(new i = 0; i < 10; i++) RentStock[i] = amount;
-	SCM(playerid, COLOR_GREEN, "Stockurile schimbate cu success.");
-	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s a schimbat stockurile de la rent in %d", GetName(playerid), amount);
+	SCM(playerid, COLOR_GREEN, "Rentstock da duoc thay doi thanh cong.");
+	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s da thay doi rent stock thanh %d", GetName(playerid), amount);
 	if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(COLOR_WHITE, string, 1);
 	return true;
 }
@@ -10063,9 +10063,9 @@ YCMD:givepp(playerid, params[], help) {
 	if(sscanf(params, "uis[64]",id,money,reason)) return SendClientMessage(playerid,COLOR_GREY, "Syntax: {FFFFFF}/givepp <playerid/name> <points> <reason>");
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_GREY, "Nguoi choi do khong dang nhap.");	
 	PlayerInfo[id][pPremiumPoints] += money;
-	format(string, sizeof(string), "%s i-a dat %s Premium Points lui %s, ly do: %s.", GetName(playerid),FormatNumber(money),GetName(id), reason);
+	format(string, sizeof(string), "%s da give %s Premium Points cho %s, ly do: %s.", GetName(playerid),FormatNumber(money),GetName(id), reason);
 	if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(COLOR_YELLOW, string,5);
-	format(string, sizeof(string), "* Ban nhan duoc %s Premium Points de la administratorul %s, ly do: %s.", FormatNumber(money), GetName(playerid), reason);
+	format(string, sizeof(string), "* Ban nhan duoc %s Premium Points tu admin %s, ly do: %s.", FormatNumber(money), GetName(playerid), reason);
 	SendClientMessage(id, COLOR_YELLOW, string);
 	Update(id, pPremiumPointsx);
 	return true;
@@ -10076,9 +10076,9 @@ YCMD:givehpoints(playerid, params[], help) {
 	if(sscanf(params, "uis[64]", id,hp,reason)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/givehpoints <playerid/name> <points> <reason>");
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Nguoi choi khong ket noi");
 	PlayerInfo[id][pHpoints] += hp;
-	format(string, sizeof(string), "%s i-a dat %s RPoints lui %s, ly do: %s", GetName(playerid),FormatNumber(hp),GetName(id), reason);
+	format(string, sizeof(string), "%s da give %s RPoints cho %s, ly do: %s", GetName(playerid),FormatNumber(hp),GetName(id), reason);
 	if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(COLOR_ERROR, string,5);
-	format(string, sizeof(string), "* Ban nhan duoc %s RPoints de la administratorul %s, ly do: %s.", FormatNumber(hp), GetName(playerid), reason);
+	format(string, sizeof(string), "* Ban nhan duoc %s RPoints tu admin %s, ly do: %s.", FormatNumber(hp), GetName(playerid), reason);
 	SendClientMessage(id, COLOR_YELLOW, string);
 	Info(id, 0, hp);
 	Update(id, pHpointsx);
@@ -10092,8 +10092,8 @@ YCMD:kick(playerid, params[], help) {
 	if(PlayerInfo[playerid][pAdmin] < 1 && PlayerInfo[playerid][pHelper] < 2) return SCM(playerid, COLOR_WHITE, AdminOnly);
 	if(DeelayCommand[playerid][2] != 0) return DeelayTime(playerid, 2);
 	if(sscanf(params, "us[128]", id, reason)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/kick <playerid/name> <reason>");
-	if(id == playerid) return SCM(playerid, COLOR_GREY, "Nu iti poti da kick singur.");
-	if(PlayerInfo[id][pScripter] > 0) return SCM(playerid, COLOR_YELLOW, "Nu poti da kick la Scripter/Fondator.");
+	if(id == playerid) return SCM(playerid, COLOR_GREY, "Ban khong the kick chinh ban.");
+	if(PlayerInfo[id][pScripter] > 0) return SCM(playerid, COLOR_YELLOW, "Ban khong the kick Scripter/Founder.");
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Nguoi choi do khong dang nhap.");
 	if(FaceReclama(reason)) return RemoveFunction(playerid, reason);
 	if(PlayerInfo[id][pAdmin] > PlayerInfo[playerid][pAdmin]) return SCM(playerid, COLOR_GREY, "Ban khong the su dung lenh nay len nguoi choi do.");
@@ -10119,7 +10119,7 @@ YCMD:rac(playerid, params[], help) {
 			if(!VehicleHaveDriver(car)) SetVehicleToRespawn(car); 
 		}	
 	}
-	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s a respawnat toate vehiculele nefolosite!", GetName(playerid));
+	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s da respawn cac xe khong su dung!", GetName(playerid));
 	SendAdminMessage(COLOR_WHITE, string, 3);
 	return true;
 }
@@ -10139,9 +10139,9 @@ YCMD:warn(playerid, params[], help) {
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Nguoi choi do khong dang nhap.");
 	GetPlayerIp(id, ip, sizeof(ip));
 	if(FaceReclama(reason)) return RemoveFunction(playerid, reason);
-	if(PlayerInfo[id][pAdmin] > PlayerInfo[playerid][pAdmin]) return SCM(playerid, -1, "Nu poti folosi comanda aceasta pe acel player.");
+	if(PlayerInfo[id][pAdmin] > PlayerInfo[playerid][pAdmin]) return SCM(playerid, -1, "Ban khong the su dung lenh len nguoi choi nay.");
 	PlayerInfo[id][pWarns] += 1;
-	format(string, sizeof(string), "AdmBot: %s a primit o avertizare de la %s, ly do: %s", GetName(id), GetName(playerid), reason);
+	format(string, sizeof(string), "AdmBot: %s da nhan duoc warn tu admin %s, ly do: %s", GetName(id), GetName(playerid), reason);
 	SCMTA(COLOR_LIGHTRED, string);
 	InsereazaSanctiune(id, playerid, WARN, reason);
 	Update(id,pWarnsx);
@@ -10205,7 +10205,7 @@ YCMD:warn(playerid, params[], help) {
 		PlayerInfo[id][pWarns] = 0;
 		UpdateVar2(playerid, "Warns", 1);
 		Update(id,pWarnsx);
-		format(string, sizeof(string), "AdmBot: %s a fost banat de AdmBot (3/3 avertizari) pentru 2 zile, ly do: %s", GetName(id),reason);
+		format(string, sizeof(string), "AdmBot: %s da bi kick boi AdmBot (3/3 warns) trong 2 ngay, ly do: %s", GetName(id),reason);
 		SCMTA(COLOR_LIGHTRED, string);
 		InsereazaSanctiune(id, playerid, BAN, "3/3 warns");
 		Banlog(ip,GetName(id),GetName(playerid),"3 Warnings",2);
@@ -10224,7 +10224,7 @@ YCMD:warno(playerid, params[], help) {
 	new id[25],reason[128],cont;
 	if(sscanf(params, "s[25]s[128]", id, reason)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/warno <name> <reason>");
 	cont = MySQLCheckAccount(id);
-	if(cont == 0) return SCM(playerid,COLOR_ERROR,"error:{FFFFFF} Acest cont nu a fost gasit in baza de date!");
+	if(cont == 0) return SCM(playerid,COLOR_ERROR,"Error:{FFFFFF} Tai khoan khong ton tai trong co so du lieu!");
 	gQuery[0] = EOS;
 	mysql_format(SQL, gQuery, sizeof(gQuery), "SELECT * FROM `users` WHERE `name`='%s'",id);
 	mysql_tquery(SQL, gQuery, "CheckWarns", "is[25]s[128]", playerid, id, reason);		
@@ -10279,7 +10279,7 @@ function CheckWarns(playerid, id[], reason[]) {
 			}
 		}
 		DeelayCommand[playerid][1] = 10;
-		format(gString, sizeof(gString), "AdmBot: %s a fost banat de AdmBot (3/3 avertizari) pentru 2 zile, ly do: %s",id,reason);
+		format(gString, sizeof(gString), "AdmBot: %s da bi kick boi AdmBot (3/3 warns) trong 2 ngay, ly do: %s",id,reason);
 		SCMTA(COLOR_LIGHTRED, gString);
 		Banlog("Offline", id, GetName(playerid), "3 Warnings", 2);
 
@@ -10289,12 +10289,12 @@ function CheckWarns(playerid, id[], reason[]) {
 		intid = 0;
 	}
 	intid++;
-	format(gString, sizeof(gString), "Offline: %s a primit o avertizare de la %s, ly do: %s",id, GetName(playerid), reason);
+	format(gString, sizeof(gString), "Offline: %s da nhan duoc warn boi %s, ly do: %s",id, GetName(playerid), reason);
 	SCMTA(COLOR_LIGHTRED, gString);
 	gQuery[0] = EOS;
 	mysql_format(SQL, gQuery, sizeof(gQuery),"UPDATE users SET `Warnings`='%d' WHERE `name`='%s'",intid,id);
 	mysql_tquery(SQL, gQuery, "", "");
-	format(gString, sizeof(gString), "Ban nhan duoc un warn de la %s, motiv %s.", GetName(playerid), reason);
+	format(gString, sizeof(gString), "Ban nhan duoc un warn de la %s, ly do: %s.", GetName(playerid), reason);
 	InsertEmail(id, GetName(playerid), gString, 0);	
 	return true;
 }
@@ -10303,11 +10303,11 @@ YCMD:unwarn(playerid, params[], help) {
 	new id,string[200];
 	if(sscanf(params, "u", id)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/unwarn <playerid/name>");
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Nguoi choi do khong dang nhap.");
-	if(PlayerInfo[id][pWarns] == 0) return SCM(playerid, COLOR_LGREEN, "* Acel player nu are avertizari!");
+	if(PlayerInfo[id][pWarns] == 0) return SCM(playerid, COLOR_LGREEN, "* Nguoi choi do khong bi warn!");
 	PlayerInfo[id][pWarns] -= 1;
-	format(string, sizeof(string), "AdmBot: %s i-a sters un warn lui %s.", GetName(playerid), GetName(id));
+	format(string, sizeof(string), "AdmBot: %s da xoa warn cho %s.", GetName(playerid), GetName(id));
 	SendAdminMessage(COLOR_LIGHTRED, string, 1);
-	format(string, sizeof(string), "* %s ti-a sters un warn!", GetName(playerid));
+	format(string, sizeof(string), "* %s da xoa warn cua ban!", GetName(playerid));
 	SCM(id, COLOR_YELLOW, string);
 	Update(id,pWarnsx);
 	return true;
@@ -10320,9 +10320,9 @@ YCMD:bano(playerid, params[], help) {
 	if(sscanf(params, "s[25]ds[128]", giveplayerid, days,reason)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/bano <name> <0 = permanent/days> <reason>");
 	if(FaceReclama(reason)) return RemoveFunction(playerid, reason);
 	new userID = GetPlayerID( giveplayerid );
-	if(userID != INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Acel jucator este deja conectat!");
+	if(userID != INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Nguoi choi da chon khong ket noi!");
 	cont = MySQLCheckAccount(giveplayerid);
-	if(cont == 0) return SCM(playerid,COLOR_ERROR,"error:{FFFFFF} Acest cont nu a fost gasit in baza de date!");
+	if(cont == 0) return SCM(playerid,COLOR_ERROR,"Error:{FFFFFF} Tai khoan khong ton tai trong co so du lieu!");
 	GetPlayerName(playerid, name, sizeof name);
 	if(days > 0) {
 		new year,month,day;
@@ -10370,11 +10370,11 @@ YCMD:bano(playerid, params[], help) {
 		}
 		DeelayCommand[playerid][0] = 10;
 		if(days == 1) {
-			format(string,128,"Offline: %s a primit ban de la %s pentru %d zile, ly do: %s",giveplayerid,name,days,reason);
+			format(string,128,"Offline: %s da bi ban boi %s trong %d ngay, ly do: %s",giveplayerid,name,days,reason);
 			SCMTA(COLOR_LIGHTRED,string);
 		}
 		else if(days > 1) {
-			format(string,128,"Offline: %s a primit ban de la %s pentru %d zile, ly do: %s",giveplayerid,name,days,reason);
+			format(string,128,"Offline: %s da bi ban boi %s trong %d ngay, ly do: %s",giveplayerid,name,days,reason);
 			SCMTA(COLOR_LIGHTRED,string);
 		}
 		new szQuery[256];
@@ -10412,10 +10412,10 @@ YCMD:respawn(playerid, params[], help) {
 	new id,string[100];
 	if(sscanf(params, "u", id)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/respawn <playerid/name>");
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Nguoi choi do khong dang nhap.");
-	if(PlayerInfo[id][pAdmin] > PlayerInfo[playerid][pAdmin]) return SCM(playerid, -1, "Nu poti folosi comanda aceasta pe acel player.");
-	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s l-a respawnat pe %s.", GetName(playerid), GetName(id));
+	if(PlayerInfo[id][pAdmin] > PlayerInfo[playerid][pAdmin]) return SCM(playerid, -1, "Ban khong the su dung lenh len nguoi choi nay.");
+	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s da respawn %s.", GetName(playerid), GetName(id));
 	if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(COLOR_WHITE, string,4);
-	format(string, sizeof(string), "* Ban nhan duoc respawn de la %s.", GetName(playerid));
+	format(string, sizeof(string), "* %s respawn ban.", GetName(playerid));
 	SCM(id, -1, string);
 	SpawnPlayer(id);
 	return true;
@@ -10457,7 +10457,7 @@ YCMD:afvr(playerid, params[], help) {
 		}			
 	}
 	new string[180];
-	format(string, sizeof(string), "(AdmCmd): %s a respawnat toate vehiculele factiunii %s (%d)!", GetName(playerid), FactionName(id), id);
+	format(string, sizeof(string), "(AdmCmd): %s da respawn toan bo xe trong to chuc %s (%d)!", GetName(playerid), FactionName(id), id);
 	SendAdminMessage(COLOR_RED, string, 2);
 	return true;
 }
@@ -10469,7 +10469,7 @@ YCMD:fvrespawn(playerid, params[], help) {
 		}			
 	}
 	new string[180];
-	format(string, sizeof(string), "(i) %s a respawnat vehiculele factiunii", GetName(playerid));
+	format(string, sizeof(string), "(i) %s da respawn phuong tien trong to chuc", GetName(playerid));
 	SendFactionMessage(PlayerInfo[playerid][pMember], COLOR_LIGHTBLUE, string);			
 	return true;
 }
@@ -10521,15 +10521,15 @@ YCMD:deleteobject(playerid, params[], help) {
 	if(PlayerInfo[playerid][pScripter] < 2) return true;
 	if(sscanf(params, "u", params[0])) return SCM(playerid, COLOR_GREY, "Usage: /deleteobiect <playerid>");
 	for(new i; i < 9; i++) RemovePlayerAttachedObject(params[0], i);
-	SCM(playerid, COLOR_GREY, "{03c03c} obiectele eliminate din player");
+	SCM(playerid, COLOR_GREY, "{03c03c} Object da bi xoa khoi nguoi choi");
 	return true;
 }
 
 YCMD:setstatus(playerid, params[], help) {
-	if(PlayerInfo[playerid][pLeader] == 0) return SCM(playerid, COLOR_GREY, "Nu esti lider de factiune!");
+	if(PlayerInfo[playerid][pLeader] == 0) return SCM(playerid, COLOR_GREY, "Ban khong phai la leader de factiune!");
 	switch(DynamicFactions[PlayerInfo[playerid][pLeader]][fApp]) {
-		case 0: SCM(playerid, COLOR_WHITE, "Acum, factiunea ta, nu mai recruteaza membrii."), DynamicFactions[PlayerInfo[playerid][pLeader]][fApp] = 1;
-		case 1: SCM(playerid, COLOR_WHITE, "Acum, factiunea ta, recruteaza membrii."), DynamicFactions[PlayerInfo[playerid][pLeader]][fApp] = 0;
+		case 0: SCM(playerid, COLOR_WHITE, "Bay gio to chuc cua ban da co the tuyen dung thanh vien."), DynamicFactions[PlayerInfo[playerid][pLeader]][fApp] = 1;
+		case 1: SCM(playerid, COLOR_WHITE, "Bay gio to chuc cua ban da duoc dong tuyen dung."), DynamicFactions[PlayerInfo[playerid][pLeader]][fApp] = 0;
 	}
 	new query[180];
 	mysql_format(SQL, query, sizeof(query), "UPDATE `factions` SET `App`='%d' WHERE `ID`='%d'", DynamicFactions[PlayerInfo[playerid][pLeader]][fApp], PlayerInfo[playerid][pLeader]);
@@ -10542,11 +10542,11 @@ YCMD:ban(playerid, params[], help) {
 	if(DeelayCommand[playerid][0] != 0) return DeelayTime(playerid, 0);
 	if(sscanf(params, "uds[128]", id,type,reason)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/ban <playerid/name> <days | 0 = permanent ip ; 1 = permanent account> <reason>");
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Nguoi choi do khong dang nhap.");
-	if(id == playerid) return SCM(playerid, COLOR_GREY, "Nu iti poti da ban singur.");
-	if(PlayerInfo[id][pScripter] > 0) return SCM(playerid, COLOR_YELLOW, "Nu poti da kick la Scripter/Fondator.");
+	if(id == playerid) return SCM(playerid, COLOR_GREY, "Ban khong the lam dieu nay.");
+	if(PlayerInfo[id][pScripter] > 0) return SCM(playerid, COLOR_YELLOW, "Ban khong the kick Scripter/Founder.");
 	if(FaceReclama(reason)) return RemoveFunction(playerid, reason);
 	if(PlayerInfo[id][pAdmin] > 7) return true;
-	if(PlayerInfo[id][pAdmin] > PlayerInfo[playerid][pAdmin]) return SCM(playerid, -1, "Acel player are adminul mai mare ca tine!");
+	if(PlayerInfo[id][pAdmin] > PlayerInfo[playerid][pAdmin]) return SCM(playerid, -1, "Ban khong the ban admin level cao hon ban!");
 	InsereazaSanctiune(id, playerid, BAN, reason);		
 	 
 	if(type == 1) {
@@ -10587,11 +10587,11 @@ YCMD:ban(playerid, params[], help) {
 	}
 	else if(type > 1) {
 		if(strfind(reason, "silent", true) != -1) {
-			format(string, sizeof(string), "Silent: %s a primit ban de la %s pentru %d zile, ly do: %s", GetName(id), GetName(playerid), type, reason);
+			format(string, sizeof(string), "Silent: %s da bi ban boi %s trong %d ngay, ly do: %s", GetName(id), GetName(playerid), type, reason);
 			SendAdminMessage(COLOR_LIGHTRED, string, 1);
 		}
 		else {
-			format(string, sizeof(string), "AdmBot: %s a primit ban de la %s pentru %d zile, ly do: %s", GetName(id), GetName(playerid), type, reason);
+			format(string, sizeof(string), "AdmBot: %s da bi ban boi %s trong %d ngay, ly do: %s", GetName(id), GetName(playerid), type, reason);
 			MesajLung2(COLOR_LIGHTRED, string);		
 		}
 		new year,month,day;
@@ -10644,8 +10644,8 @@ YCMD:ban(playerid, params[], help) {
 		mysql_format(SQL, szQuery, sizeof(szQuery), "UPDATE `users` SET `BTemp`='1', `BYear`='%d', `BMonth`='%d', `BDay`='%d', `BBy`='%s', `BReason`='%s' WHERE `ID`='%d'",year, month, day, GetName(playerid), reason, PlayerInfo[id][pSQLID]);
 		mysql_tquery(SQL ,szQuery, "", "");		
 	}
-	SCM(id,COLOR_WARNING,"Ai fost banat! Daca consideri ca ai luat ban degeaba, poti face o cerere pe (panel."SERVER_NAME".ro/unbans).");
-	SCM(id,COLOR_WARNING,"Si poti face un Screen Shot pe tasta F8.");
+	SCM(id,COLOR_WARNING,"Ban da bi banned! Neu ban cam thay ban khong lam gi sai, ban co the gui don khieu nai tai (panel."SERVER_NAME".ro/unbans).");
+	SCM(id,COLOR_WARNING,"Bay gio ban co the Screen shot bang phim F8.");
 	strmid(PlayerInfo[id][pBBy], GetName(playerid), 0, strlen(GetName(playerid)), 255);
 	strmid(PlayerInfo[id][pBReason], reason, 0, strlen(reason), 255);
 	Update(id,pBByx);
@@ -10663,7 +10663,7 @@ YCMD:unbanip(playerid, params[], help) {
 	if(PlayerInfo[playerid][pAdmin] < 3) return SCM(playerid, COLOR_WHITE, AdminOnly);
 	new ip[16],string[128];
 	if(sscanf(params, "s[16]", ip)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/unbanip <ip>");
-	format(string, sizeof(string), "Warning: %s a debanat IP-ul %s", GetName(playerid), ip);
+	format(string, sizeof(string), "Warning: %s da unban IP %s", GetName(playerid), ip);
 	SendAdminMessage(COLOR_WARNING, string, 3);		
 	return true;
 }
@@ -10673,7 +10673,7 @@ YCMD:banip(playerid, params[], help) {
 	if(sscanf(params, "s[16]s[64]", ip, reason)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/banip <ip> <reason>");
 	if(strlen(ip) < 5) return SCM(playerid, COLOR_GREY, "IP Invalid!");
 			
-	format(string, sizeof(string), "Warning: %s a banat IP-ul %s, ly do: %s.", GetName(playerid), ip, reason);
+	format(string, sizeof(string), "Warning: %s da ban IP %s, ly do: %s.", GetName(playerid), ip, reason);
 	SendAdminMessage(COLOR_WARNING, string, 3);		
 	return true;
 }
@@ -10694,11 +10694,11 @@ function UnbanSerial(playerid, ip2[]) {
 	new Cache: result = mysql_query(SQL, query);
 	new test = cache_num_rows();
 	cache_delete(result);
-	if(test == 0) return SCM(playerid, COLOR_LGREEN, "Clasa acestui IP nu a fost gasita in baza de date.");		
+	if(test == 0) return SCM(playerid, COLOR_LGREEN, "Khong tim thay IP nay trong co so du lieu.");		
 	mysql_format(SQL, query, sizeof(query), "DELETE FROM `ipbans` WHERE `IP`='%s'", ip);
 	mysql_tquery(SQL, query, "", "");	
 	printf("[SERIAL IP UNBAN]: %s by %s", ip, GetName(playerid));
-	SCM(playerid, COLOR_LGREEN, "Clasa acestui IP a fost gasita in baza de date.");	
+	SCM(playerid, COLOR_LGREEN, "Da tim thay IP nay trong co so du lieu.");	
 	return true;
 }
 function CheckClassIP(playerid) {
@@ -10776,13 +10776,13 @@ YCMD:unban(playerid, params[], help) {
 	new id[25], cont;
 	if(sscanf(params, "s[25]", id)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/unban <account name>");
 	cont = MySQLCheckAccount(id);
-	if(cont == 0) return SCM(playerid,COLOR_ERROR,"error:{FFFFFF} Acest cont nu a fost gasit in baza de date!");
+	if(cont == 0) return SCM(playerid,COLOR_ERROR,"Error:{FFFFFF} Tai khoan khong ton tai trong co so du lieu!");
 	new string[180], query[128];
 	mysql_format(SQL, query,sizeof(query),"UPDATE users SET `Banned`='0', `BTemp`='0', `BYear`='0', `BMonth`='0', `BDay`='0' WHERE `name`='%s'",id);
 	mysql_tquery(SQL,query, "", "");
 	mysql_format(SQL, query,sizeof(query),"DELETE FROM `ipbans` WHERE `Name`='%s'",id);
 	mysql_tquery(SQL,query, "", "");	
-	format(string, sizeof(string), "Warning: %s i-a dat unban lui %s", GetName(playerid), id);
+	format(string, sizeof(string), "Warning: %s da give unban cho %s", GetName(playerid), id);
 	SendAdminMessage(COLOR_WARNING, string, 3);		
 	return true;
 }
@@ -10807,7 +10807,7 @@ YCMD:muteo(playerid, params[], help) {
 	if(sscanf(params, "s[25]is[80]", id,time,msg)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/muteo <name> <Time(minutes)> <reason>");
 	if(FaceReclama(msg)) return RemoveFunction(playerid, msg);
 	cont = MySQLCheckAccount(id);
-	if(cont == 0) return SCM(playerid,COLOR_ERROR,"error:{FFFFFF} Acest cont nu a fost gasit in baza de date!");
+	if(cont == 0) return SCM(playerid,COLOR_ERROR,"Error:{FFFFFF} Tai khoan khong ton tai trong co so du lieu!");
 	if(time <= 0) return SCM(playerid,-1, "Invalid mute time.");
 
 	PlayerInfo[playerid][pHelpedPlayers] ++;
@@ -10819,7 +10819,7 @@ YCMD:muteo(playerid, params[], help) {
 	mysql_format(SQL, szQuery,sizeof(szQuery),"UPDATE users SET `Muted`='1',`MuteTime`='%d' WHERE `name`='%s'",time*60,id);
 	mysql_tquery(SQL,szQuery, "", "");
 	
-	format(string, sizeof(string), "Ban nhan duoc mute de la %s pentru %d minute, motiv %s.", GetName(playerid), time, msg);
+	format(string, sizeof(string), "Ban nhan duoc mute de la %s pentru %d minute, ly do: %s.", GetName(playerid), time, msg);
 	InsertEmail(id, GetName(playerid), string, 0);
 	format(string, sizeof(string), "Offline: %s a primit mute de la %s pentru %d minute, ly do: %s", id, GetName(playerid),time,msg);
 	SCMTA(COLOR_LIGHTRED, string);
@@ -10858,7 +10858,7 @@ YCMD:sethp(playerid, params[], help) {
 	if(PlayerInfo[id][pAdmin] > PlayerInfo[playerid][pAdmin]) return SCM(playerid, COLOR_GREY, "Nu poti executa aceasta comanda pe acel player!");
 	SetPlayerHealthEx(id, hp);
 
-	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a setat lui %s viata la %d hp.", GetName(playerid),GetName(id),hp);
+	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a setat cho %s viata la %d hp.", GetName(playerid),GetName(id),hp);
 	if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(COLOR_WHITE, string,2);
 	return true;
 }
@@ -10869,7 +10869,7 @@ YCMD:setarmor(playerid, params[], help) {
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Nguoi choi do khong dang nhap.");
 	SetPlayerArmourEx(id, armor);
 	
-	format(string, sizeof(string), "AdmBot: Adminul %s i-a setat lui %s armura la %d.",  GetName(playerid),GetName(id),armor);
+	format(string, sizeof(string), "AdmBot: Adminul %s i-a setat cho %s armura la %d.",  GetName(playerid),GetName(id),armor);
 	if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(COLOR_WHITE, string,2);
 	return true;
 }
@@ -10937,7 +10937,7 @@ YCMD:hw(playerid, params[], help) {
 	if(id == playerid) return SCM(playerid, COLOR_GREY, "Ban khong the su dung lenh nay len chinh minh!");
 	PlayerInfo[id][pHW] = amount;
 	UpdateVar(id, "HW", amount);
-	format(string, sizeof(string), "AdmCmd: %s i-a setat lui %s %d/3 helper warns, ly do: %s.", GetName(playerid), GetName(id), amount, reason);
+	format(string, sizeof(string), "AdmCmd: %s i-a setat cho %s %d/3 helper warns, ly do: %s.", GetName(playerid), GetName(id), amount, reason);
 	SendAdminMessage(COLOR_WHITE, string, 1);
 	format(string, sizeof(string), "Administratorul %s ti-a setat %d/3 helper warns, ly do: %s.", GetName(playerid), amount, reason);
 	SCM(id, COLOR_LIGHTBLUE, string);
@@ -10966,7 +10966,7 @@ YCMD:lw(playerid, params[], help) {
 	if(id == playerid) return SCM(playerid, COLOR_GREY, "Ban khong the su dung lenh nay len chinh minh!");
 	PlayerInfo[id][pLW] = amount;
 	UpdateVar(id, "LW", amount);
-	format(string, sizeof(string), "AdmCmd: %s i-a setat lui %s %d/3 leader warns, ly do: %s.", GetName(playerid), GetName(id), amount, reason);
+	format(string, sizeof(string), "AdmCmd: %s i-a setat cho %s %d/3 leader warns, ly do: %s.", GetName(playerid), GetName(id), amount, reason);
 	SendAdminMessage(COLOR_WHITE, string, 1);
 	format(string, sizeof(string), "Administratorul %s ti-a setat %d/3 leader warns, ly do: %s.", GetName(playerid), amount, reason);
 	SCM(id, COLOR_LIGHTBLUE, string);
@@ -11013,7 +11013,7 @@ YCMD:aw(playerid, params[], help) {
 	if(id == playerid) return SCM(playerid, COLOR_GREY, "Ban khong the su dung lenh nay len chinh minh!");
 	PlayerInfo[id][pAW] = amount;
 	UpdateVar(id, "AW", amount);
-	format(string, sizeof(string), "AdmCmd: %s i-a setat lui %s %d/3 admin warns, ly do: %s.", GetName(playerid), GetName(id), amount, reason);
+	format(string, sizeof(string), "AdmCmd: %s i-a setat cho %s %d/3 admin warns, ly do: %s.", GetName(playerid), GetName(id), amount, reason);
 	SendAdminMessage(COLOR_WHITE, string, 1);
 	format(string, sizeof(string), "Administratorul %s ti-a setat %d/3 admin warns, ly do: %s.", GetName(playerid), amount, reason);
 	SCM(id, COLOR_LIGHTBLUE, string);
@@ -11055,7 +11055,7 @@ YCMD:closereport(playerid, params[], help) {
 	format(string, sizeof(string), "Admin %s: %s", GetName(playerid), result);
 	SCM(userID, COLOR_GOLD, string);
 	SCM(userID, COLOR_GOLD, "Report-ul tau a fost inchis.");
-	format(string, sizeof(string), "(/cr) %s a inchis report-ul lui %s, ly do: %s.", GetName(playerid), GetName(userID), result);
+	format(string, sizeof(string), "(/cr) %s a inchis report-ul cho %s, ly do: %s.", GetName(playerid), GetName(userID), result);
 	SendAdminMessage(0xFFADADFF, string, 1);
 	
 	if(PlayerInfo[playerid][pAdmin] >= 1 && GetPVarInt(userID, "ReportType") != 4) {
@@ -11087,7 +11087,7 @@ YCMD:acceptreport(playerid, params[], help) {
 	if(GetPVarInt(userID, "Reported") == 0) return SCM(playerid, COLOR_WHITE, "Acel player nu a dat report.");
 	format(string, sizeof(string), "Admin %s ti-a acceptat report-ul si este in curs de rezolvare.", GetName(playerid));
 	SCM(userID, COLOR_GOLD, string);
-	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a acceptat report-ul lui %s.", GetName(playerid), GetName(userID));
+	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a acceptat report-ul cho %s.", GetName(playerid), GetName(userID));
 	if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(COLOR_RED, string, 1);
 	PlayerInfo[playerid][pHelpedPlayers] ++;
 	PlayerInfo[playerid][pHelpedPlayersToday] ++;
@@ -11356,7 +11356,7 @@ YCMD:nreport(playerid, params[], help) {
 	if(HaveHelp[playerid] == -1) return SCM(playerid, COLOR_GREY, "Nu Ban nhan duoc o intrebare.");
 	new userID = HaveHelp[playerid];
 	new string[180];
-	format(string, sizeof(string), "AdmCmd: %s a trimis intrebarea lui %s (%d) adminilor.", GetName(playerid), GetName(userID), userID);
+	format(string, sizeof(string), "AdmCmd: %s a trimis intrebarea cho %s (%d) adminilor.", GetName(playerid), GetName(userID), userID);
 	SendStaffMessage(COLOR_LOGS, string);
 	SCM(userID, COLOR_GOLD, "Intrebarea ta a fost trimisa adminilor!");
 	format(string, sizeof(string), "Report de la %s (%d): %s.", GetName(userID), userID, HelpText[userID]);
@@ -11394,7 +11394,7 @@ YCMD:nskip(playerid, params[], help) {
 	if(Iter_Count(PlayerHelpers) > 1) {
 		new userID = HaveHelper[Iter_Random(PlayerHelpers)];
 		PlayerPlaySound(userID, 1056, 0.0, 0.0, 0.0);
-		format(string, sizeof(string), "(/nskip) %s a sarit peste intrebarea lui %s.", GetName(playerid), GetName(HaveHelp[playerid]));
+		format(string, sizeof(string), "(/nskip) %s a sarit peste intrebarea cho %s.", GetName(playerid), GetName(HaveHelp[playerid]));
 		if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(0xFFADADFF, string, 1);
 		format(string, sizeof(string), "Helperul anterior a sarit peste intrebarea ta. Acum, intrebarea a fost preluata de helperul %s (%d).", GetName(userID), userID);
 		SCM(HaveHelp[playerid], COLOR_LGREEN, string);
@@ -11419,7 +11419,7 @@ YCMD:rnewbie(playerid, params[], help) {
 	new result[128];
 	GetPVarString(id, "ReportText", result, sizeof(result));
 	new string[180];
-	format(string, sizeof(string), "AdmCmd: %s a trimis report-ul lui %s (%d) helperilor.", GetName(playerid), GetName(id), id);
+	format(string, sizeof(string), "AdmCmd: %s a trimis report-ul cho %s (%d) helperilor.", GetName(playerid), GetName(id), id);
 	SendStaffMessage(COLOR_WHITE, string);
 	SCM(id, COLOR_GOLD, "Report-ul tau a fost trimis helperilor! Asteapta un raspuns..");
 	HelpText[id] = "";
@@ -11503,7 +11503,7 @@ YCMD:ndelete(playerid, params[], help) {
 	new userID = HaveHelp[playerid];
 	format(string, sizeof(string), "* Intrebarea ta a fost stearsa de %s. Motiv: %s", GetName(playerid), result);
 	SCM(userID, COLOR_YELLOW, string);
-	format(string, sizeof(string), "(/nd) intrebarea lui %s a fost stearsa de %s, ly do: %s.", GetName(HaveHelp[playerid]), GetName(playerid), result);
+	format(string, sizeof(string), "(/nd) intrebarea cho %s a fost stearsa de %s, ly do: %s.", GetName(HaveHelp[playerid]), GetName(playerid), result);
 	if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(0xFFADADFF, string, 1);
 	Helped[userID] = 0;
 	HaveHelp[playerid] = -1;
@@ -11839,7 +11839,7 @@ YCMD:setadmin(playerid, params[], help)
 				SendClientMessage(id, COLOR_LIGHTBLUE, string);
 				format(string, sizeof(string), "L-ai promovat pe %s la nivel %d admin.", giveplayer,adminlevel);
 				SendClientMessage(playerid, COLOR_LIGHTBLUE, string);
-				format(string, sizeof(string), "AdmCmd: Admin %s i-a setat lui %s admin %d.", sendername,giveplayer,adminlevel);
+				format(string, sizeof(string), "AdmCmd: Admin %s i-a setat cho %s admin %d.", sendername,giveplayer,adminlevel);
 				Iter_Add(PlayerAdmins, id);
 				SendAdminMessage(COLOR_LOGS,string,4);
 			 	new wakaname[25];
@@ -11902,7 +11902,7 @@ YCMD:sethelper(playerid, params[], help) {
 	format(gString, sizeof(gString), "Ai fost promovat ca helper level %d de %s.", helperlevel, GetName(playerid));
 	SCM(id, COLOR_LIGHTBLUE, gString);
 	gString[0] = EOS;
-	format(gString, sizeof(gString), "AdmCmd: %s i-a setat lui %s helper level %d", GetName(playerid), GetName(id), helperlevel);
+	format(gString, sizeof(gString), "AdmCmd: %s i-a setat cho %s helper level %d", GetName(playerid), GetName(id), helperlevel);
 	SendAdminMessage(COLOR_LOGS, gString, 1);
 
 	finishAchievement(id, 26);
@@ -12122,13 +12122,13 @@ YCMD:ip(playerid, params[], help) {
 		return SCM(playerid, COLOR_LGREEN, "Error: Nu poti vedea IP-ul unui admin!");
 	
 	if(PlayerInfo[id][pAdmin] > PlayerInfo[playerid][pAdmin]) 
-		return SCM(playerid, -1, "Nu poti folosi comanda aceasta pe acel player.");
+		return SCM(playerid, -1, "Ban khong the su dung lenh len nguoi choi nay.");
 	
 	new playersip[16];
 	GetPlayerIp(id,playersip,sizeof(playersip));
 
 	gString[0] = EOS;
-	format(gString, sizeof(gString), "Conturile cu IP-ul lui %s (%d):",GetName(id),id);
+	format(gString, sizeof(gString), "Conturile cu IP-ul cho %s (%d):",GetName(id),id);
 	SCM(playerid, COLOR_SERVER, gString);
 
 	gQuery[0] = EOS;
@@ -12155,7 +12155,7 @@ YCMD:getip(playerid, params[], help) {
 	if(sscanf(params, "u", id)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/getip <playerid>");
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Nguoi choi do khong dang nhap.");
 	if(PlayerInfo[id][pAdmin] >= 1 && PlayerInfo[playerid][pAdmin] < 6) return SCM(playerid, COLOR_LGREEN, "Error: Nu poti vedea IP-ul unui admin!");
-	if(PlayerInfo[id][pAdmin] > PlayerInfo[playerid][pAdmin]) return SCM(playerid, -1, "Nu poti folosi comanda aceasta pe acel player.");
+	if(PlayerInfo[id][pAdmin] > PlayerInfo[playerid][pAdmin]) return SCM(playerid, -1, "Ban khong the su dung lenh len nguoi choi nay.");
 	GetPlayerIp(id,playersip,sizeof(playersip));
 	format(string, sizeof(string), "%s (%d) IP: %s",GetName(id),id,playersip);
 	SCM(playerid,COLOR_WHITE,string);
@@ -12269,7 +12269,7 @@ YCMD:pm(playerid, params[], help) {
 	if(id == playerid) return SCM(playerid, COLOR_GREY, "Nu iti poti da pm singur.");
 	format(string, sizeof(string), "(( PM %s: %s ))", GetName(playerid), message);
 	SCM(id, COLOR_YELLOW, string);
-	format(string, sizeof(string), "(( PM trimis lui %s: %s ))", GetName(id) , message);
+	format(string, sizeof(string), "(( PM trimis cho %s: %s ))", GetName(id) , message);
 	SCM(playerid, 0xC8E0DFFF, string);
 	format(string, sizeof(string), "(PM) %s catre %s: %s", GetName(playerid), GetName(id), message);
 	ChatLog(GetName(playerid), playerid, string);				
@@ -12596,7 +12596,7 @@ YCMD:cancel(playerid, params[], help) {
 	else if(strcmp(item,"command",true) == 0) {
 		if(AcceptedService[playerid] == -1) return true;
 		AcceptedTaxiService[0][AcceptedService[playerid]] = 0;
-		format(string, sizeof(string), "**(( Taxi Dispatch: Taximetristul %s (%d) i-a anulat comanda lui %s (%d). Pentru a o accepta, foloseste (/accept taxi). ))**", GetName(playerid), playerid, GetName(AcceptedService[playerid]), AcceptedService[playerid]);
+		format(string, sizeof(string), "**(( Taxi Dispatch: Taximetristul %s (%d) i-a anulat comanda cho %s (%d). Pentru a o accepta, foloseste (/accept taxi). ))**", GetName(playerid), playerid, GetName(AcceptedService[playerid]), AcceptedService[playerid]);
 		SendFactionMessage(12, 0x2C6CBFFF, string);
 		format(string, sizeof(string), "Yeu cau dich vu cua ban da bi huy bo!");
 		SCM(playerid, COLOR_WHITE, string);
@@ -12734,7 +12734,7 @@ YCMD:accept(playerid, params[], help) {
 		if(PlayerMoney(playerid, money)) return SCM(playerid, COLOR_GREY, "Ban khong co suma necesara de chap nhan de nghi oferta!");
 		format(string, sizeof(string), "%s ti-a acceptat oferta de a lua clanul si Ban nhan duoc $%s.", GetName(playerid), FormatNumber(money));
 		SCM(id, COLOR_MONEY, string);
-		format(string, sizeof(string), "Ai acceptat oferta lui %s si ai pierdut $%s.", GetName(id), FormatNumber(money));
+		format(string, sizeof(string), "Ai acceptat oferta cho %s si ai pierdut $%s.", GetName(id), FormatNumber(money));
 		SCM(playerid, COLOR_MONEY, string);
 		GivePlayerCash(playerid, 0,money);
 		GivePlayerCash(id, 1, money);
@@ -12792,7 +12792,7 @@ YCMD:accept(playerid, params[], help) {
 				mysql_format(SQL, str,128,"UPDATE users SET `FlyLic`='1',`FlyLicT`='50' WHERE `ID`='%d'",PlayerInfo[playerid][pSQLID]);
 				mysql_tquery(SQL,str, "", "");
 
-				format(string, sizeof(string), "**(( SI Dispatch: %s (%d) i-a oferit licenta de zbor lui %s (%d) pentru suma de %d$. ))**", GetName(id), id, GetName(playerid), playerid, money);
+				format(string, sizeof(string), "**(( SI Dispatch: %s (%d) i-a oferit licenta de zbor cho %s (%d) pentru suma de %d$. ))**", GetName(id), id, GetName(playerid), playerid, money);
 				SendFactionMessage(PlayerInfo[id][pMember], COLOR_LIGHTBLUE, string);
 				finishAchievement(playerid, 9);	
 			}
@@ -12807,7 +12807,7 @@ YCMD:accept(playerid, params[], help) {
 				mysql_format(SQL, str,128,"UPDATE users SET `BoatLic`='1',`BoatLicT`='50' WHERE `ID`='%d'",PlayerInfo[playerid][pSQLID]);
 				mysql_tquery(SQL,str, "", "");		
 
-				format(string, sizeof(string), "**(( SI Dispatch: %s (%d) i-a oferit licenta de navigatie lui %s (%d) pentru suma de %d$. ))**", GetName(id), id, GetName(playerid), playerid, money);
+				format(string, sizeof(string), "**(( SI Dispatch: %s (%d) i-a oferit licenta de navigatie cho %s (%d) pentru suma de %d$. ))**", GetName(id), id, GetName(playerid), playerid, money);
 				SendFactionMessage(PlayerInfo[id][pMember], COLOR_LIGHTBLUE, string);	
 				finishAchievement(playerid, 8);	
 			}
@@ -12822,7 +12822,7 @@ YCMD:accept(playerid, params[], help) {
 				mysql_format(SQL, str,128,"UPDATE users SET `GunLic`='1',`GunLicT`='50' WHERE `ID`='%d'",PlayerInfo[playerid][pSQLID]);
 				mysql_tquery(SQL,str, "", "");		
 
-				format(string, sizeof(string), "**(( SI Dispatch: %s (%d) i-a oferit licenta de arme lui %s (%d) pentru suma de %d$. ))**", GetName(id), id, GetName(playerid), playerid, money);
+				format(string, sizeof(string), "**(( SI Dispatch: %s (%d) i-a oferit licenta de arme cho %s (%d) pentru suma de %d$. ))**", GetName(id), id, GetName(playerid), playerid, money);
 				SendFactionMessage(PlayerInfo[id][pMember], COLOR_LIGHTBLUE, string);	
 				finishAchievement(playerid, 7);	
 			}
@@ -12834,7 +12834,7 @@ YCMD:accept(playerid, params[], help) {
 		for(new m; m < 2; m++) {
 			if(PlayerInfo[id][pDailyMission][m] == 15 || PlayerInfo[id][pDailyMission][m] == 16) CheckMission(id, m);
 		}			
-		format(string, sizeof(string), "Ai acceptat oferta lui %s si Ban nhan duoc licenta.", GetName(id));
+		format(string, sizeof(string), "Ai acceptat oferta cho %s si Ban nhan duoc licenta.", GetName(id));
 		SCM(playerid, COLOR_MONEY, string);
 		format(string, sizeof(string), "%s ti-a acceptat oferta si Ban nhan duoc $%s.", GetName(playerid), FormatNumber(money));
 		SCM(id, COLOR_MONEY, string);	
@@ -12850,11 +12850,11 @@ YCMD:accept(playerid, params[], help) {
 		if(TradeID[id] != -1) return SCM(playerid, COLOR_WHITE, "Acel player este deja intr-o afacere!");					
 		TradePlayer[playerid] = -1;
 		
-		format(string, sizeof(string), "Bunurile lui %s", GetName(id));
+		format(string, sizeof(string), "Bunurile cho %s", GetName(id));
 		PlayerTextDrawSetString(playerid, TradePTD[0], string);
 		PlayerTextDrawSetString(id, TradePTD[0], "Bunurile tale");
 		PlayerTextDrawSetString(playerid, TradePTD[1], "Bunurile tale");
-		format(string, sizeof(string), "Bunurile lui %s", GetName(playerid));
+		format(string, sizeof(string), "Bunurile cho %s", GetName(playerid));
 		PlayerTextDrawSetString(id, TradePTD[1], string);
 		
 		TradeItems[id] = 0;
@@ -12866,7 +12866,7 @@ YCMD:accept(playerid, params[], help) {
 
 		format(string, sizeof(string), "%s (%d) a acceptat invitatia ta!", GetName(playerid), playerid);
 		SCM(id, COLOR_LIGHTBLUE, string);	
-		format(string, sizeof(string), "Ai acceptat invitatia lui %s (%d)!", GetName(id), id);
+		format(string, sizeof(string), "Ai acceptat invitatia cho %s (%d)!", GetName(id), id);
 		SCM(playerid, COLOR_LIGHTBLUE, string);
 		
 		ShowTradeTDs(id);
@@ -12971,7 +12971,7 @@ YCMD:accept(playerid, params[], help) {
 		format(string, sizeof(string), "(i) %s a intrat in factiune deoarece a fost invitat de %s.", giveplayer, sendername);
 		SendFactionMessage(PlayerInfo[playerid][pMember], COLOR_LIGHTBLUE, string);
 		FactionMembers[PlayerInfo[playerid][pMember]] ++;
-		format(string, sizeof(string), "Ai acceptat invitatia liderului %s de a intra in factiunea %s.", sendername,FactionName(PlayerInfo[playerid][pMember]));
+		format(string, sizeof(string), "Ai acceptat invitatia liderucho %s de a intra in factiunea %s.", sendername,FactionName(PlayerInfo[playerid][pMember]));
 		SCM(playerid, COLOR_LIGHTBLUE, string);
 		format(string, sizeof(string), "%s a acceptat invitatia ta.", giveplayer);
 		SCM(id, COLOR_LIGHTBLUE, string);
@@ -13095,11 +13095,11 @@ YCMD:accept(playerid, params[], help) {
 		GetPlayerName(idoffer,giveplayer,sizeof(giveplayer));
 		GetPlayerName(playerid,sendername,sizeof(sendername));
 		GetWeaponNameEx(weaponid,gunname,sizeof(gunname));
-		format(string, sizeof(string), "I-ai dat lui %s, un %s cu %d gloante, pentru %d materiale.", sendername,gunname, ammo,mats);
+		format(string, sizeof(string), "I-ai dat cho %s, un %s cu %d gloante, pentru %d materiale.", sendername,gunname, ammo,mats);
 		SCM(idoffer, COLOR_GRAD1, string);
 		format(string, sizeof(string), "Ban nhan duoc un %s cu %d gloante pentru %s.", gunname, ammo, giveplayer);
 		SCM(playerid, COLOR_GRAD1, string);
-		format(string, sizeof(string), "* %s a creat o arma si i-a dat-o lui %s.", giveplayer ,sendername);
+		format(string, sizeof(string), "* %s a creat o arma si da give-o cho %s.", giveplayer ,sendername);
 		ProxDetector(30.0, playerid, string, COLOR_PURPLE);
 		SellgunOffer[playerid] = -1;
 		SellgunPrice[playerid] = 0;
@@ -13126,7 +13126,7 @@ YCMD:accept(playerid, params[], help) {
 		if(PlayerInfo[id][pLawyer] < 1) return SCM(playerid,-1, "Acel player nu are accept.");
 		GetPlayerName(playerid, giveplayer, sizeof(giveplayer));
 		GetPlayerName(FreeOffer[playerid], sendername, sizeof(sendername));
-		format(string, sizeof(string), "* I-ai dat free lui %s si l-ai scos din inchisoare.", giveplayer);
+		format(string, sizeof(string), "* I-ai dat free cho %s si l-ai scos din inchisoare.", giveplayer);
 		SCM(FreeOffer[playerid], COLOR_LIGHTBLUE, string);
 		format(string, sizeof(string), "* Ban nhan duoc free de la %s si ai iesit din inchisoare.", sendername);
 		SCM(playerid, COLOR_LIGHTBLUE, string);
@@ -13154,7 +13154,7 @@ YCMD:accept(playerid, params[], help) {
 		GetPlayerName(TicketOffer[playerid], giveplayer, sizeof(giveplayer));
 		GetPlayerName(playerid, sendername, sizeof(sendername));
 		if(PlayerMoney(playerid, TicketMoney[playerid])) return SCM(playerid, COLOR_LIGHTBLUE, "* Ban khong co enough money.");
-		format(string, sizeof(string), "* Ai platit amenda de $%d lui %s.", TicketMoney[playerid], giveplayer);
+		format(string, sizeof(string), "* Ai platit amenda de $%d cho %s.", TicketMoney[playerid], giveplayer);
 		SCM(playerid, COLOR_MONEY, string);
 		format(string, sizeof(string), "* %s a platit amenda in valoare de $%d.", sendername, TicketMoney[playerid]);
 		SCM(TicketOffer[playerid], COLOR_MONEY, string);
@@ -13178,11 +13178,11 @@ YCMD:accept(playerid, params[], help) {
 		fuel = 100;
 		UpdateFactionRaport(id, 0);	
 		DeelayCommand[id][6] = 30;	
-		format(string, sizeof(string), "**(( TTC Dispatch: Tow Truck Member %s (%s) i-a alimentat masina lui %s (%d) pentru suma de %d$. ))**", GetName(id), id, GetName(playerid), playerid, RefillPrice[playerid]);
+		format(string, sizeof(string), "**(( TTC Dispatch: Tow Truck Member %s (%s) i-a alimentat masina cho %s (%d) pentru suma de %d$. ))**", GetName(id), id, GetName(playerid), playerid, RefillPrice[playerid]);
 		SendFactionMessage(8, COLOR_LIGHTBLUE, string);		
 		format(string, sizeof(string), "* Vehiculul tau a fost alimentat cu %d%s pentru $%d de mecanicul %s.",fuel,"%%",RefillPrice[playerid],GetName(id));
 		SCM(playerid,COLOR_MONEY, string);
-		format(string, sizeof(string), "* I-ai alimentat vehiculul lui %s pentru $%d.",sendername,RefillPrice[playerid]);
+		format(string, sizeof(string), "* I-ai alimentat vehiculul cho %s pentru $%d.",sendername,RefillPrice[playerid]);
 		SCM(RefillOffer[playerid], COLOR_MONEY, string);
 		GivePlayerCash(id, 1,RefillPrice[playerid]);
 		GivePlayerCash(playerid, 0, RefillPrice[playerid]);
@@ -13287,12 +13287,12 @@ YCMD:deposit(playerid, params[], help) {
 	if(!IsAtBank(playerid)) return SCM(playerid, COLOR_LGREEN, "Error: Pentru a putea folosi aceasta comanda, trebuie sa fii intr-o banca!");
 	new money,string[200];
 	if(sscanf(params, "i", money)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/deposit <Suma>");
-	if(PlayerMoney(playerid, money) || money < 1 || money > 1000000000) return SCM(playerid, COLOR_LGREEN, "Error: Ban khong co aceasta suma pe care vrei sa o depozitezi.");
+	if(PlayerMoney(playerid, money) || money < 1 || money > 1000000000) return SCM(playerid, COLOR_LGREEN, "Error: Ban khong co aceasta suma pe care vrei sa o Gui tienezi.");
 	GivePlayerCash(playerid, 0, money);
 	GivePlayerBank(playerid, money);
 	Update(playerid, pBankx);
 	Update(playerid, pMBankx);
-	format(string, sizeof(string), "Ai depozitat $%s in contul tau bancar. Acum ai: $%s.", FormatNumber(money), GetBankMoney(playerid));
+	format(string, sizeof(string), "Ai Gui tienat $%s in contul tau bancar. Acum ai: $%s.", FormatNumber(money), GetBankMoney(playerid));
 	if(TradeID[playerid] != -1) return SCM(playerid, COLOR_LGREEN, "Error: Ban khong the su dung lenh nay khi dang giao dich!");
 	SCM(playerid, 0xFAAC25FF, string);
 	if(PlayerInfo[playerid][pShowBanca] == 1) {
@@ -13322,7 +13322,7 @@ YCMD:transfer(playerid, params[], help) {
 	TransferOffer[playerid] = id;
 	TransferMoney[playerid] = moneytransfer;	
 	new cashbank = TransferMoney[playerid]/100;	
-	format(string, sizeof(string), "Esti sigur ca vrei sa transferi %s$ lui %s?\nTaxa este $%s.",FormatNumber(moneytransfer),GetName(id),FormatNumber(cashbank));
+	format(string, sizeof(string), "Esti sigur ca vrei sa transferi %s$ cho %s?\nTaxa este $%s.",FormatNumber(moneytransfer),GetName(id),FormatNumber(cashbank));
 	Dialog_Show(playerid, DIALOG_TRANSFER, DIALOG_STYLE_MSGBOX, "Transfer:", string, "Yes", "No");
 	return true;
 }
@@ -13745,12 +13745,12 @@ YCMD:heal(playerid, params[], help) {
 		DeelayCommand[playerid][4] = 30;
 		PlayerPlaySound(playerid, 1150, 0.0, 0.0, 0.0);
 		
-		format(string, sizeof(string), "**(( Paramedic Dispatch: Paramedic %s (%d) i-a oferit heal lui %s (%d) pentru suma de %s$. ))**",GetName(playerid), playerid, GetName(id), id, FormatNumber(price));
+		format(string, sizeof(string), "**(( Paramedic Dispatch: Paramedic %s (%d) i-a oferit heal cho %s (%d) pentru suma de %s$. ))**",GetName(playerid), playerid, GetName(id), id, FormatNumber(price));
 		SendFactionMessage(13, COLOR_LIGHTBLUE,string);
 		
 		format(string, sizeof(string), "Ban nhan duoc viata pentru %s$.",FormatNumber(price));
 		SCM(id, COLOR_MONEY,string);
-		format(string, sizeof(string), "I-ai dat viata lui %s in schimbul sumei de $%s.", GetName(id), FormatNumber(price));
+		format(string, sizeof(string), "I-ai dat viata cho %s in schimbul sumei de $%s.", GetName(id), FormatNumber(price));
 		SCM(playerid, COLOR_MONEY, string);
 		if(PlayerInfo[playerid][pMember] != PlayerInfo[id][pMember]) UpdateFactionRaport(playerid, 0);	
 		Update(id, pCashx);
@@ -13811,8 +13811,8 @@ YCMD:call(playerid, params[], help) {
 				if(PlayerInfo[playerid][pPhone] == 0) SetPlayerAttachedObject(playerid,4,330,6, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 1.000000, 1.000000, 1.000000 );
 				else if(PlayerInfo[playerid][pPhone] == 1) SetPlayerAttachedObject( playerid, 4, 18865, 6, 0.086043, 0.027719, 0.003817, 95.232246, 178.651031, 1.691840, 1.002077, 1.000000, 1.000000 ); // MobilePhone1 - phone1
 				else if(PlayerInfo[playerid][pPhone] == 2) SetPlayerAttachedObject( playerid,4, 18874, 6, 0.086043, 0.027719, 0.003817, 95.232246, 178.651031, 1.691840, 1.002077, 1.000000, 1.000000 ); // MobilePhone10 - phone10
-				if(strlen(tel2) == 4) format(string, sizeof(string), "* Suna iPhone-ul lui %s.", giveplayer);
-				else format(string, sizeof(string), "* Suna telefonul lui %s.", giveplayer);
+				if(strlen(tel2) == 4) format(string, sizeof(string), "* Suna iPhone-ul cho %s.", giveplayer);
+				else format(string, sizeof(string), "* Suna telefonul cho %s.", giveplayer);
 				ProxDetector(20.0, giveplayerid, string, COLOR_PURPLE);
 
 				CellTime[playerid] = 1;
@@ -13856,7 +13856,7 @@ YCMD:sms(playerid, params[], help) {
 				format(string, sizeof(string), "SMS de la %s (%s): %s",GetName(playerid),DecimalNumber(playerid), smstext);
 				SCM(giveplayerid, COLOR_YELLOW, string);
 			}
-			format(string, sizeof(string), "SMS trimis lui %s (%s): %s",GetName(giveplayerid),DecimalNumber(giveplayerid),smstext);
+			format(string, sizeof(string), "SMS trimis cho %s (%s): %s",GetName(giveplayerid),DecimalNumber(giveplayerid),smstext);
 			SCM(playerid, 0xC8E0DFFF, string);
 			format(string, sizeof(string), "(sms) %s catre %s: %s", GetName(playerid), GetName(giveplayerid), smstext);
 			ChatLog(GetName(playerid), playerid, string);	
@@ -13927,7 +13927,7 @@ YCMD:reply(playerid, params[], help) {
 				format(string, sizeof(string), "SMS de la %s (%s): %s",GetName(playerid),DecimalNumber(playerid), smstext);
 				SCM(giveplayerid, COLOR_YELLOW, string);
 			}
-			format(string, sizeof(string), "SMS trimis lui %s (%s): %s",GetName(giveplayerid),DecimalNumber(giveplayerid),smstext);
+			format(string, sizeof(string), "SMS trimis cho %s (%s): %s",GetName(giveplayerid),DecimalNumber(giveplayerid),smstext);
 			SCM(playerid, 0xC8E0DFFF, string);
 			format(string, sizeof(string), "(sms) %s catre %s: %s", sendername, GetName(giveplayerid), smstext);
 			ChatLog(GetName(playerid), playerid, string);
@@ -14139,7 +14139,7 @@ YCMD:unjailo(playerid, params[], help) {
 	new id[25];
 	if(sscanf(params, "s[25]", id)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/unjailo <name>");
 	new cont = MySQLCheckAccount(id);
-	if(cont == 0) return SCM(playerid,COLOR_ERROR,"error:{FFFFFF} Acest cont nu a fost gasit in baza de date!");
+	if(cont == 0) return SCM(playerid,COLOR_ERROR,"Error:{FFFFFF} Tai khoan khong ton tai trong co so du lieu!");
 	new str1[128], string[180];
 	format(string, sizeof(string), "%s a fost scos din jail si a fost salvat in baza de date.", id);
 	SCM(playerid, COLOR_WHITE, string);
@@ -14154,11 +14154,11 @@ YCMD:jailo(playerid, params[], help) {
 	if(sscanf(params, "s[25]is[128]", id,minutes,reason)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/ajailo <name> <Minute> <reason>");
 	if(FaceReclama(reason)) return RemoveFunction(playerid, reason);
 	cont = MySQLCheckAccount(id);
-	if(cont == 0) return SCM(playerid,COLOR_ERROR,"error:{FFFFFF} Acest cont nu a fost gasit in baza de date!");
+	if(cont == 0) return SCM(playerid,COLOR_ERROR,"Error:{FFFFFF} Tai khoan khong ton tai trong co so du lieu!");
 	new timej = minutes*60;
 	format(string, sizeof(string), "Offline: %s a fost bagat in inchisoare de %s pentru %d minute, ly do: %s", id, sendername,minutes,reason);
 	SCMTA(COLOR_LIGHTRED, string);
-	format(string, sizeof(string), "Ban nhan duoc jail de la %s pentru %d minute, motiv %s.", GetName(playerid), minutes, reason);
+	format(string, sizeof(string), "Ban nhan duoc jail de la %s pentru %d minute, ly do: %s.", GetName(playerid), minutes, reason);
 	InsertEmail(id, GetName(playerid), string, 0);		
 	new str1[184];		
 	mysql_format(SQL, str1,sizeof(str1),"UPDATE users SET `Jailed`='2',`JailTime`='%d',`WantedLevel`='0' WHERE `name`='%s'",timej,id);
@@ -14282,7 +14282,7 @@ YCMD:showlicenses(playerid, params[], help) {
 	if(!ProxDetectorS(8.0, playerid, id)) return SCM(playerid,COLOR_WHITE, "Nguoi choi do khong o gan ban.");
 	if(Spectate[id] != 255) return SCM(playerid,COLOR_WHITE, "Nguoi choi do khong o gan ban.");
 	new string[128];
-	format(string, sizeof(string), "I-ai aratat licentele lui %s.", GetName(id));
+	format(string, sizeof(string), "I-ai aratat licentele cho %s.", GetName(id));
 	SCM(playerid, COLOR_LIGHTBLUE, string);
 	format(string, sizeof(string), "%s ti-a aratat licentele lui.", GetName(playerid));
 	SCM(id, COLOR_LIGHTBLUE, string);	
@@ -14353,7 +14353,7 @@ YCMD:startlesson(playerid, params[], help) {
 	if(!ProxDetectorS(9.0, playerid, id)) return SCM(playerid, -1, "Nu esti langa acel jucator!");
 	format(string, sizeof(string), "Instructorul %s doreste sa inceapa o lectie cu tine. (/accept lesson %d)", GetName(playerid), playerid);
 	SCM(id, COLOR_LIGHTBLUE, string);
-	format(string, sizeof(string), "Invitatie a fost trimisa lui %s.", GetName(id));
+	format(string, sizeof(string), "Invitatie a fost trimisa cho %s.", GetName(id));
 	SCM(playerid, COLOR_LIGHTBLUE, string);	
 	SetPVarInt(id, "Lesson", playerid);
 	return true;
@@ -14429,7 +14429,7 @@ YCMD:givelicense(playerid, params[], help) {
 		if(PlayerMoney(id, money)) return SCM(playerid, -1, "Acel jucator nu are suma necesara de bani!");
 		if(PlayerInfo[id][pFlyLicS] != 0) return SCM(playerid, -1, "Acel jucator are aceasta licenta suspendata!");
 		if(PlayerInfo[id][pFlyLicT] >= 20) return SCM(playerid, -1, "Acel jucator are deja aceasta licenta!");
-		format(string, sizeof(string), "* I-ai oferit licenta de zbor lui %s pentru suma de $%s.",GetName(id), FormatNumber(money));
+		format(string, sizeof(string), "* I-ai oferit licenta de zbor cho %s pentru suma de $%s.",GetName(id), FormatNumber(money));
 		SCM(playerid, COLOR_LIGHTBLUE, string);
 		format(string, sizeof(string), "* Instructorul %s ti-a oferit licenta de zbor in schimbul sumei de $%s. (/accept license %d)",GetName(playerid), FormatNumber(money), playerid);
 		SCM(id, COLOR_LIGHTBLUE, string);
@@ -14441,7 +14441,7 @@ YCMD:givelicense(playerid, params[], help) {
 		if(PlayerMoney(id, money)) return SCM(playerid, -1, "Acel jucator nu are suma necesara de bani!");
 		if(PlayerInfo[id][pBoatLicS] != 0) return SCM(playerid, -1, "Acel jucator are aceasta licenta suspendata!");
 		if(PlayerInfo[id][pBoatLicT] >= 20) return SCM(playerid, -1, "Acel jucator are deja aceasta licenta!");
-		format(string, sizeof(string), "* I-ai oferit licenta de navigatie lui %s pentru suma de $%s.",GetName(id), FormatNumber(money));
+		format(string, sizeof(string), "* I-ai oferit licenta de navigatie cho %s pentru suma de $%s.",GetName(id), FormatNumber(money));
 		SCM(playerid, COLOR_LIGHTBLUE, string);
 		format(string, sizeof(string), "* Instructorul %s ti-a oferit licenta de navigatie in schimbul sumei de $%s. (/accept license %d)",GetName(playerid), FormatNumber(money), playerid);
 		SCM(id, COLOR_LIGHTBLUE, string);
@@ -14453,7 +14453,7 @@ YCMD:givelicense(playerid, params[], help) {
 		if(PlayerMoney(id, money)) return SCM(playerid, -1, "Acel jucator nu are suma necesara de bani!");
 		if(PlayerInfo[id][pGunLicS] != 0) return SCM(playerid, -1, "Acel jucator are aceasta licenta suspendata!");
 		if(PlayerInfo[id][pGunLicT] >= 20) return SCM(playerid, -1, "Acel jucator are deja aceasta licenta!");
-		format(string, sizeof(string), "* I-ai oferit licenta de arme lui %s pentru suma de $%s.",GetName(id), FormatNumber(money));
+		format(string, sizeof(string), "* I-ai oferit licenta de arme cho %s pentru suma de $%s.",GetName(id), FormatNumber(money));
 		SCM(playerid, COLOR_LIGHTBLUE, string);
 		format(string, sizeof(string), "* Instructorul %s ti-a oferit licenta arme in schimbul sumei de $%s. (/accept license %d)",GetName(playerid), FormatNumber(money), playerid);
 		SCM(id, COLOR_LIGHTBLUE, string);
@@ -14902,7 +14902,7 @@ YCMD:money(playerid, params[], help) {
 	if(CheckerBigInt(money) != 0) return SCM(playerid, COLOR_GREY, "Money invalid.");
 	ResetPlayerCash(id);
 	Translate32Bit(StoreMoney[id], MoneyMoney[id], money);
-	format(string, sizeof(string), "(/money) {FFFFFF}%s i-a setat bani lui %s, $%s.", GetName(playerid),GetName(id), FormatBigInt(StoreMoney[id], MoneyMoney[id]));
+	format(string, sizeof(string), "(/money) {FFFFFF}%s i-a setat bani cho %s, $%s.", GetName(playerid),GetName(id), FormatBigInt(StoreMoney[id], MoneyMoney[id]));
 	SendAdminMessage(COLOR_RED, string, 5);
 	format(string, sizeof(string), "Admin {7BAABA}%s{FFFFFF} ti-a setat banii la $%s.", GetName(playerid), FormatBigInt(StoreMoney[id], MoneyMoney[id]));
 	SCM(id, COLOR_WHITE, string);
@@ -14990,7 +14990,7 @@ YCMD:mute(playerid, params[], help) {
 	new time,id,string[180],reason[250],str[180];
 	if(sscanf(params, "uis[250]",id,time,reason)) return SCM(playerid,COLOR_GREY, "Syntax: {FFFFFF}/mute <playerid/name> <Time(minutes)> <reason>");
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Nguoi choi do khong dang nhap.");
-	if(PlayerInfo[id][pAdmin] > PlayerInfo[playerid][pAdmin]) return SCM(playerid, -1, "Acel player are adminul mai mare ca tine!");
+	if(PlayerInfo[id][pAdmin] > PlayerInfo[playerid][pAdmin]) return SCM(playerid, -1, "Ban khong the ban admin level cao hon ban!");
 	PlayerInfo[id][pMuted] = 1;
 	PlayerInfo[id][pMuteTime] = time*60;
 	format(string, sizeof(string), "* Ban nhan duoc mute de la %s pentru %d minute, ly do: %s.", GetName(playerid),time,reason);
@@ -15018,7 +15018,7 @@ YCMD:unmute(playerid, params[], help) {
 	PlayerInfo[id][pMuteTime] = 0;
 	format(string, sizeof(string), "* Ban nhan duoc unmute de la Adminul %s.", GetName(playerid));
 	SCM(id, COLOR_WHITE, string);
-	format(string, sizeof(string), "AdmCmd: %s i-a dat unmute lui %s.", GetName(playerid),GetName(id));
+	format(string, sizeof(string), "AdmCmd: %s da give unmute cho %s.", GetName(playerid),GetName(id));
 	if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(COLOR_WHITE, string,3);
 	new string2[184];
 	mysql_format(SQL, string2, sizeof(string2), "UPDATE users SET `Muted`='0',`MuteTime`='0' WHERE `ID`='%d'",PlayerInfo[id][pSQLID]);
@@ -15556,7 +15556,7 @@ stock TTCFunction(playerid) {
 					CP[playerid] = 34;
 					if(idd != 0) {
 						new string[180];
-						format(string, 256, "Ai tractat vehiculul lui %s.", CarInfo[idd][cOwner]);
+						format(string, 256, "Ai tractat vehiculul cho %s.", CarInfo[idd][cOwner]);
 						SCM(playerid, -1, string);	
 					}
 				}
@@ -15619,7 +15619,7 @@ YCMD:punish(playerid, params[], help) {
 	SpawnPlayer(id);
 	format(string, sizeof(string), "Ban nhan duoc punish de la %s pentru %d secunde.", GetName(playerid), time);
 	SCM(id, COLOR_LIGHTBLUE, string);
-	format(string, sizeof(string), "I-ai dat punish lui %s pentru %d secunde.", GetName(id), time);
+	format(string, sizeof(string), "I-ai dat punish cho %s pentru %d secunde.", GetName(id), time);
 	SCM(playerid, COLOR_LIGHTBLUE, string);					
 	return true;
 }
@@ -15788,7 +15788,7 @@ function UpdateFare(playerid) {
 			foreach(new i: Player) {
 				if(IsNearPlayer(playerid, i)) {
 					if(PlayerInfo[playerid][pMember] == 12) format(string, sizeof(string), "* %s da tra cho tai xe %s so tien $%s chi phi taxi.", GetName(playerid), GetName(TaxiDriver[playerid]), FormatNumber(TaxiMoney[playerid]));
-					else if(PlayerInfo[playerid][pMember] == 15) format(string, sizeof(string), "* %s a platit uberului %s suma de $%s pentru cursa efectuata.", GetName(playerid), GetName(TaxiDriver[playerid]), FormatNumber(TaxiMoney[playerid]));
+					else if(PlayerInfo[playerid][pMember] == 15) format(string, sizeof(string), "* %s a platit uberucho %s suma de $%s pentru cursa efectuata.", GetName(playerid), GetName(TaxiDriver[playerid]), FormatNumber(TaxiMoney[playerid]));
 					SCM(i, COLOR_PURPLE, string);
 				}
 			}
@@ -15890,7 +15890,7 @@ YCMD:disarm(playerid, params[], help) {
 	if(sscanf(params, "u",id)) return SCM(playerid, COLOR_GREY, "Syntax: {FFFFFF}/disarm <playerid/name>");
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Nguoi choi do khong dang nhap.");
 	ResetWeapons(id);
-	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a luat armele lui %s.",GetName(playerid), GetName(id));
+	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a luat armele cho %s.",GetName(playerid), GetName(id));
 	if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(COLOR_WHITE, string,1);
 	return true;
 }
@@ -15909,7 +15909,7 @@ YCMD:suspend(playerid, params[], help) {
 		PlayerInfo[id][pCarLicS] = hours;
 		PlayerInfo[id][pCarLic] = 0;
 		PlayerInfo[id][pCarLicT] = 0;
-		format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a confiscat lui %s licenta de condus pentru %d ore, ly do: %s", GetName(playerid), GetName(id), hours, reason);
+		format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a confiscat cho %s licenta de condus pentru %d ore, ly do: %s", GetName(playerid), GetName(id), hours, reason);
 		SCMTA(COLOR_LIGHTRED, string);
 		format(string, sizeof(string), "Admin %s tich thu giay phep lai xe cua ban pentru %d ore.", GetName(playerid), hours);
 		SCM(id, COLOR_WARNING, string);
@@ -15920,7 +15920,7 @@ YCMD:suspend(playerid, params[], help) {
 		PlayerInfo[id][pBoatLicS] = hours;
 		PlayerInfo[id][pBoatLic] = 0;
 		PlayerInfo[id][pBoatLicT] = 0;
-		format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a confiscat lui %s licenta de navigat pentru %d ore, ly do: %s", GetName(playerid), GetName(id), hours, reason);
+		format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a confiscat cho %s licenta de navigat pentru %d ore, ly do: %s", GetName(playerid), GetName(id), hours, reason);
 		SCMTA(COLOR_LIGHTRED, string);
 		format(string, sizeof(string), "Admin %s ti-a confiscat licenta de navigat pentru %d ore.", GetName(playerid), hours);
 		SCM(id, COLOR_WARNING, string);
@@ -15931,7 +15931,7 @@ YCMD:suspend(playerid, params[], help) {
 		PlayerInfo[id][pFlyLicS] = hours;
 		PlayerInfo[id][pFlyLic] = 0;
 		PlayerInfo[id][pFlyLicT] = 0;
-		format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a confiscat lui %s licenta de zbor pentru %d ore, ly do: %s", GetName(playerid), GetName(id), hours, reason);
+		format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a confiscat cho %s licenta de zbor pentru %d ore, ly do: %s", GetName(playerid), GetName(id), hours, reason);
 		SCMTA(COLOR_LIGHTRED, string);
 		format(string, sizeof(string), "Admin %s ti-a confiscat licenta de zbor pentru %d ore.", GetName(playerid), hours);
 		SCM(id, COLOR_WARNING, string);
@@ -15943,7 +15943,7 @@ YCMD:suspend(playerid, params[], help) {
 		PlayerInfo[id][pGunLic] = 0;
 		PlayerInfo[id][pGunLicT] = 0;
 		ResetPlayerWeapons(id);
-		format(string, sizeof(string), "Admin %s i-a confiscat lui %s licenta de arme pentru %d ore.", GetName(playerid), GetName(id), hours);
+		format(string, sizeof(string), "Admin %s i-a confiscat cho %s licenta de arme pentru %d ore.", GetName(playerid), GetName(id), hours);
 		SendAdminMessage(COLOR_LIGHTRED, string, 1); 		
 		format(string, sizeof(string), "Admin %s ti-a confiscat licenta de arme pentru %d ore.", GetName(playerid), hours);
 		SCM(id, COLOR_WARNING, string);
@@ -15962,30 +15962,30 @@ YCMD:suspendo(playerid, params[], help) {
 		return true;
 	}
 	new userID = GetPlayerID(id);
-	if(userID != INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Acel jucator este deja conectat!");
+	if(userID != INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Nguoi choi da chon khong ket noi!");
 	new cont = MySQLCheckAccount(id);
-	if(cont == 0) return SCM(playerid,COLOR_ERROR,"error:{FFFFFF} Acest cont nu a fost gasit in baza de date!");
+	if(cont == 0) return SCM(playerid,COLOR_ERROR,"Error:{FFFFFF} Tai khoan khong ton tai trong co so du lieu!");
 	if(hours < 0 || hours > 100) return SCM(playerid, COLOR_GREY, "Invalid hours! (0-100)");
 	if(strcmp(item,"driving",true) == 0) {
-		format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a confiscat lui %s (offline) licenta de condus pentru %d ore, ly do: %s", GetName(playerid), id, hours, reason);
+		format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a confiscat cho %s (offline) licenta de condus pentru %d ore, ly do: %s", GetName(playerid), id, hours, reason);
 		SCMTA(COLOR_LIGHTRED, string);
 		mysql_format(SQL, query, sizeof(query), "UPDATE `users` SET `CarLic`='0', `CarLicT`='0', `CarLicS`='%d' WHERE `name`='%s'", hours, id);
 		mysql_tquery(SQL, query, "", "");		
 	}
 	else if(strcmp(item,"sailing",true) == 0) {
-		format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a confiscat lui %s (offline) licenta de navigat pentru %d ore, ly do: %s", GetName(playerid), id, hours, reason);
+		format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a confiscat cho %s (offline) licenta de navigat pentru %d ore, ly do: %s", GetName(playerid), id, hours, reason);
 		SCMTA(COLOR_LIGHTRED, string);
 		mysql_format(SQL, query, sizeof(query), "UPDATE `users` SET `BoatLic`='0', `BoatLicT`='0', `BoatLicS`='%d' WHERE `name`='%s'", hours, id);
 		mysql_tquery(SQL, query, "", "");
 	}	
 	else if(strcmp(item,"fly",true) == 0) {
-		format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a confiscat lui %s (offline) licenta de zbor pentru %d ore, ly do: %s", GetName(playerid), id, hours, reason);
+		format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a confiscat cho %s (offline) licenta de zbor pentru %d ore, ly do: %s", GetName(playerid), id, hours, reason);
 		SCMTA(COLOR_LIGHTRED, string);
 		mysql_format(SQL, query, sizeof(query), "UPDATE `users` SET `FlyLic`='0', `FlyLicT`='0', `FlyLicS`='%d' WHERE `name`='%s'", hours, id);
 		mysql_tquery(SQL, query, "", "");
 	}	
 	else if(strcmp(item,"gun",true) == 0) {
-		format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a confiscat lui %s (offline) licenta de arme pentru %d ore.", GetName(playerid), id, hours);
+		format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a confiscat cho %s (offline) licenta de arme pentru %d ore.", GetName(playerid), id, hours);
 		SendAdminMessage(COLOR_LIGHTRED, string, 1); 		
 		mysql_format(SQL, query, sizeof(query), "UPDATE `users` SET `GunLic`='0', `GunLicT`='0', `GunLicS`='%d' WHERE `name`='%s'", hours, id);
 		mysql_tquery(SQL, query, "", "");		
@@ -16003,9 +16003,9 @@ YCMD:agl(playerid, params[], help) {
 	}
 	if(id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Nguoi choi do khong dang nhap.");
 	if(strcmp(item,"driving",true) == 0) {
-		format(string, sizeof(string), "* I-ai dat licenta de condus lui %s.",GetName(id));
+		format(string, sizeof(string), "* I-ai dat licenta de condus cho %s.",GetName(id));
 		SCM(playerid, COLOR_LIGHTBLUE, string);
-		format(string, sizeof(string), "* Adminul %s ti-a dat licenta de condus.",GetName(playerid));
+		format(string, sizeof(string), "* Adminul %s tda give licenta de condus.",GetName(playerid));
 		SCM(id, COLOR_LIGHTBLUE, string);
 		PlayerInfo[id][pCarLic] = 1;
 		PlayerInfo[id][pCarLicT] = 50;
@@ -16014,9 +16014,9 @@ YCMD:agl(playerid, params[], help) {
 		mysql_tquery(SQL,str, "", "");
 	}
 	else if(strcmp(item,"fly",true) == 0) {
-		format(string, sizeof(string), "* I-ai dat licenta de zbor lui %s.",GetName(id));
+		format(string, sizeof(string), "* I-ai dat licenta de zbor cho %s.",GetName(id));
 		SCM(playerid, COLOR_LIGHTBLUE, string);
-		format(string, sizeof(string), "* Adminul %s ti-a dat licenta zbor.",GetName(playerid));
+		format(string, sizeof(string), "* Adminul %s tda give licenta zbor.",GetName(playerid));
 		SCM(id, COLOR_LIGHTBLUE, string);
 		PlayerInfo[id][pFlyLic] = 1;
 		PlayerInfo[id][pFlyLicT] = 50;
@@ -16025,9 +16025,9 @@ YCMD:agl(playerid, params[], help) {
 		mysql_tquery(SQL,str, "", "");
 	}
 	else if(strcmp(item,"sailing",true) == 0) {
-		format(string, sizeof(string), "* I-ai dat licenta de navigatie lui %s.",GetName(id));
+		format(string, sizeof(string), "* I-ai dat licenta de navigatie cho %s.",GetName(id));
 		SCM(playerid, COLOR_LIGHTBLUE, string);
-		format(string, sizeof(string), "* Adminul %s ti-a dat licenta de navigatie",GetName(playerid));
+		format(string, sizeof(string), "* Adminul %s tda give licenta de navigatie",GetName(playerid));
 		SCM(id, COLOR_LIGHTBLUE, string);
 		PlayerInfo[id][pBoatLic] = 1;
 		PlayerInfo[id][pBoatLicT] = 50;
@@ -16036,9 +16036,9 @@ YCMD:agl(playerid, params[], help) {
 		mysql_tquery(SQL,str, "","");
 	}
 	else if(strcmp(item,"gun",true) == 0) {
-		format(string, sizeof(string), "* I-ai dat licenta de arme lui %s.",GetName(id));
+		format(string, sizeof(string), "* I-ai dat licenta de arme cho %s.",GetName(id));
 		SCM(playerid, COLOR_LIGHTBLUE, string);
-		format(string, sizeof(string), "* Adminul %s ti-a dat licenta arme.",GetName(playerid));
+		format(string, sizeof(string), "* Adminul %s tda give licenta arme.",GetName(playerid));
 		SCM(id, COLOR_LIGHTBLUE, string);
 		PlayerInfo[id][pGunLic] = 1;
 		PlayerInfo[id][pGunLicT] = 50;
@@ -16047,9 +16047,9 @@ YCMD:agl(playerid, params[], help) {
 		mysql_tquery(SQL,str, "","");
 	}
 	else if(strcmp(item,"all",true) == 0) {
-		format(string, sizeof(string), "* I-ai dat toate licentele lui %s.",GetName(id));
+		format(string, sizeof(string), "* I-ai dat toate licentele cho %s.",GetName(id));
 		SCM(playerid, COLOR_LIGHTBLUE, string);
-		format(string, sizeof(string), "* Adminul %s ti-a dat toate licentele.",GetName(playerid));
+		format(string, sizeof(string), "* Adminul %s tda give toate licentele.",GetName(playerid));
 		SCM(id, COLOR_LIGHTBLUE, string);
 		PlayerInfo[id][pGunLic] = 1;
 		PlayerInfo[id][pGunLicT] = 50;
@@ -16124,9 +16124,9 @@ YCMD:pay(playerid, params[], help) {
 		GivePlayerCash(id, 1, moneys);
 		PlayerPlaySound(id, 1052, 0.0, 0.0, 0.0);
 		
-		format(string, sizeof(string), "* %s scoate niste bani din buzunar si-i inmaneaza lui %s.", GetName(playerid) ,GetName(id));
+		format(string, sizeof(string), "* %s scoate niste bani din buzunar si-i inmaneaza cho %s.", GetName(playerid) ,GetName(id));
 		ProxDetector(30.0, playerid, string, COLOR_PURPLE);
-		format(string, sizeof(string), "I-ai trimis lui %s suma de $%s.", giveplayer, FormatNumber(moneys));
+		format(string, sizeof(string), "I-ai trimis cho %s suma de $%s.", giveplayer, FormatNumber(moneys));
 		SCM(playerid, COLOR_WHITE, string);
 		PlayerPlaySound(playerid, 1052, 0.0, 0.0, 0.0);
 		format(string, sizeof(string), "Ban nhan duoc $%s de la %s.", FormatNumber(moneys), GetName(playerid));
@@ -16283,7 +16283,7 @@ YCMD:givegun(playerid, params[], help) {
 	GetPlayerName(playerid, sendername, sizeof(sendername));
 	new gunname[32];
 	GetWeaponName(gun, gunname, 32);
-	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a dat lui %s arma %s (%d ammo).",sendername,giveplayer,gunname, ammo);
+	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s da give %s arma %s (%d ammo).",sendername,giveplayer,gunname, ammo);
 	if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(COLOR_WHITE, string,3);
 	if(GetPlayerState(id) == PLAYER_STATE_PASSENGER) {
 		new gun2,tmp;
@@ -16445,7 +16445,7 @@ YCMD:myreferral(playerid, params[], help) {
 	
 	format(szQuery, sizeof(szQuery), "SELECT * FROM `users` WHERE `Referral`='%d' ORDER BY `users`.`Level` DESC LIMIT 20", PlayerInfo[playerid][pSQLID]);
 	new Cache: result = mysql_query(SQL, szQuery);	
-	strcat(szDialog, "{FFB469}(+) Informatii{FFFFFF}\n");
+	strcat(szDialog, "{FFB469}(+) Thong tin{FFFFFF}\n");
 	for(new i, x = cache_num_rows(); i < x; i++) {
 		cache_get_value_name(i, "name", string); format(name, 64, string);
 
@@ -16828,7 +16828,7 @@ YCMD:startwork(playerid, params[], help) {
 	
 	MoneyEarned[playerid] = 0;
 	CurseFacute[playerid] = 0;
-	if(PlayerInfo[playerid][pShowJob] == 0 && PlayerInfo[playerid][pJob] != 5 && PlayerInfo[playerid][pLevel] < 3) SCM(playerid, COLOR_YELLOW, "Daca doresti sa vezi mai multe informatii folositoare de la job, o poti face prin comanda (/hud > Informatii job).");
+	if(PlayerInfo[playerid][pShowJob] == 0 && PlayerInfo[playerid][pJob] != 5 && PlayerInfo[playerid][pLevel] < 3) SCM(playerid, COLOR_YELLOW, "Daca doresti sa vezi mai multe Thong tin folositoare de la job, o poti face prin comanda (/hud > Thong tin job).");
 	new skill = GetPlayerSkill(playerid);
 	switch(skill) {
 		case 1: JobVehicle[playerid] = CreateVehicleEx(JobInfo[PlayerInfo[playerid][pJob]][jSkill1Veh], Pos[0], Pos[1], Pos[2], CarAngle, -1, -1, -1, 0);
@@ -16956,7 +16956,7 @@ YCMD:setjob(playerid, params[], help) {
 	if(jobid < 1 || jobid > 13) return SCM(playerid, -1, "ID invalid! (1-13)");
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Nguoi choi do khong dang nhap.");
 	PlayerInfo[id][pJob] = jobid;
-	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a schimbat lui %s jobul in %s (%d).", GetName(playerid),GetName(id),JobInfo[jobid][jName],jobid);
+	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a schimbat cho %s jobul in %s (%d).", GetName(playerid),GetName(id),JobInfo[jobid][jName],jobid);
 	if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(COLOR_WHITE, string,3);
 	format(string, sizeof(string), "Admin %s ti-a schimbat jobul in %s.", GetName(playerid),JobInfo[jobid][jName]);
 	SCM(id,COLOR_LIGHTBLUE, string);
@@ -17450,9 +17450,9 @@ YCMD:givevehicle(playerid, params[], help) {
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_GREY, "Nguoi choi do khong dang nhap.");
 	else if(GetSlots(id) <= Iter_Count(MyVehicle[id])) return SCM(playerid, -1, "Acel player are numarul maxim de so huu phuong tien! Isi poate cumpara un slot din /shop.");
 	
-	format(string, sizeof(string), "* Ban nhan duoc un %s de la administratorul %s.", aVehicleNames[model-400], GetName(playerid));
+	format(string, sizeof(string), "* Ban nhan duoc un %s tu admin %s.", aVehicleNames[model-400], GetName(playerid));
 	SCM(id, COLOR_YELLOW, string);
-	format(string, sizeof(string), "* I-ai dat lui %s un %s.", GetName(id), aVehicleNames[model-400]);
+	format(string, sizeof(string), "* I-ai dat cho %s un %s.", GetName(id), aVehicleNames[model-400]);
 	SCM(playerid, COLOR_YELLOW, string);				
 	GiveVehicle(id, model, 0, 0, 0, 0, temporar);	
 	return true;
@@ -17846,7 +17846,7 @@ YCMD:cinvite(playerid, params[], help) {
 	if(PlayerInfo[playerid][pClanRank] < 5) return SCM(playerid, COLOR_WHITE, "La aceasta categorie, are acces doar propietarul clanului si co-liderul.");
 	if(PlayerInfo[userID][pClan] != 0) return SCM(playerid, COLOR_WHITE, "Jucatorul invitat este deja intr-un clan!");
 	if(GetCMembers(PlayerInfo[playerid][pClan]) >= ClanInfo[clanid][clSlots]) return SCM(playerid, COLOR_GREY, "Nu mai poti baga membrii in clan deoarece e plin.");
-	format(string, sizeof(string), "I-ai trimis o invitatie lui %s de intrare in clan.", GetName(userID));
+	format(string, sizeof(string), "I-ai trimis o invitatie cho %s de intrare in clan.", GetName(userID));
 	SCM(playerid, COLOR_LIGHTBLUE, string);
 	format(string, sizeof(string), "Ai fost invitat in clanul %s cu tagul %s de catre %s.", ClanInfo[clanid][clName], ClanInfo[clanid][clTag], GetName(playerid));
 	SCM(userID, COLOR_LIGHTBLUE, string);
@@ -17864,7 +17864,7 @@ YCMD:rpforall(playerid, params[], help) {
 		if(IsPlayerConnected(i) && IsPlayerLogged[i] == 1) {
 			PlayerInfo[i][pExp] += rp;
 			Update(i, pExp);
-			format(szMessage, sizeof(szMessage), "* Administratorul {F03636}%s{FFFFFF} ti-a dat %d RP-uri ca bonus!",GetName(playerid), rp);
+			format(szMessage, sizeof(szMessage), "* Administratorul {F03636}%s{FFFFFF} tda give %d RP-uri ca bonus!",GetName(playerid), rp);
 			SCM(i,COLOR_WHITE,szMessage);
 			UpdateProgress(i);
 		}
@@ -17880,7 +17880,7 @@ YCMD:levelupall(playerid, params[], help) {
 			PlayerInfo[i][pLevel] = playerlevel + 1;
 			Update(i, pLevelx);
 			SetPlayerScore(i,PlayerInfo[i][pLevel]);
-			format(szMessage, sizeof(szMessage), "* Administratorul {F03636}%s{FFFFFF} ti-a dat un level up ca bonus iar acum ai level %d! ",GetName(playerid), PlayerInfo[i][pLevel]);
+			format(szMessage, sizeof(szMessage), "* Administratorul {F03636}%s{FFFFFF} tda give un level up ca bonus iar acum ai level %d! ",GetName(playerid), PlayerInfo[i][pLevel]);
 			SCM(i,COLOR_WHITE,szMessage);
 			UpdateProgress(i);
 		}
@@ -17900,9 +17900,9 @@ YCMD:voucherforall(playerid, params[], help) {
 	foreach(new i: Player) {
 		if(IsPlayerConnected(i) && IsPlayerLogged[i] == 1) {
 			PlayerInfo[i][pVoucher][type-1] += crate;
-			if(type == 1) format(szMessage, sizeof(szMessage), "* Administratorul {F03636}%s{FFFFFF} ti-a dat %d Rare vouchers ca bonus!", GetName(playerid), crate);
-			if(type == 2) format(szMessage, sizeof(szMessage), "* Administratorul {F03636}%s{FFFFFF} ti-a dat %d Epic vouchers ca bonus!", GetName(playerid), crate);
-			if(type == 3) format(szMessage, sizeof(szMessage), "* Administratorul {F03636}%s{FFFFFF} ti-a dat %d Legendary vouchers ca bonus!", GetName(playerid), crate);
+			if(type == 1) format(szMessage, sizeof(szMessage), "* Administratorul {F03636}%s{FFFFFF} tda give %d Rare vouchers ca bonus!", GetName(playerid), crate);
+			if(type == 2) format(szMessage, sizeof(szMessage), "* Administratorul {F03636}%s{FFFFFF} tda give %d Epic vouchers ca bonus!", GetName(playerid), crate);
+			if(type == 3) format(szMessage, sizeof(szMessage), "* Administratorul {F03636}%s{FFFFFF} tda give %d Legendary vouchers ca bonus!", GetName(playerid), crate);
 			SCM(i,COLOR_WHITE,szMessage);
 			save_vouchers(i);
 		}
@@ -17917,7 +17917,7 @@ YCMD:ppforall(playerid, params[], help) {
 		if(IsPlayerConnected(i) && IsPlayerLogged[i] == 1) {
 			PlayerInfo[i][pPremiumPoints] += money;
 			Update(i, pPremiumPointsx);
-			format(szMessage, sizeof(szMessage), "* Administratorul {F03636}%s{FFFFFF} ti-a dat %s Premium Points ca bonus!", GetName(playerid), FormatNumber(money));
+			format(szMessage, sizeof(szMessage), "* Administratorul {F03636}%s{FFFFFF} tda give %s Premium Points ca bonus!", GetName(playerid), FormatNumber(money));
 			SCM(i,COLOR_WHITE,szMessage);
 		}
 	}
@@ -17931,7 +17931,7 @@ YCMD:hpforall(playerid, params[], help) {
 		if(IsPlayerConnected(i) && IsPlayerLogged[i] == 1) {
 			PlayerInfo[i][pHpoints] += money;
 			Update(i, pHpointsx);
-			format(szMessage, sizeof(szMessage), "* Administratorul {F03636}%s{FFFFFF} ti-a dat %s RPoints ca bonus!", GetName(playerid), FormatNumber(money));
+			format(szMessage, sizeof(szMessage), "* Administratorul {F03636}%s{FFFFFF} tda give %s RPoints ca bonus!", GetName(playerid), FormatNumber(money));
 			SCM(i,COLOR_WHITE,szMessage);
 		}
 	}
@@ -17945,7 +17945,7 @@ YCMD:gpforall(playerid, params[], help) {
 		if(IsPlayerConnected(i) && IsPlayerLogged[i] == 1) {
 			PlayerInfo[i][pGiftPoints] += money;
 			Update(i, pGiftPointsx);
-			format(szMessage, sizeof(szMessage), "* Administratorul {F03636}%s{FFFFFF} ti-a dat %s Gift Points ca bonus!", GetName(playerid), FormatNumber(money));
+			format(szMessage, sizeof(szMessage), "* Administratorul {F03636}%s{FFFFFF} tda give %s Gift Points ca bonus!", GetName(playerid), FormatNumber(money));
 			SCM(i,COLOR_WHITE,szMessage);
 		}
 	}
@@ -17963,7 +17963,7 @@ YCMD:givemoney(playerid, params[], help) {
 	gString[0] = EOS;
 	format(gString, sizeof(gString), "(/givemoney) {FFFFFF}%s give %s, $%s money", GetName(playerid), GetName(id), FormatNumberss(money));
 	SendAdminMessage(COLOR_WARNING, gString, 5);
-	format(gString, sizeof(gString), "Admin-ul %s ti-a dat $%s", GetName(playerid), FormatNumberss(money));
+	format(gString, sizeof(gString), "Admin-ul %s tda give $%s", GetName(playerid), FormatNumberss(money));
 	SCM(id, COLOR_WHITE, gString);
 	Update(id, pCashx);
 	format(gString, sizeof(gString), "%s a primit $%s de la %s", GetName(id), FormatNumberss(money), GetName(playerid));
@@ -17979,7 +17979,7 @@ YCMD:moneyforall(playerid, params[], help) {
 	foreach(new i: Player) {
 		if(IsPlayerConnected(i) && IsPlayerLogged[i] == 1) {
 			Translate32Bit(StoreMoney[i], MoneyMoney[i], money);
-			format(szMessage, sizeof(szMessage), "* Administratorul {F03636}%s{FFFFFF} ti-a dat $%s ca bonus!", GetName(playerid), FormatNumberss(money));
+			format(szMessage, sizeof(szMessage), "* Administratorul {F03636}%s{FFFFFF} tda give $%s ca bonus!", GetName(playerid), FormatNumberss(money));
 			SCM(i,COLOR_WHITE,szMessage);
 		}
 	}
@@ -18263,7 +18263,7 @@ YCMD:licitatie(playerid, params[], help) {
 	MesajLicitatie(0x7A45FFFF, string);
 	format(string, sizeof(string), "Ai la dispozitie %d minute pentru a licita.", time);
 	MesajLicitatie(0x7A45FFFF, string);
-	MesajLicitatie(0x7A45FFFF, "Lenh co san: (/bid - licitezi), (/info - informatii)");
+	MesajLicitatie(0x7A45FFFF, "Lenh co san: (/bid - licitezi), (/info - Thong tin)");
 	return true;
 }
 YCMD:info(playerid, params[], help) {
@@ -19228,7 +19228,7 @@ YCMD:setskin(playerid, params[], help) {
 	if(!IsPlayerConnected(id) || id == INVALID_PLAYER_ID) return SCM(playerid, COLOR_GREY, "Nguoi choi do khong dang nhap.");
 	PlayerInfo[id][pChar] = level;
 	SetPlayerSkinEx(id, PlayerInfo[id][pChar]);
-	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a setat skinul %d lui %s.", GetName(playerid), level, GetName(id));
+	format(string, sizeof(string), "({FF0000}Admin Info{FFFFFF}) %s i-a setat skinul %d cho %s.", GetName(playerid), level, GetName(id));
 	if(GetPVarInt(playerid, "Cover") == 0) SendAdminMessage(COLOR_WHITE, string, 1);
 	format(string, sizeof(string), "I-ai setat lui {7BAABA}%s(%d){FFFFFF} skin %d.", GetName(id), id, level);
 	SCM(playerid, COLOR_WHITE, string);
@@ -20153,7 +20153,7 @@ YCMD:frisk(playerid, params[], help) {
 	if(PlayerInfo[id][pDrugs] > 0) { text1 = "| Droguri."; } else { text1 = "| Buzunar gol."; }
 	if(PlayerInfo[id][pMats] > 0) { text2 = "| Materiale."; } else { text2 = "| Buzunar gol."; }
 	if(PlayerInfo[id][pPhoneBook] > 0) { text4 = "| Phone Book."; } else { text4 = "| Buzunar gol."; }
-	format(string, sizeof(string), "** Lucrurile lui %s{FFFFFF} **", GetName(id));
+	format(string, sizeof(string), "** Lucrurile cho %s{FFFFFF} **", GetName(id));
 	SCM(playerid, COLOR_WHITE, string);
 	format(string, sizeof(string), "%s, grame de droguri: %d", text1,PlayerInfo[id][pDrugs]);
 	SCM(playerid, 0xFFFFFFAA, string);
@@ -20784,7 +20784,7 @@ YCMD:bizwithdraw(playerid, params[], help) return SCM(playerid, COLOR_LGREEN, "L
 YCMD:bizfee(playerid, params[], help) return SCM(playerid, COLOR_LGREEN, "Lenh da duoc chuyen sang /bizmenu!");
 YCMD:bizname(playerid, params[], help) return SCM(playerid, COLOR_LGREEN, "Lenh da duoc chuyen sang /bizmenu!");
 YCMD:sellbiz(playerid, params[], help) return SCM(playerid, COLOR_LGREEN, "Lenh da duoc chuyen sang /bizmenu!");
-YCMD:sellbizto(playerid, params[], help) return SCM(playerid, COLOR_LGREEN, "Aceasta comanda a fost dezactivata deoarece acum se pot face afaceri prin intermediul comenzii /trade.");
+YCMD:sellbizto(playerid, params[], help) return SCM(playerid, COLOR_LGREEN, "Lenh da bi vo hieu hoa, ban co the giao dich thong qua lenh /trade.");
 YCMD:sellbiztostate(playerid, params[], help) {
 		
 	if(TradeID[playerid] != -1) return SCM(playerid, COLOR_LGREEN, "Error: Ban khong the su dung lenh nay khi dang giao dich!");
@@ -20800,7 +20800,7 @@ YCMD:buybiz(playerid, params[], help) {
 	for(new b = 1; b < sizeof(BizzInfo); b++) {
 		if(PlayerToPoint(2, playerid, BizzInfo[b][bEntranceX], BizzInfo[b][bEntranceY], BizzInfo[b][bEntranceZ]) && BizzInfo[b][bBuyPrice] != 0) {
 			if(PlayerInfo[playerid][pLevel] < BizzInfo[b][bLevel]) {
-				format(string, sizeof(string), "Ai nevoie de nivel %d pentru a cumpara.",BizzInfo[b][bLevel]);
+				format(string, sizeof(string), "Ban can dat level %d de mua.",BizzInfo[b][bLevel]);
 				SCM(playerid, COLOR_WHITE, string);
 				return true;
 			}
@@ -20813,7 +20813,7 @@ YCMD:buybiz(playerid, params[], help) {
 				GivePlayerBank(id, BizzInfo[b][bBuyPrice]);
 				Update(id, pBankx);
 				Update(id, pMBankx);
-				format(string, sizeof(string), "* %s ti-a cumparat afacerea pentru {19CF2E}$%s{239931}. Banii au fost transferati in contul tau bancar.", GetName(playerid), FormatNumber(BizzInfo[b][bBuyPrice]));
+				format(string, sizeof(string), "* %s ti-a cumparat afacerea pentru {19CF2E}$%s{239931}. So tien da duoc chuyen truc tiep vao tai khoan ngan hang cua ban.", GetName(playerid), FormatNumber(BizzInfo[b][bBuyPrice]));
 				SCM(id, 0x239931FF, string);
 				mysql_format(SQL, gQuery,sizeof(gQuery),"UPDATE users SET `Bank`='%d', `MBank`='%d' WHERE `ID`='%d'",PlayerInfo[id][pAccount],PlayerInfo[id][pStoreAccount], PlayerInfo[id][pSQLID]);
 				mysql_tquery(SQL, gQuery, "", "");					
@@ -22568,7 +22568,7 @@ task LocalTimer[1000]() {
 					MesajLicitatie(0x7A45FFFF, string);
 					format(string, sizeof(string), "Ai la dispozitie 5 minute pentru a licita.");
 					MesajLicitatie(0x7A45FFFF, string);
-					MesajLicitatie(0x7A45FFFF, "Lenh co san: (/bid - licitezi), (/info - informatii)");		
+					MesajLicitatie(0x7A45FFFF, "Lenh co san: (/bid - licitezi), (/info - Thong tin)");		
 				}
 				else if(FreeHouses() > 0) {
 					new id = GetHouseID();
@@ -22597,7 +22597,7 @@ task LocalTimer[1000]() {
 					MesajLicitatie(0x7A45FFFF, string);
 					format(string, sizeof(string), "Ai la dispozitie 5 minute pentru a licita.");
 					MesajLicitatie(0x7A45FFFF, string);
-					MesajLicitatie(0x7A45FFFF, "Lenh co san: (/bid - licitezi), (/info - informatii)");
+					MesajLicitatie(0x7A45FFFF, "Lenh co san: (/bid - licitezi), (/info - Thong tin)");
 				}			
 				else if(minute == 0 && second == 0) SendAdminMessage(COLOR_WHITE, "AdmBot: Nu sunt proprietati ce poti fi scoase la licitatie.", 1);
 			}
@@ -22958,7 +22958,7 @@ YCMD:setjobowner(playerid, params[], help) {
 	format(JobInfo[job][jOwner], 24, GetName(id));
 	PlayerInfo[id][pJobOwner] = job;
 	UpdateVar(id, "JobOwner", PlayerInfo[playerid][pJobOwner]);
-	format(string, sizeof(string), "AdmBot: Adminul %s i-a setat lui %s owner la jobul %s", GetName(playerid), JobInfo[job][jOwner], JobInfo[job][jName]);
+	format(string, sizeof(string), "AdmBot: Adminul %s i-a setat cho %s owner la jobul %s", GetName(playerid), JobInfo[job][jOwner], JobInfo[job][jName]);
 	SendAdminMessage(COLOR_ADMCHAT, string,1);
 	format(string, sizeof(string), "Chuc mung! Esti noul owner la jobul %s.", JobInfo[job][jName]);
 	SCM(id, COLOR_YELLOW, string);
@@ -27098,7 +27098,7 @@ function SQL_InsertSafeZone(playerid, range, Float: x, Float: y, Float: z) {
 	SafeZone[i][szRange] = range;
 	SCM(playerid, COLOR_GOLD, "Acest loc a fost adaugat cu succes in baza de date.");
 	gString[0] = EOS;
-	format(gString, sizeof(gString), "Informatii: ID %d, Coordonate (%f, %f, %f), raza %d.", i, x, y, z, range);
+	format(gString, sizeof(gString), "Thong tin: ID %d, Coordonate (%f, %f, %f), raza %d.", i, x, y, z, range);
 	SCM(playerid, COLOR_GOLD, gString);
 	return true;
 }

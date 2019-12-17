@@ -1,5 +1,6 @@
 #include <a_samp>
 #include <easyDialog>
+
 Dialog:DIALOG_FINDCAR(playerid, response, listitem, inputtext[]) {
 	if(!response)
 		return true;
